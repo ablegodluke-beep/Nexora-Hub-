@@ -1843,3 +1843,950 @@ td small {
 
 }
   </style>
+    
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+/* =========================
+   SUPABASE
+   ========================= */
+
+const SUPABASE_URL =
+  "https://izjrazugqbnijzhlxegp.supabase.co";
+
+const SUPABASE_KEY =
+  "PASTE YOUR WORKING PUBLISHABLE KEY HERE";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =========================
+   GLOBAL DATA
+   ========================= */
+
+let allJobs = [];
+
+
+/* =========================
+   ELEMENTS
+   ========================= */
+
+const adminJobsTable =
+  document.getElementById("adminJobsTable");
+
+const adminJobSearch =
+  document.getElementById("adminJobSearch");
+
+const totalJobsCount =
+  document.getElementById("totalJobsCount");
+
+const activeJobsCount =
+  document.getElementById("activeJobsCount");
+
+const jobCountText =
+  document.getElementById("jobCountText");
+
+const addJobForm =
+  document.getElementById("addJobForm");
+
+const addJobModal =
+  document.getElementById("addJobModal");
+
+const addJobMessage =
+  document.getElementById("addJobMessage");
+
+const mobileMenuBtn =
+  document.getElementById("mobileMenuBtn");
+
+const adminSidebar =
+  document.getElementById("adminSidebar");
+
+const sidebarOverlay =
+  document.getElementById("sidebarOverlay");
+
+
+/* =========================
+   LOAD JOBS
+   ========================= */
+
+async function loadJobs() {
+
+  if (!adminJobsTable) return;
+
+  adminJobsTable.innerHTML = `
+    <tr>
+      <td
+        colspan="6"
+        style="
+          text-align:center;
+          padding:35px;
+        "
+      >
+        Loading opportunities...
+      </td>
+    </tr>
+  `;
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("jobs")
+    .select("*")
+    .order("verified", {
+      ascending: false
+    });
+
+  if (error) {
+
+    console.error(
+      "Supabase error:",
+      error
+    );
+
+    adminJobsTable.innerHTML = `
+      <tr>
+        <td
+          colspan="6"
+          style="
+            text-align:center;
+            padding:35px;
+            color:#dc2626;
+          "
+        >
+          Unable to load opportunities.
+          <br>
+          <small>
+            ${escapeHtml(error.message)}
+          </small>
+        </td>
+      </tr>
+    `;
+
+    if (totalJobsCount) {
+      totalJobsCount.textContent = "—";
+    }
+
+    if (activeJobsCount) {
+      activeJobsCount.textContent = "—";
+    }
+
+    if (jobCountText) {
+      jobCountText.textContent =
+        "Unable to load jobs";
+    }
+
+    return;
+  }
+
+  allJobs = data || [];
+
+  updateStats();
+
+  renderJobs(allJobs);
+}
+
+
+/* =========================
+   UPDATE STATS
+   ========================= */
+
+function updateStats() {
+
+  const total =
+    allJobs.length;
+
+  const active =
+    allJobs.filter(
+      job =>
+        String(job.status || "")
+          .toLowerCase() === "active"
+    ).length;
+
+  if (totalJobsCount) {
+    totalJobsCount.textContent =
+      total;
+  }
+
+  if (activeJobsCount) {
+    activeJobsCount.textContent =
+      active;
+  }
+
+  if (jobCountText) {
+    jobCountText.textContent =
+      `${total} job${total === 1 ? "" : "s"}`;
+  }
+}
+
+
+/* =========================
+   RENDER JOBS
+   ========================= */
+
+function renderJobs(jobs) {
+
+  if (!adminJobsTable) return;
+
+  if (!jobs.length) {
+
+    adminJobsTable.innerHTML = `
+      <tr>
+        <td
+          colspan="6"
+          style="
+            text-align:center;
+            padding:35px;
+            color:#718096;
+          "
+        >
+          No jobs found.
+        </td>
+      </tr>
+    `;
+
+    if (jobCountText) {
+      jobCountText.textContent =
+        "0 jobs";
+    }
+
+    return;
+  }
+
+  adminJobsTable.innerHTML =
+    jobs.map(job => {
+
+      const status =
+        String(job.status || "unknown")
+          .toLowerCase();
+
+      const statusLabel =
+        status === "active"
+          ? "Active"
+          : status === "network"
+            ? "Network"
+            : job.status || "Unknown";
+
+      const statusStyle =
+        status === "active"
+          ? "background:#dcfce7;color:#166534;"
+          : "background:#fef3c7;color:#92400e;";
+
+      return `
+        <tr>
+
+          <td>
+            <strong>
+              ${escapeHtml(job.title || "Untitled Job")}
+            </strong>
+
+            <small>
+              ${escapeHtml(job.company || "Unknown Company")}
+            </small>
+          </td>
+
+          <td>
+            ${escapeHtml(job.location || "—")}
+          </td>
+
+          <td>
+            ${escapeHtml(job.type || "—")}
+          </td>
+
+          <td>
+            ${escapeHtml(job.audience || "—")}
+          </td>
+
+          <td>
+            <span
+              style="
+                display:inline-block;
+                padding:5px 9px;
+                border-radius:20px;
+                font-size:11px;
+                font-weight:700;
+                ${statusStyle}
+              "
+            >
+              ${escapeHtml(statusLabel)}
+            </span>
+          </td>
+
+          <td>
+
+            <button
+              type="button"
+              class="job-action-btn"
+              onclick="viewJob('${escapeJs(job.id)}')"
+            >
+              View
+            </button>
+
+            <button
+              type="button"
+              class="job-action-btn"
+              onclick="openJobLink('${escapeJs(job.apply_url || "")}')"
+            >
+              Apply
+            </button>
+
+          </td>
+
+        </tr>
+      `;
+
+    }).join("");
+
+  if (jobCountText) {
+    jobCountText.textContent =
+      `${jobs.length} job${jobs.length === 1 ? "" : "s"}`;
+  }
+}
+
+
+/* =========================
+   SEARCH
+   ========================= */
+
+if (adminJobSearch) {
+
+  adminJobSearch.addEventListener(
+    "input",
+    function () {
+
+      const search =
+        this.value
+          .trim()
+          .toLowerCase();
+
+      if (!search) {
+        renderJobs(allJobs);
+        return;
+      }
+
+      const filtered =
+        allJobs.filter(job => {
+
+          const searchable = [
+
+            job.company,
+            job.title,
+            job.type,
+            job.location,
+            job.region,
+            job.audience,
+            job.eligibility,
+            job.category,
+            job.description,
+            job.source,
+            job.status
+
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+          return searchable.includes(search);
+        });
+
+      renderJobs(filtered);
+    }
+  );
+}
+
+
+/* =========================
+   ADD JOB MODAL
+   ========================= */
+
+function openAddJobForm() {
+
+  if (!addJobModal) return;
+
+  addJobModal.style.display =
+    "flex";
+
+  document.body.style.overflow =
+    "hidden";
+
+  if (addJobMessage) {
+    addJobMessage.style.display =
+      "none";
+
+    addJobMessage.textContent =
+      "";
+  }
+
+  const verifiedInput =
+    document.getElementById(
+      "jobVerified"
+    );
+
+  if (verifiedInput &&
+      !verifiedInput.value) {
+
+    const today =
+      new Date()
+        .toISOString()
+        .split("T")[0];
+
+    verifiedInput.value =
+      today;
+  }
+}
+
+
+function closeAddJobForm() {
+
+  if (!addJobModal) return;
+
+  addJobModal.style.display =
+    "none";
+
+  document.body.style.overflow =
+    "";
+
+  if (addJobForm) {
+    addJobForm.reset();
+  }
+
+  if (addJobMessage) {
+    addJobMessage.style.display =
+      "none";
+
+    addJobMessage.textContent =
+      "";
+  }
+}
+
+
+/* =========================
+   ADD JOB
+   ========================= */
+
+if (addJobForm) {
+
+  addJobForm.addEventListener(
+    "submit",
+    async function (event) {
+
+      event.preventDefault();
+
+      const saveButton =
+        addJobForm.querySelector(
+          ".save-job-btn"
+        );
+
+      if (saveButton) {
+
+        saveButton.disabled =
+          true;
+
+        saveButton.textContent =
+          "Adding Job...";
+      }
+
+      showJobMessage(
+        "Adding job...",
+        "info"
+      );
+
+      const company =
+        document.getElementById(
+          "jobCompany"
+        ).value.trim();
+
+      const title =
+        document.getElementById(
+          "jobTitle"
+        ).value.trim();
+
+      const type =
+        document.getElementById(
+          "jobType"
+        ).value.trim();
+
+      const location =
+        document.getElementById(
+          "jobLocation"
+        ).value.trim();
+
+      const region =
+        document.getElementById(
+          "jobRegion"
+        ).value;
+
+      const audience =
+        document.getElementById(
+          "jobAudience"
+        ).value;
+
+      const eligibility =
+        document.getElementById(
+          "jobEligibility"
+        ).value.trim();
+
+      const category =
+        document.getElementById(
+          "jobCategory"
+        ).value.trim();
+
+      const description =
+        document.getElementById(
+          "jobDescription"
+        ).value.trim();
+
+      const applyUrl =
+        document.getElementById(
+          "jobApplyUrl"
+        ).value.trim();
+
+      const source =
+        document.getElementById(
+          "jobSource"
+        ).value.trim();
+
+      const status =
+        document.getElementById(
+          "jobStatus"
+        ).value;
+
+      const verified =
+        document.getElementById(
+          "jobVerified"
+        ).value;
+
+
+      const jobId =
+        createJobId(
+          company,
+          title
+        );
+
+
+      const {
+        data,
+        error
+      } = await supabaseClient
+        .from("jobs")
+        .insert([
+          {
+            id: jobId,
+            company: company,
+            title: title,
+            type: type,
+            location: location,
+            region: region,
+            audience: audience,
+            eligibility: eligibility,
+            category: category,
+            description: description,
+            apply_url: applyUrl,
+            source: source,
+            status: status,
+            verified: verified
+          }
+        ])
+        .select();
+
+
+      if (error) {
+
+        console.error(
+          "Add job error:",
+          error
+        );
+
+        showJobMessage(
+          "Unable to add job: " +
+          error.message,
+          "error"
+        );
+
+        if (saveButton) {
+          saveButton.disabled =
+            false;
+
+          saveButton.textContent =
+            "Add Job";
+        }
+
+        return;
+      }
+
+
+      showJobMessage(
+        "Job added successfully!",
+        "success"
+      );
+
+
+      if (saveButton) {
+        saveButton.textContent =
+          "Added ✓";
+      }
+
+
+      await loadJobs();
+
+
+      setTimeout(
+        () => {
+
+          closeAddJobForm();
+
+          if (saveButton) {
+            saveButton.disabled =
+              false;
+
+            saveButton.textContent =
+              "Add Job";
+          }
+
+        },
+        1000
+      );
+
+    }
+  );
+}
+
+
+/* =========================
+   MESSAGE HELPER
+   ========================= */
+
+function showJobMessage(
+  message,
+  type
+) {
+
+  if (!addJobMessage) return;
+
+  addJobMessage.textContent =
+    message;
+
+  addJobMessage.style.display =
+    "block";
+
+  if (type === "success") {
+
+    addJobMessage.style.background =
+      "#dcfce7";
+
+    addJobMessage.style.color =
+      "#166534";
+
+  } else if (type === "error") {
+
+    addJobMessage.style.background =
+      "#fee2e2";
+
+    addJobMessage.style.color =
+      "#991b1b";
+
+  } else {
+
+    addJobMessage.style.background =
+      "#e0f2fe";
+
+    addJobMessage.style.color =
+      "#075985";
+  }
+}
+
+
+/* =========================
+   VIEW JOB
+   ========================= */
+
+function viewJob(id) {
+
+  const job =
+    allJobs.find(
+      item =>
+        String(item.id) ===
+        String(id)
+    );
+
+  if (!job) {
+
+    alert(
+      "Job information could not be found."
+    );
+
+    return;
+  }
+
+  const message = [
+
+    `Company: ${job.company || "—"}`,
+
+    `Title: ${job.title || "—"}`,
+
+    `Type: ${job.type || "—"}`,
+
+    `Location: ${job.location || "—"}`,
+
+    `Region: ${job.region || "—"}`,
+
+    `Audience: ${job.audience || "—"}`,
+
+    `Eligibility: ${job.eligibility || "—"}`,
+
+    `Category: ${job.category || "—"}`,
+
+    `Status: ${job.status || "—"}`,
+
+    `Verified: ${job.verified || "—"}`
+
+  ].join("\n");
+
+  alert(message);
+}
+
+
+/* =========================
+   OPEN APPLICATION
+   ========================= */
+
+function openJobLink(url) {
+
+  if (!url) {
+
+    alert(
+      "No application link is available."
+    );
+
+    return;
+  }
+
+  window.open(
+    url,
+    "_blank",
+    "noopener,noreferrer"
+  );
+}
+
+
+/* =========================
+   CREATE JOB ID
+   ========================= */
+
+function createJobId(
+  company,
+  title
+) {
+
+  const base =
+    `${company}-${title}`
+      .toLowerCase()
+      .replace(
+        /[^a-z0-9]+/g,
+        "-"
+      )
+      .replace(
+        /^-+|-+$/g,
+        ""
+      );
+
+  const random =
+    Math.random()
+      .toString(36)
+      .substring(2, 8);
+
+  return `${base}-${random}`;
+}
+
+
+/* =========================
+   ESCAPE HTML
+   ========================= */
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+}
+
+
+/* =========================
+   ESCAPE JAVASCRIPT
+   ========================= */
+
+function escapeJs(value) {
+
+  return String(value ?? "")
+    .replace(
+      /\\/g,
+      "\\\\"
+    )
+    .replace(
+      /'/g,
+      "\\'"
+    );
+}
+
+
+/* =========================
+   MOBILE SIDEBAR
+   ========================= */
+
+if (mobileMenuBtn) {
+
+  mobileMenuBtn.addEventListener(
+    "click",
+    function () {
+
+      adminSidebar.classList.add(
+        "open"
+      );
+
+      sidebarOverlay.classList.add(
+        "show"
+      );
+    }
+  );
+}
+
+
+if (sidebarOverlay) {
+
+  sidebarOverlay.addEventListener(
+    "click",
+    closeSidebar
+  );
+}
+
+
+function closeSidebar() {
+
+  adminSidebar.classList.remove(
+    "open"
+  );
+
+  sidebarOverlay.classList.remove(
+    "show"
+  );
+}
+
+
+/* =========================
+   CLOSE SIDEBAR AFTER NAV
+   ========================= */
+
+document
+  .querySelectorAll(
+    ".admin-nav a"
+  )
+  .forEach(link => {
+
+    link.addEventListener(
+      "click",
+      function () {
+
+        document
+          .querySelectorAll(
+            ".admin-nav a"
+          )
+          .forEach(item =>
+            item.classList.remove(
+              "active"
+            )
+          );
+
+        this.classList.add(
+          "active"
+        );
+
+        closeSidebar();
+      }
+    );
+
+  });
+
+
+/* =========================
+   CLOSE MODAL ON BACKDROP
+   ========================= */
+
+if (addJobModal) {
+
+  addJobModal.addEventListener(
+    "click",
+    function (event) {
+
+      if (
+        event.target ===
+        addJobModal
+      ) {
+        closeAddJobForm();
+      }
+
+    }
+  );
+}
+
+
+/* =========================
+   ESC KEY
+   ========================= */
+
+document.addEventListener(
+  "keydown",
+  function (event) {
+
+    if (
+      event.key === "Escape"
+    ) {
+
+      closeAddJobForm();
+
+      closeSidebar();
+    }
+
+  }
+);
+
+
+/* =========================
+   START DASHBOARD
+   ========================= */
+
+loadJobs();
+
+
+/* =========================
+   CLOSE HTML DOCUMENT
+   ========================= */
+
+</script>
+
+</main>
+
+</body>
+  </html>
