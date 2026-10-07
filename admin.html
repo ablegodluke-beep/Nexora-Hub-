@@ -1515,9 +1515,41 @@
       document.getElementById("adminJobSearch");
 
 
-    let allJobs = Array.isArray(window.jobsData)
-      ? window.jobsData
-      : [];
+    let allJobs = [];
+
+async function loadAdminJobs() {
+
+  const { data, error } = await supabaseClient
+    .from("jobs")
+    .select("*")
+    .order("verified", { ascending: false });
+
+  if (error) {
+
+    console.error("Admin jobs error:", error);
+
+    jobsTable.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align:center;padding:30px;">
+          Unable to load jobs.
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  allJobs = data || [];
+
+  renderJobs(allJobs);
+
+  activeJobsCount.textContent =
+    allJobs.filter(job => job.status === "active").length;
+
+  jobCountText.textContent =
+    `${allJobs.length} jobs`;
+
+}
 
 
     function renderJobs(jobs) {
@@ -1632,8 +1664,7 @@
     }
 
 
-    renderJobs(allJobs);
-    updateJobStats();
+    loadAdminJobs();
 
 
     /* =========================
