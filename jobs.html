@@ -734,15 +734,19 @@ async function loadJobs() {
 
   if (error) {
 
-    console.error(
-      "Supabase error:",
-      error
-    );
+  console.error("Supabase error:", error);
 
-    jobsCount.textContent =
-      "Unable to load opportunities.";
+  jobsCount.textContent =
+    "Supabase error: " +
+    (error.message || "Unknown error");
 
-    return;
+  noJobs.style.display = "block";
+
+  noJobs.innerHTML =
+    "<strong>Database error:</strong><br>" +
+    (error.message || "Unknown error");
+
+  return;
   }
 
   jobsData = data || [];
