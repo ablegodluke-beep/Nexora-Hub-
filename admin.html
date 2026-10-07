@@ -1,1 +1,1751 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Nexora Hub — Admin Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f7fb;
+      color: #172033;
+      overflow-x: hidden;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* =========================
+       SIDEBAR
+       ========================= */
+
+    .admin-sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 250px;
+      height: 100vh;
+      background: #0b1220;
+      color: white;
+      padding: 24px 16px;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .admin-logo {
+      display: block;
+      font-size: 25px;
+      font-weight: 800;
+      padding: 0 10px 28px;
+      letter-spacing: -0.5px;
+    }
+
+    .admin-logo span {
+      color: #35d07f;
+    }
+
+    .admin-label {
+      color: #718096;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      padding: 0 12px;
+      margin: 18px 0 10px;
+      text-transform: uppercase;
+    }
+
+    .admin-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .admin-nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 12px;
+      border-radius: 10px;
+      color: #b8c2d3;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    .admin-nav a:hover,
+    .admin-nav a.active {
+      background: #162237;
+      color: white;
+    }
+
+    .admin-nav a.active {
+      border-left: 3px solid #35d07f;
+    }
+
+    .nav-icon {
+      width: 22px;
+      text-align: center;
+    }
+
+    .admin-sidebar-bottom {
+      margin-top: 30px;
+      border-top: 1px solid #1d2a3d;
+      padding-top: 20px;
+    }
+
+    .view-site {
+      display: block;
+      background: #35d07f;
+      color: #07130d;
+      text-align: center;
+      font-weight: 700;
+      padding: 12px;
+      border-radius: 9px;
+      font-size: 13px;
+    }
+
+    /* =========================
+       MAIN
+       ========================= */
+
+    .admin-main {
+      margin-left: 250px;
+      min-height: 100vh;
+    }
+
+    .admin-topbar {
+      height: 75px;
+      background: white;
+      border-bottom: 1px solid #e5eaf1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .topbar-left h1 {
+      font-size: 22px;
+      margin-bottom: 3px;
+    }
+
+    .topbar-left p {
+      color: #7b8798;
+      font-size: 12px;
+    }
+
+    .admin-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .admin-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #dff9ea;
+      color: #0c9b50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
+
+    .admin-profile-text strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .admin-profile-text small {
+      color: #8994a5;
+      font-size: 11px;
+    }
+
+    /* =========================
+       CONTENT
+       ========================= */
+
+    .admin-content {
+      padding: 30px;
+      max-width: 1500px;
+      margin: auto;
+    }
+
+    .welcome-box {
+      background: linear-gradient(135deg, #0c1728, #142943);
+      border-radius: 18px;
+      padding: 28px;
+      color: white;
+      margin-bottom: 25px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-box::after {
+      content: "";
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      border: 35px solid rgba(53, 208, 127, 0.08);
+      right: -60px;
+      top: -70px;
+    }
+
+    .welcome-box h2 {
+      font-size: 25px;
+      margin-bottom: 8px;
+    }
+
+    .welcome-box p {
+      color: #b9c5d5;
+      font-size: 14px;
+      max-width: 650px;
+      line-height: 1.6;
+    }
+
+    .live-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 16px;
+      color: #78e6a8;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: #35d07f;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* =========================
+       STAT CARDS
+       ========================= */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: white;
+      border: 1px solid #e7ecf3;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 16px rgba(20, 35, 55, 0.04);
+    }
+
+    .stat-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .stat-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
+      background: #eef3f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+    }
+
+    .stat-card small {
+      color: #7d899a;
+      font-size: 12px;
+    }
+
+    .stat-card h3 {
+      font-size: 27px;
+      margin-bottom: 6px;
+    }
+
+    .stat-status {
+      color: #8b97a7;
+      font-size: 11px;
+    }
+
+    .not-connected {
+      color: #e38a16;
+    }
+
+    /* =========================
+       TWO COLUMN
+       ========================= */
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr;
+      gap: 22px;
+      margin-bottom: 28px;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid #e7ecf3;
+      border-radius: 15px;
+      padding: 22px;
+      box-shadow: 0 4px 16px rgba(20, 35, 55, 0.04);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .panel-header h2 {
+      font-size: 17px;
+    }
+
+    .panel-header p {
+      color: #8994a5;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .panel-link {
+      color: #159b59;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* =========================
+       CHART
+       ========================= */
+
+    .chart-area {
+      height: 220px;
+      border-radius: 10px;
+      background:
+        linear-gradient(#edf1f6 1px, transparent 1px),
+        linear-gradient(90deg, #edf1f6 1px, transparent 1px);
+      background-size: 100% 44px, 70px 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chart-message {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .chart-message div {
+      background: rgba(255,255,255,0.95);
+      padding: 15px 20px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .chart-message strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .chart-message span {
+      color: #8994a5;
+      font-size: 11px;
+    }
+
+    /* =========================
+       REVENUE
+       ========================= */
+
+    .revenue-box {
+      text-align: center;
+      padding: 15px 5px;
+    }
+
+    .revenue-icon {
+      width: 55px;
+      height: 55px;
+      background: #eafaf1;
+      border-radius: 15px;
+      margin: 0 auto 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+    }
+
+    .revenue-box h3 {
+      font-size: 29px;
+      margin-bottom: 5px;
+    }
+
+    .revenue-box p {
+      color: #8a95a5;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .revenue-status {
+      display: inline-block;
+      margin-top: 17px;
+      background: #fff4e2;
+      color: #b36b05;
+      padding: 7px 10px;
+      border-radius: 7px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    /* =========================
+       QUICK ACTIONS
+       ========================= */
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .quick-action {
+      border: 1px solid #e5eaf1;
+      border-radius: 11px;
+      padding: 15px;
+      background: #fafbfd;
+      cursor: pointer;
+      transition: 0.2s;
+      text-align: left;
+    }
+
+    .quick-action:hover {
+      transform: translateY(-2px);
+      border-color: #35d07f;
+    }
+
+    .quick-action-icon {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .quick-action strong {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .quick-action span {
+      color: #8a95a5;
+      font-size: 10px;
+    }
+
+    /* =========================
+       JOB MANAGEMENT
+       ========================= */
+
+    .jobs-panel {
+      margin-bottom: 28px;
+    }
+
+    .job-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .job-search {
+      flex: 1;
+      max-width: 420px;
+      position: relative;
+    }
+
+    .job-search input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #dce3ec;
+      border-radius: 9px;
+      outline: none;
+      font-size: 13px;
+      background: #fafbfd;
+    }
+
+    .job-search input:focus {
+      border-color: #35d07f;
+    }
+
+    .add-job-btn {
+      border: 0;
+      background: #159b59;
+      color: white;
+      padding: 12px 16px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .jobs-table-wrapper {
+      overflow-x: auto;
+      width: 100%;
+    }
+
+    .jobs-table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+    }
+
+    .jobs-table th {
+      text-align: left;
+      background: #f7f9fc;
+      color: #778396;
+      font-size: 10px;
+      padding: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .jobs-table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid #edf1f5;
+      font-size: 12px;
+      vertical-align: middle;
+    }
+
+    .job-name {
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .job-company {
+      color: #8a95a5;
+      font-size: 10px;
+    }
+
+    .job-badge {
+      display: inline-block;
+      padding: 5px 8px;
+      border-radius: 6px;
+      background: #eaf8f0;
+      color: #12834b;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .action-btn {
+      border: 1px solid #dce3ec;
+      background: white;
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 10px;
+      cursor: pointer;
+      margin-right: 4px;
+    }
+
+    .action-btn:hover {
+      border-color: #35d07f;
+    }
+
+    /* =========================
+       ANALYTICS
+       ========================= */
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .analytics-card {
+      background: white;
+      border: 1px solid #e7ecf3;
+      border-radius: 15px;
+      padding: 20px;
+    }
+
+    .analytics-card h3 {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .analytics-card p {
+      color: #8994a5;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .analytics-placeholder {
+      margin-top: 18px;
+      padding: 14px;
+      background: #f7f9fc;
+      border-radius: 9px;
+      color: #8994a5;
+      font-size: 11px;
+    }
+
+    /* =========================
+       NOTICE
+       ========================= */
+
+    .admin-notice {
+      background: #fff8e9;
+      border: 1px solid #f5dfae;
+      color: #805a14;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 28px;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .admin-notice strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* =========================
+       MOBILE HEADER
+       ========================= */
+
+    .mobile-menu-btn {
+      display: none;
+      border: 0;
+      background: #eef2f7;
+      width: 40px;
+      height: 40px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .sidebar-overlay {
+      display: none;
+    }
+
+    /* =========================
+       RESPONSIVE
+       ========================= */
+
+    @media (max-width: 1100px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .analytics-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 800px) {
+
+      .admin-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+        width: 245px;
+      }
+
+      .admin-sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.4);
+        z-index: 900;
+      }
+
+      .sidebar-overlay.show {
+        display: block;
+      }
+
+      .admin-main {
+        margin-left: 0;
+      }
+
+      .admin-topbar {
+        padding: 0 16px;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+        margin-right: 10px;
+      }
+
+      .topbar-left {
+        display: flex;
+        align-items: center;
+      }
+
+      .topbar-left h1 {
+        font-size: 17px;
+      }
+
+      .topbar-left p {
+        display: none;
+      }
+
+      .admin-profile-text {
+        display: none;
+      }
+
+      .admin-content {
+        padding: 18px 14px;
+      }
+
+      .welcome-box {
+        padding: 22px;
+      }
+
+      .welcome-box h2 {
+        font-size: 21px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .stat-card {
+        padding: 15px;
+      }
+
+      .stat-card h3 {
+        font-size: 21px;
+      }
+
+      .stat-icon {
+        width: 36px;
+        height: 36px;
+      }
+
+      .panel {
+        padding: 16px;
+      }
+
+      .analytics-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .job-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .job-search {
+        max-width: none;
+      }
+
+      .add-job-btn {
+        width: 100%;
+      }
+
+      .quick-actions {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stat-card small {
+        font-size: 10px;
+      }
+
+      .stat-card h3 {
+        font-size: 19px;
+      }
+
+      .stat-status {
+        font-size: 9px;
+      }
+
+      .welcome-box p {
+        font-size: 12px;
+      }
+
+      .quick-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .panel-header {
+        align-items: flex-start;
+      }
+
+      .panel-header h2 {
+        font-size: 15px;
+      }
+
+      .admin-topbar {
+        height: 65px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       SIDEBAR
+       ========================= -->
+
+  <aside class="admin-sidebar" id="adminSidebar">
+
+    <a href="index.html" class="admin-logo">
+      Nexora<span>Hub</span>
+    </a>
+
+    <div class="admin-label">Dashboard</div>
+
+    <nav class="admin-nav">
+
+      <a href="#dashboard" class="active">
+        <span class="nav-icon">▦</span>
+        Overview
+      </a>
+
+      <a href="#analytics">
+        <span class="nav-icon">📊</span>
+        Analytics
+      </a>
+
+      <a href="#jobs">
+        <span class="nav-icon">💼</span>
+        Jobs
+      </a>
+
+      <a href="#revenue">
+        <span class="nav-icon">💰</span>
+        Revenue
+      </a>
+
+      <a href="#companies">
+        <span class="nav-icon">🏢</span>
+        Companies
+      </a>
+
+      <a href="#products">
+        <span class="nav-icon">🛍️</span>
+        Digital Products
+      </a>
+
+      <a href="#messages">
+        <span class="nav-icon">✉️</span>
+        Messages
+      </a>
+
+    </nav>
+
+    <div class="admin-label">System</div>
+
+    <nav class="admin-nav">
+
+      <a href="#settings">
+        <span class="nav-icon">⚙️</span>
+        Settings
+      </a>
+
+    </nav>
+
+    <div class="admin-sidebar-bottom">
+
+      <a href="index.html" class="view-site">
+        🌐 View Nexora Website
+      </a>
+
+    </div>
+
+  </aside>
+
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+
+  <!-- =========================
+       MAIN
+       ========================= -->
+
+  <main class="admin-main">
+
+    <!-- TOP BAR -->
+
+    <header class="admin-topbar">
+
+      <div class="topbar-left">
+
+        <button
+          class="mobile-menu-btn"
+          id="mobileMenuBtn"
+          aria-label="Open menu">
+          ☰
+        </button>
+
+        <div>
+          <h1>Admin Dashboard</h1>
+          <p>Manage and monitor Nexora Hub</p>
+        </div>
+
+      </div>
+
+
+      <div class="admin-profile">
+
+        <div class="admin-avatar">
+          A
+        </div>
+
+        <div class="admin-profile-text">
+          <strong>Administrator</strong>
+          <small>Nexora Hub</small>
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- CONTENT -->
+
+    <section class="admin-content" id="dashboard">
+
+
+      <!-- WELCOME -->
+
+      <div class="welcome-box">
+
+        <h2>Welcome to Nexora Hub 👋</h2>
+
+        <p>
+          Your central control center for jobs, opportunities,
+          companies, digital products, visitors and revenue.
+        </p>
+
+        <div class="live-indicator">
+          <span class="live-dot"></span>
+          Dashboard ready
+        </div>
+
+      </div>
+
+
+      <!-- IMPORTANT NOTICE -->
+
+      <div class="admin-notice">
+
+        <strong>⚙️ Data connection status</strong>
+
+        This dashboard is currently the management interface.
+        Visitor statistics, advertising revenue and database
+        changes will be connected to real services in the next
+        stage. No fake statistics are being displayed.
+
+      </div>
+
+
+      <!-- =========================
+           MAIN STATISTICS
+           ========================= -->
+
+      <div class="stats-grid">
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+            <div class="stat-icon">👥</div>
+            <small>Visitors</small>
+          </div>
+
+          <h3>—</h3>
+
+          <div class="stat-status not-connected">
+            Analytics not connected
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+            <div class="stat-icon">💼</div>
+            <small>Active Jobs</small>
+          </div>
+
+          <h3 id="activeJobsCount">—</h3>
+
+          <div class="stat-status">
+            From jobs database
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+            <div class="stat-icon">🏢</div>
+            <small>Companies</small>
+          </div>
+
+          <h3>—</h3>
+
+          <div class="stat-status not-connected">
+            Database not connected
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+            <div class="stat-icon">💰</div>
+            <small>Revenue</small>
+          </div>
+
+          <h3>—</h3>
+
+          <div class="stat-status not-connected">
+            Revenue data not connected
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           VISITOR ANALYTICS + REVENUE
+           ========================= -->
+
+      <div class="dashboard-grid" id="analytics">
+
+
+        <!-- VISITORS -->
+
+        <div class="panel">
+
+          <div class="panel-header">
+
+            <div>
+              <h2>📈 Visitor Analytics</h2>
+              <p>Website traffic over time</p>
+            </div>
+
+            <span class="panel-link">
+              Coming soon
+            </span>
+
+          </div>
+
+          <div class="chart-area">
+
+            <div class="chart-message">
+
+              <div>
+
+                <strong>Analytics connection required</strong>
+
+                <span>
+                  Real visitors, countries, devices and traffic
+                  sources will appear here.
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- REVENUE -->
+
+        <div class="panel" id="revenue">
+
+          <div class="panel-header">
+
+            <div>
+              <h2>💰 Revenue</h2>
+              <p>Ad and platform earnings</p>
+            </div>
+
+          </div>
+
+          <div class="revenue-box">
+
+            <div class="revenue-icon">
+              💵
+            </div>
+
+            <h3>—</h3>
+
+            <p>
+              Your real advertising and product revenue
+              will appear here after the relevant services
+              are connected.
+            </p>
+
+            <span class="revenue-status">
+              NOT CONNECTED
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           QUICK ACTIONS
+           ========================= -->
+
+      <div class="panel" style="margin-bottom:28px;">
+
+        <div class="panel-header">
+
+          <div>
+            <h2>⚡ Quick Actions</h2>
+            <p>Manage your Nexora platform</p>
+          </div>
+
+        </div>
+
+        <div class="quick-actions">
+
+          <button class="quick-action" onclick="showAddJobMessage()">
+
+            <div class="quick-action-icon">➕</div>
+
+            <strong>Add New Job</strong>
+
+            <span>Create an opportunity listing</span>
+
+          </button>
+
+
+          <button class="quick-action" onclick="goToJobs()">
+
+            <div class="quick-action-icon">💼</div>
+
+            <strong>Manage Jobs</strong>
+
+            <span>View and manage opportunities</span>
+
+          </button>
+
+
+          <button class="quick-action">
+
+            <div class="quick-action-icon">🏢</div>
+
+            <strong>Companies</strong>
+
+            <span>Manage company projects</span>
+
+          </button>
+
+
+          <button class="quick-action">
+
+            <div class="quick-action-icon">🛍️</div>
+
+            <strong>Products</strong>
+
+            <span>Manage digital products</span>
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           JOB MANAGEMENT
+           ========================= -->
+
+      <div class="panel jobs-panel" id="jobs">
+
+        <div class="panel-header">
+
+          <div>
+            <h2>💼 Job Management</h2>
+            <p>Current opportunities on Nexora Hub</p>
+          </div>
+
+          <span class="panel-link" id="jobCountText">
+            Loading...
+          </span>
+
+        </div>
+
+
+        <div class="job-toolbar">
+
+          <div class="job-search">
+
+            <input
+              type="search"
+              id="adminJobSearch"
+              placeholder="Search jobs, companies or categories..."
+            >
+
+          </div>
+
+
+          <button
+            class="add-job-btn"
+            onclick="showAddJobMessage()">
+            + Add New Job
+          </button>
+
+        </div>
+
+
+        <div class="jobs-table-wrapper">
+
+          <table class="jobs-table">
+
+            <thead>
+
+              <tr>
+
+                <th>Opportunity</th>
+                <th>Location</th>
+                <th>Type</th>
+                <th>Audience</th>
+                <th>Status</th>
+                <th>Action</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="adminJobsTable">
+
+              <tr>
+
+                <td colspan="6" style="text-align:center;">
+                  Loading jobs...
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           PLATFORM ANALYTICS
+           ========================= -->
+
+      <div class="analytics-grid">
+
+        <div class="analytics-card">
+
+          <h3>🌍 Visitor Countries</h3>
+
+          <p>
+            See where people visiting Nexora are coming from.
+          </p>
+
+          <div class="analytics-placeholder">
+            🔒 Requires analytics connection
+          </div>
+
+        </div>
+
+
+        <div class="analytics-card">
+
+          <h3>📱 Devices</h3>
+
+          <p>
+            Monitor mobile, desktop and tablet traffic.
+          </p>
+
+          <div class="analytics-placeholder">
+            🔒 Requires analytics connection
+          </div>
+
+        </div>
+
+
+        <div class="analytics-card">
+
+          <h3>🔗 Traffic Sources</h3>
+
+          <p>
+            See whether visitors came from Google,
+            social media, referrals or direct traffic.
+          </p>
+
+          <div class="analytics-placeholder">
+            🔒 Requires analytics connection
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           COMPANIES
+           ========================= -->
+
+      <div class="panel" id="companies" style="margin-bottom:28px;">
+
+        <div class="panel-header">
+
+          <div>
+            <h2>🏢 Company Projects</h2>
+            <p>Companies that want Nexora to help with projects</p>
+          </div>
+
+          <span class="panel-link">
+            Coming soon
+          </span>
+
+        </div>
+
+        <div class="analytics-placeholder">
+
+          Company submissions will appear here once the
+          company project system and database are connected.
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           PRODUCTS
+           ========================= -->
+
+      <div class="panel" id="products" style="margin-bottom:28px;">
+
+        <div class="panel-header">
+
+          <div>
+            <h2>🛍️ Digital Products</h2>
+            <p>Products and sales</p>
+          </div>
+
+          <span class="panel-link">
+            Coming soon
+          </span>
+
+        </div>
+
+        <div class="analytics-placeholder">
+
+          Product sales, customers and revenue will appear
+          here after the store and payment system are connected.
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           MESSAGES
+           ========================= -->
+
+      <div class="panel" id="messages" style="margin-bottom:28px;">
+
+        <div class="panel-header">
+
+          <div>
+            <h2>✉️ Messages</h2>
+            <p>Contact and company enquiries</p>
+          </div>
+
+          <span class="panel-link">
+            Coming soon
+          </span>
+
+        </div>
+
+        <div class="analytics-placeholder">
+
+          Messages and company enquiries will appear here
+          once the contact system is connected.
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           SETTINGS
+           ========================= -->
+
+      <div class="panel" id="settings">
+
+        <div class="panel-header">
+
+          <div>
+            <h2>⚙️ System Settings</h2>
+            <p>Nexora Hub administration</p>
+          </div>
+
+        </div>
+
+        <div class="analytics-placeholder">
+
+          Secure administrator authentication, database
+          settings and platform controls will be added
+          during the backend stage.
+
+        </div>
+
+      </div>
+
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================
+       JAVASCRIPT
+       ========================= -->
+
+  <script src="jobs-data.js"></script>
+
+  <script>
+
+    /* =========================
+       MOBILE SIDEBAR
+       ========================= */
+
+    const mobileMenuBtn =
+      document.getElementById("mobileMenuBtn");
+
+    const adminSidebar =
+      document.getElementById("adminSidebar");
+
+    const sidebarOverlay =
+      document.getElementById("sidebarOverlay");
+
+
+    mobileMenuBtn.addEventListener("click", () => {
+
+      adminSidebar.classList.toggle("open");
+      sidebarOverlay.classList.toggle("show");
+
+    });
+
+
+    sidebarOverlay.addEventListener("click", () => {
+
+      adminSidebar.classList.remove("open");
+      sidebarOverlay.classList.remove("show");
+
+    });
+
+
+    /* =========================
+       LOAD JOBS
+       ========================= */
+
+    const jobsTable =
+      document.getElementById("adminJobsTable");
+
+    const activeJobsCount =
+      document.getElementById("activeJobsCount");
+
+    const jobCountText =
+      document.getElementById("jobCountText");
+
+    const searchInput =
+      document.getElementById("adminJobSearch");
+
+
+    let allJobs = Array.isArray(window.jobsData)
+      ? window.jobsData
+      : [];
+
+
+    function renderJobs(jobs) {
+
+      if (!jobs.length) {
+
+        jobsTable.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align:center;padding:30px;">
+              No jobs found.
+            </td>
+          </tr>
+        `;
+
+        return;
+      }
+
+
+      jobsTable.innerHTML = jobs.map(job => `
+
+        <tr>
+
+          <td>
+
+            <div class="job-name">
+              ${escapeHtml(job.title || "Untitled")}
+            </div>
+
+            <div class="job-company">
+              ${escapeHtml(job.company || "Unknown company")}
+            </div>
+
+          </td>
+
+
+          <td>
+            ${escapeHtml(job.location || "—")}
+          </td>
+
+
+          <td>
+            ${escapeHtml(job.type || "—")}
+          </td>
+
+
+          <td>
+            ${escapeHtml(job.audience || "—")}
+          </td>
+
+
+          <td>
+
+            <span class="job-badge">
+              ${escapeHtml(
+                job.status === "network"
+                  ? "NETWORK"
+                  : "ACTIVE"
+              )}
+            </span>
+
+          </td>
+
+
+          <td>
+
+            <button
+              class="action-btn"
+              onclick="viewJob('${escapeHtml(job.applyUrl || "")}')">
+              View
+            </button>
+
+            <button
+              class="action-btn"
+              onclick="editJobMessage()">
+              Edit
+            </button>
+
+          </td>
+
+        </tr>
+
+      `).join("");
+
+    }
+
+
+    function escapeHtml(value) {
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    function updateJobStats() {
+
+      const activeJobs =
+        allJobs.filter(job =>
+          job.status === "active"
+        ).length;
+
+      activeJobsCount.textContent =
+        activeJobs;
+
+      jobCountText.textContent =
+        `${allJobs.length} total`;
+
+    }
+
+
+    renderJobs(allJobs);
+    updateJobStats();
+
+
+    /* =========================
+       SEARCH
+       ========================= */
+
+    searchInput.addEventListener("input", function () {
+
+      const query =
+        this.value.toLowerCase().trim();
+
+      if (!query) {
+
+        renderJobs(allJobs);
+        return;
+
+      }
+
+
+      const filtered =
+        allJobs.filter(job => {
+
+          const searchable = [
+
+            job.title,
+            job.company,
+            job.location,
+            job.type,
+            job.audience,
+            job.category,
+            job.region
+
+          ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+
+          return searchable.includes(query);
+
+        });
+
+
+      renderJobs(filtered);
+
+    });
+
+
+    /* =========================
+       ACTIONS
+       ========================= */
+
+    function viewJob(url) {
+
+      if (!url) {
+
+        alert("No application link is available.");
+
+        return;
+
+      }
+
+      window.open(url, "_blank");
+
+    }
+
+
+    function showAddJobMessage() {
+
+      alert(
+        "The Add Job interface is ready to be connected. " +
+        "In the next stage, jobs will be saved to a real database " +
+        "and will automatically appear on the public jobs page."
+      );
+
+    }
+
+
+    function editJobMessage() {
+
+      alert(
+        "Job editing will be connected to the real database " +
+        "in the next stage."
+      );
+
+    }
+
+
+    function goToJobs() {
+
+      window.location.href = "jobs.html";
+
+    }
+
+
+    /* =========================
+       CLOSE MOBILE MENU
+       ========================= */
+
+    document.querySelectorAll(".admin-nav a").forEach(link => {
+
+      link.addEventListener("click", () => {
+
+        adminSidebar.classList.remove("open");
+        sidebarOverlay.classList.remove("show");
+
+      });
+
+    });
+
+  </script>
+
+</body>
+  </html>
