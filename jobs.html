@@ -677,44 +677,28 @@
 
 </footer>
 
-
-
 <!-- =========================
      JOB DATABASE
      ========================= -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
 
-  <script>
-const SUPABASE_URL = "https://izjrazugqbnijzhlxegp.supabase.co";
+const SUPABASE_URL =
+  "https://izjrazugqbnijzhlxegp.supabase.co";
 
-const SUPABASE_KEY = "sb_publishable_0kyYhouRdBFmRzb5BhAEEQ_NZ-r3A-3";
+const SUPABASE_KEY =
+  "sb_publishable_0kyYhouRdBFmRzb5BhAEEQ_NZ-r3A-3";
 
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
 
 let jobsData = [];
-
-async function loadJobs() {
-
-  const { data, error } = await supabaseClient
-    .from("jobs")
-    .select("*");
-
-  if (error) {
-    console.error(error);
-    return;
-  }
-
-  jobsData = data || [];
-
-  renderJobs();
-}
-
-loadJobs();
-</script>
 
 const jobsContainer =
   document.getElementById("jobsContainer");
@@ -741,6 +725,32 @@ const regionButtons =
 let selectedRegion = "Nigeria";
 
 
+async function loadJobs() {
+
+  const { data, error } =
+    await supabaseClient
+      .from("jobs")
+      .select("*");
+
+  if (error) {
+
+    console.error(
+      "Supabase error:",
+      error
+    );
+
+    jobsCount.textContent =
+      "Unable to load opportunities.";
+
+    return;
+  }
+
+  jobsData = data || [];
+
+  renderJobs();
+}
+
+
 
 function renderJobs() {
 
@@ -759,18 +769,17 @@ function renderJobs() {
   const filteredJobs =
     jobsData.filter(job => {
 
-
       const searchableText = (
 
-        job.title +
+        (job.title || "") +
         " " +
-        job.company +
+        (job.company || "") +
         " " +
-        job.category +
+        (job.category || "") +
         " " +
-        job.description +
+        (job.description || "") +
         " " +
-        job.location
+        (job.location || "")
 
       ).toLowerCase();
 
@@ -795,43 +804,49 @@ function renderJobs() {
 
       if (selectedRegion !== "all") {
 
-        if (selectedRegion === "Nigeria") {
+        if (
+          selectedRegion === "Nigeria"
+        ) {
 
           regionMatch =
             job.region === "Nigeria" ||
-            job.location
+            (job.location || "")
               .toLowerCase()
               .includes("nigeria") ||
-            job.eligibility
+            (job.eligibility || "")
               .toLowerCase()
               .includes("nigeria");
 
         }
 
 
-        else if (selectedRegion === "Africa") {
+        else if (
+          selectedRegion === "Africa"
+        ) {
 
           regionMatch =
             job.region === "Africa" ||
             job.region === "Nigeria" ||
-            job.location
+            (job.location || "")
               .toLowerCase()
               .includes("africa") ||
-            job.eligibility
+            (job.eligibility || "")
               .toLowerCase()
               .includes("africa");
 
         }
 
 
-        else if (selectedRegion === "Worldwide") {
+        else if (
+          selectedRegion === "Worldwide"
+        ) {
 
           regionMatch =
             job.region === "Worldwide" ||
-            job.location
+            (job.location || "")
               .toLowerCase()
               .includes("worldwide") ||
-            job.eligibility
+            (job.eligibility || "")
               .toLowerCase()
               .includes("worldwide");
 
@@ -849,11 +864,6 @@ function renderJobs() {
 
     });
 
-
-
-  /*
-   * Put Nigeria opportunities first.
-   */
 
   filteredJobs.sort((a, b) => {
 
@@ -878,9 +888,7 @@ function renderJobs() {
   });
 
 
-
   jobsContainer.innerHTML = "";
-
 
 
   jobsCount.textContent =
@@ -889,7 +897,6 @@ function renderJobs() {
         ? "opportunity"
         : "opportunities"
     } found`;
-
 
 
   if (
@@ -908,9 +915,7 @@ function renderJobs() {
     "none";
 
 
-
   filteredJobs.forEach(job => {
-
 
     const card =
       document.createElement("article");
@@ -920,19 +925,10 @@ function renderJobs() {
       "job-card real-job";
 
 
-    let statusLabel =
-      "Active opportunity";
-
-
-    if (
+    const statusLabel =
       job.status === "network"
-    ) {
-
-      statusLabel =
-        "Talent network";
-
-    }
-
+        ? "Talent network"
+        : "Active opportunity";
 
 
     card.innerHTML = `
@@ -940,49 +936,49 @@ function renderJobs() {
       <div class="job-card-top">
 
         <span class="job-company">
-          ${job.company}
+          ${job.company || ""}
         </span>
 
         <span class="job-type">
-          ${job.type}
+          ${job.type || ""}
         </span>
 
       </div>
 
 
       <h3>
-        ${job.title}
+        ${job.title || ""}
       </h3>
 
 
       <div class="job-location">
-        📍 ${job.location}
+        📍 ${job.location || ""}
       </div>
 
 
       <div class="job-eligibility">
-        ${job.eligibility}
+        ${job.eligibility || ""}
       </div>
 
 
       <div class="job-audience">
-        🎯 ${job.audience}
+        🎯 ${job.audience || ""}
       </div>
 
 
       <p>
-        ${job.description}
+        ${job.description || ""}
       </p>
 
 
       <div class="job-meta">
 
         <span>
-          ${job.category}
+          ${job.category || ""}
         </span>
 
         <span>
-          ✓ Checked ${job.verified}
+          ✓ Checked ${job.verified || ""}
         </span>
 
       </div>
@@ -991,19 +987,21 @@ function renderJobs() {
       <div class="job-footer">
 
         <span class="job-source">
-          ${statusLabel} · ${job.source}
+          ${statusLabel} · ${job.source || ""}
         </span>
 
 
         <a
-          href="${job.applyUrl}"
+          href="${job.apply_url || "#"}"
           target="_blank"
           rel="noopener noreferrer"
           class="job-button"
         >
-          ${job.status === "network"
-            ? "Join Network →"
-            : "Apply Now →"}
+          ${
+            job.status === "network"
+              ? "Join Network →"
+              : "Apply Now →"
+          }
         </a>
 
       </div>
@@ -1019,19 +1017,11 @@ function renderJobs() {
 
 
 
-/*
- * Search
- */
-
 jobSearch.addEventListener(
   "input",
   renderJobs
 );
 
-
-/*
- * Audience
- */
 
 audienceFilter.addEventListener(
   "change",
@@ -1039,19 +1029,11 @@ audienceFilter.addEventListener(
 );
 
 
-/*
- * Job type
- */
-
 jobTypeFilter.addEventListener(
   "change",
   renderJobs
 );
 
-
-/*
- * Region buttons
- */
 
 regionButtons.forEach(button => {
 
@@ -1085,16 +1067,18 @@ regionButtons.forEach(button => {
 });
 
 
-/*
- * Initial display:
- * NIGERIA FIRST
- */
-
-renderJobs();
+loadJobs();
 
 </script>
 
 
 </body>
 
-  </html>
+</html>
+
+
+
+
+        
+
+      
