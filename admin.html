@@ -1551,89 +1551,83 @@ async function loadAdminJobs() {
 
 }
 
+function renderJobs(jobs) {
 
-    function renderJobs(jobs) {
+  if (!jobs.length) {
 
-      if (!jobs.length) {
+    jobsTable.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align:center;padding:30px;">
+          No jobs found.
+        </td>
+      </tr>
+    `;
 
-        jobsTable.innerHTML = `
-          <tr>
-            <td colspan="6" style="text-align:center;padding:30px;">
-              No jobs found.
-            </td>
-          </tr>
-        `;
+    return;
+  }
 
-        return;
-      }
+  jobsTable.innerHTML = jobs.map(job => `
 
+    <tr>
 
-      jobsTable.innerHTML = jobs.map(job => `
+      <td>
 
-        <tr>
+        <div class="job-name">
+          ${escapeHtml(job.title || "Untitled")}
+        </div>
 
-          <td>
+        <div class="job-company">
+          ${escapeHtml(job.company || "Unknown company")}
+        </div>
 
-            <div class="job-name">
-              ${escapeHtml(job.title || "Untitled")}
-            </div>
+      </td>
 
-            <div class="job-company">
-              ${escapeHtml(job.company || "Unknown company")}
-            </div>
+      <td>
+        ${escapeHtml(job.location || "—")}
+      </td>
 
-          </td>
+      <td>
+        ${escapeHtml(job.type || "—")}
+      </td>
 
+      <td>
+        ${escapeHtml(job.audience || "—")}
+      </td>
 
-          <td>
-            ${escapeHtml(job.location || "—")}
-          </td>
+      <td>
 
+        <span class="job-badge">
+          ${escapeHtml(
+            job.status === "network"
+              ? "NETWORK"
+              : "ACTIVE"
+          )}
+        </span>
 
-          <td>
-            ${escapeHtml(job.type || "—")}
-          </td>
+      </td>
 
+      <td>
 
-          <td>
-            ${escapeHtml(job.audience || "—")}
-          </td>
+        <button
+          class="action-btn"
+          onclick="viewJob('${escapeHtml(job.apply_url || "")}')">
+          View
+        </button>
 
+        <button
+          class="action-btn"
+          onclick="editJob('${job.id}')">
+          Edit
+        </button>
 
-          <td>
+      </td>
 
-            <span class="job-badge">
-              ${escapeHtml(
-                job.status === "network"
-                  ? "NETWORK"
-                  : "ACTIVE"
-              )}
-            </span>
+    </tr>
 
-          </td>
-
-
-          <td>
-
-            <button
-              class="action-btn"
-              onclick="viewJob('${escapeHtml(job.applyUrl || "")}')">
-              View
-            </button>
-
-            <button
-              class="action-btn"
-              onclick="editJobMessage()">
-              Edit
-            </button>
-
-          </td>
-
-        </tr>
-
-      `).join("");
+  `).join("");
 
     }
+    
 
 
     function escapeHtml(value) {
