@@ -2075,7 +2075,70 @@ document
 
     }
   );
+<script>
 
+async function editJob(jobId) {
+
+  const job = allJobs.find(
+    item => String(item.id) === String(jobId)
+  );
+
+  if (!job) {
+    alert("Job not found.");
+    return;
+  }
+
+  const company = prompt(
+    "Company:",
+    job.company || ""
+  );
+
+  if (company === null) return;
+
+  const title = prompt(
+    "Job title:",
+    job.title || ""
+  );
+
+  if (title === null) return;
+
+  const status = prompt(
+    "Status: active or network",
+    job.status || "active"
+  );
+
+  if (status === null) return;
+
+  const { error } =
+    await supabaseClient
+      .from("jobs")
+      .update({
+        company: company.trim(),
+        title: title.trim(),
+        status: status.trim()
+      })
+      .eq("id", jobId);
+
+  if (error) {
+
+    alert(
+      "Unable to update job: " +
+      error.message
+    );
+
+    return;
+  }
+
+  alert("Job updated successfully!");
+
+  loadAdminJobs();
+
+}
+
+</script>
+
+</body>
+</html>
 </script>
 
 </body>
