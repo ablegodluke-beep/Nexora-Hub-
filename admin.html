@@ -242,3 +242,293 @@
 
       </section>
       
+    <!-- =========================
+           STATS
+           ========================= -->
+
+      <section class="stats-grid">
+
+        <div class="stat-card">
+
+          <small>
+            Total Jobs
+          </small>
+
+          <strong id="totalJobsCount">
+            —
+          </strong>
+
+          <span>
+            Opportunities in database
+          </span>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <small>
+            Active Jobs
+          </small>
+
+          <strong id="activeJobsCount">
+            —
+          </strong>
+
+          <span>
+            Currently active
+          </span>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <small>
+            Companies
+          </small>
+
+          <strong>
+            0
+          </strong>
+
+          <span>
+            Coming soon
+          </span>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <small>
+            Products
+          </small>
+
+          <strong>
+            0
+          </strong>
+
+          <span>
+            Coming soon
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           QUICK ACTIONS
+           ========================= -->
+
+      <section class="admin-section">
+
+        <div class="section-header">
+
+          <div>
+
+            <h2>
+              Quick Actions
+            </h2>
+
+            <p>
+              Manage the most important parts
+              of Nexora.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="quick-grid">
+
+          <button
+            class="quick-action"
+            onclick="openAddJobForm()"
+          >
+
+            <strong>
+              ➕ Add Job
+            </strong>
+
+            <span>
+              Add a verified opportunity
+              to the Nexora database.
+            </span>
+
+          </button>
+
+
+          <button
+            class="quick-action"
+            onclick="goToJobs()"
+          >
+
+            <strong>
+              💼 Manage Jobs
+            </strong>
+
+            <span>
+              Search, view and edit jobs.
+            </span>
+
+          </button>
+
+
+          <button
+            class="quick-action"
+            onclick="alert('Company management will be added next.')"
+          >
+
+            <strong>
+              🏢 Companies
+            </strong>
+
+            <span>
+              Manage company opportunities
+              and projects.
+            </span>
+
+          </button>
+
+
+          <button
+            class="quick-action"
+            onclick="alert('Digital products management will be added next.')"
+          >
+
+            <strong>
+              🛍️ Digital Store
+            </strong>
+
+            <span>
+              Manage Nexora digital products.
+            </span>
+
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           JOB MANAGEMENT
+           ========================= -->
+
+      <section
+        class="admin-section"
+        id="jobs"
+      >
+
+        <div class="section-header">
+
+          <div>
+
+            <h2>
+              Job Management
+            </h2>
+
+            <p>
+              Manage opportunities displayed
+              on Nexora Hub.
+            </p>
+
+          </div>
+
+
+          <button
+            class="add-job-btn"
+            onclick="openAddJobForm()"
+          >
+            + Add Job
+          </button>
+
+        </div>
+
+
+        <!-- JOB SEARCH -->
+
+        <div class="jobs-toolbar">
+
+          <input
+            type="search"
+            id="adminJobSearch"
+            placeholder="Search jobs, companies, locations..."
+          >
+
+
+          <span
+            class="jobs-count"
+            id="jobCountText"
+          >
+            Loading jobs...
+          </span>
+
+        </div>
+
+
+        <!-- JOB TABLE -->
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Job
+                </th>
+
+                <th>
+                  Location
+                </th>
+
+                <th>
+                  Type
+                </th>
+
+                <th>
+                  Audience
+                </th>
+
+                <th>
+                  Status
+                </th>
+
+                <th>
+                  Actions
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody id="adminJobsTable">
+
+              <tr>
+
+                <td
+                  colspan="6"
+                  style="
+                    text-align:center;
+                    padding:35px;
+                  "
+                >
+                  Loading opportunities...
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
