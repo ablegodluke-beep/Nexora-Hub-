@@ -650,3 +650,222 @@ footer {
     max-width: 125px;
   }
    }
+/* =========================================
+   PREMIUM NEXORA HUB FOOTER
+========================================= */
+
+.premium-footer {
+  background: #07111f;
+  color: #ffffff;
+  margin-top: 0;
+  padding: 70px 0 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.footer-main {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1.5fr;
+  gap: 60px;
+  padding-bottom: 55px;
+}
+
+.footer-logo {
+  display: inline-block;
+  font-size: 28px;
+  font-weight: 800;
+  color: #ffffff;
+  text-decoration: none;
+  letter-spacing: -1px;
+  margin-bottom: 18px;
+}
+
+.footer-logo span {
+  color: #4f8cff;
+}
+
+.footer-brand p {
+  max-width: 330px;
+  color: #a9b5c6;
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 22px;
+}
+
+.africa-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 15px;
+  border: 1px solid rgba(79,140,255,0.35);
+  background: rgba(79,140,255,0.08);
+  border-radius: 50px;
+  color: #dce8ff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.footer-column h3 {
+  font-size: 15px;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.footer-column a {
+  display: block;
+  width: fit-content;
+  color: #a9b5c6;
+  text-decoration: none;
+  font-size: 14px;
+  margin-bottom: 13px;
+  transition: 0.25s ease;
+}
+
+.footer-column a:hover {
+  color: #ffffff;
+  transform: translateX(3px);
+}
+
+
+/* CONTACT CARDS */
+
+.contact-card {
+  width: 100% !important;
+  max-width: 320px;
+  display: flex !important;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 15px;
+  margin-bottom: 12px !important;
+
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+
+  color: #ffffff !important;
+  transition: 0.25s ease;
+}
+
+.contact-card:hover {
+  background: rgba(79,140,255,0.12);
+  border-color: rgba(79,140,255,0.35);
+  transform: translateY(-2px);
+}
+
+.contact-icon {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(79,140,255,0.15);
+  border-radius: 10px;
+
+  color: #78a7ff;
+  font-size: 18px;
+}
+
+.contact-card small {
+  display: block;
+  color: #7f8da3;
+  font-size: 11px;
+  margin-bottom: 2px;
+}
+
+.contact-card span:last-child {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+
+/* BOTTOM BAR */
+
+.footer-bottom {
+  min-height: 75px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  color: #718096;
+  font-size: 12px;
+}
+
+.footer-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  background: #35d07f;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(53,208,127,0.7);
+}
+
+
+/* =========================================
+   MOBILE FOOTER
+========================================= */
+
+@media (max-width: 700px) {
+
+  .premium-footer {
+    padding: 50px 0 0;
+  }
+
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 35px;
+    padding-bottom: 40px;
+  }
+
+  .footer-brand p {
+    max-width: 100%;
+  }
+
+  .footer-column a {
+    margin-bottom: 11px;
+  }
+
+  .contact-card {
+    max-width: 100%;
+  }
+
+  .footer-bottom {
+    min-height: auto;
+    padding: 20px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+}
+
+
+/* SMALL PHONES */
+
+@media (max-width: 360px) {
+
+  .premium-footer {
+    padding-top: 40px;
+  }
+
+  .footer-logo {
+    font-size: 25px;
+  }
+
+  .footer-brand p {
+    font-size: 14px;
+  }
+
+  .contact-card {
+    padding: 11px;
+  }
+
+}
