@@ -683,10 +683,38 @@
      JOB DATABASE
      ========================= -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="jobs-data.js"></script>
-
 
 <script>
+  <script>
+const SUPABASE_URL = "https://izjrazugqbnijzhlxegp.supabase.co";
+
+const SUPABASE_KEY = "YOUR_PUBLISHABLE_KEY";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+let jobsData = [];
+
+async function loadJobs() {
+
+  const { data, error } = await supabaseClient
+    .from("jobs")
+    .select("*");
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  jobsData = data || [];
+
+  renderJobs();
+}
+
+loadJobs();
+</script>
 
 const jobsContainer =
   document.getElementById("jobsContainer");
