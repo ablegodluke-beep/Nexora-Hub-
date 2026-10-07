@@ -532,3 +532,429 @@
         </div>
 
       </section>
+            <!-- =========================
+           ANALYTICS
+           ========================= -->
+
+      <section class="admin-section" id="analytics">
+
+        <div class="section-header">
+          <div>
+            <h2>Platform Analytics</h2>
+            <p>Track how Nexora Hub is growing.</p>
+          </div>
+        </div>
+
+        <div class="analytics-grid">
+
+          <div class="analytics-card">
+            <small>Job Views</small>
+            <strong>—</strong>
+            <span>Analytics coming soon</span>
+          </div>
+
+          <div class="analytics-card">
+            <small>Applications</small>
+            <strong>—</strong>
+            <span>Analytics coming soon</span>
+          </div>
+
+          <div class="analytics-card">
+            <small>Visitors</small>
+            <strong>—</strong>
+            <span>Analytics coming soon</span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           REVENUE
+           ========================= -->
+
+      <section class="admin-section" id="revenue">
+
+        <div class="section-header">
+          <div>
+            <h2>Revenue</h2>
+            <p>Monitor Nexora Hub's future income streams.</p>
+          </div>
+        </div>
+
+        <div class="revenue-grid">
+
+          <div class="revenue-card">
+            <small>Digital Products</small>
+            <strong>₦0</strong>
+            <span>No sales recorded yet</span>
+          </div>
+
+          <div class="revenue-card">
+            <small>Company Projects</small>
+            <strong>₦0</strong>
+            <span>Project revenue coming soon</span>
+          </div>
+
+          <div class="revenue-card">
+            <small>Affiliate Revenue</small>
+            <strong>₦0</strong>
+            <span>Affiliate tracking coming soon</span>
+          </div>
+
+          <div class="revenue-card">
+            <small>Total Revenue</small>
+            <strong>₦0</strong>
+            <span>Platform total</span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           COMPANIES
+           ========================= -->
+
+      <section class="admin-section" id="companies">
+
+        <div class="section-header">
+          <div>
+            <h2>Companies</h2>
+            <p>Manage companies and projects on Nexora Hub.</p>
+          </div>
+        </div>
+
+        <div class="empty-panel">
+
+          <div class="empty-icon">🏢</div>
+
+          <h3>Company Management</h3>
+
+          <p>
+            Company profiles, project submissions,
+            payments and worker assignments will
+            appear here.
+          </p>
+
+          <button
+            type="button"
+            onclick="alert('Company management will be added next.')"
+          >
+            Coming Soon
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           DIGITAL PRODUCTS
+           ========================= -->
+
+      <section class="admin-section" id="products">
+
+        <div class="section-header">
+          <div>
+            <h2>Digital Products</h2>
+            <p>Manage products sold through Nexora Hub.</p>
+          </div>
+        </div>
+
+        <div class="empty-panel">
+
+          <div class="empty-icon">🛍️</div>
+
+          <h3>Nexora Digital Store</h3>
+
+          <p>
+            Add, edit and manage digital products,
+            prices, sales and customer orders here.
+          </p>
+
+          <button
+            type="button"
+            onclick="alert('Digital product management will be added next.')"
+          >
+            Coming Soon
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           MESSAGES
+           ========================= -->
+
+      <section class="admin-section" id="messages">
+
+        <div class="section-header">
+          <div>
+            <h2>Messages</h2>
+            <p>Messages and enquiries from Nexora users.</p>
+          </div>
+        </div>
+
+        <div class="empty-panel">
+
+          <div class="empty-icon">✉</div>
+
+          <h3>No Messages Yet</h3>
+
+          <p>
+            Contact messages from users and companies
+            will appear here when messaging is connected.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           SETTINGS
+           ========================= -->
+
+      <section class="admin-section" id="settings">
+
+        <div class="section-header">
+          <div>
+            <h2>Settings</h2>
+            <p>Manage important Nexora Hub settings.</p>
+          </div>
+        </div>
+
+        <div class="settings-panel">
+
+          <div class="setting-row">
+            <div>
+              <strong>Public Contact Email</strong>
+              <span>ablegodluke@gmail.com</span>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <strong>Public Contact Phone</strong>
+              <span>09017579718</span>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <strong>Platform Status</strong>
+              <span>🟢 Nexora Hub is online</span>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           ADD JOB MODAL
+           ========================= -->
+
+      <div
+        class="modal-overlay"
+        id="addJobModal"
+        style="display:none;"
+      >
+
+        <div class="job-modal">
+
+          <div class="modal-header">
+
+            <div>
+              <h2>Add New Job</h2>
+              <p>Add a verified opportunity to Nexora Hub.</p>
+            </div>
+
+            <button
+              type="button"
+              class="modal-close"
+              onclick="closeAddJobForm()"
+            >
+              ×
+            </button>
+
+          </div>
+
+
+          <form id="addJobForm">
+
+            <div class="form-grid">
+
+              <div class="form-group">
+                <label for="jobCompany">Company</label>
+                <input
+                  type="text"
+                  id="jobCompany"
+                  required
+                  placeholder="e.g. LILT"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="jobTitle">Job Title</label>
+                <input
+                  type="text"
+                  id="jobTitle"
+                  required
+                  placeholder="e.g. Content Writer"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="jobType">Job Type</label>
+                <input
+                  type="text"
+                  id="jobType"
+                  required
+                  placeholder="e.g. Full-time"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="jobLocation">Location</label>
+                <input
+                  type="text"
+                  id="jobLocation"
+                  required
+                  placeholder="e.g. Nigeria / Remote"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="jobRegion">Region</label>
+                <select id="jobRegion" required>
+                  <option value="">Select region</option>
+                  <option value="Nigeria">🇳🇬 Nigeria</option>
+                  <option value="Africa">🌍 Africa</option>
+                  <option value="Worldwide">🌎 Worldwide</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="jobAudience">Audience</label>
+                <select id="jobAudience" required>
+                  <option value="">Select audience</option>
+                  <option value="Students & Beginners">
+                    Students & Beginners
+                  </option>
+                  <option value="Experienced">
+                    Experienced
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="jobEligibility">Eligibility</label>
+                <input
+                  type="text"
+                  id="jobEligibility"
+                  required
+                  placeholder="e.g. 🇳🇬 Nigeria eligible"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="jobCategory">Category</label>
+                <input
+                  type="text"
+                  id="jobCategory"
+                  required
+                  placeholder="e.g. AI & Data"
+                >
+              </div>
+
+              <div class="form-group full-width">
+                <label for="jobDescription">Description</label>
+                <textarea
+                  id="jobDescription"
+                  required
+                  rows="4"
+                  placeholder="Briefly describe the opportunity..."
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="jobApplyUrl">Application URL</label>
+                <input
+                  type="url"
+                  id="jobApplyUrl"
+                  required
+                  placeholder="https://..."
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="jobSource">Source</label>
+                <input
+                  type="text"
+                  id="jobSource"
+                  required
+                  placeholder="e.g. Company Careers Page"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="jobStatus">Status</label>
+                <select id="jobStatus" required>
+                  <option value="active">Active</option>
+                  <option value="network">Network</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="jobVerified">Verified Date</label>
+                <input
+                  type="date"
+                  id="jobVerified"
+                  required
+                >
+              </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+              <button
+                type="button"
+                class="cancel-btn"
+                onclick="closeAddJobForm()"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                class="save-job-btn"
+              >
+                Add Job
+              </button>
+
+            </div>
+
+            <p
+              id="addJobMessage"
+              style="display:none;"
+            ></p>
+
+          </form>
+
+        </div>
+
+      </div>
+
+
+      <!-- END OF ADMIN CONTENT -->
+
+  </div>
