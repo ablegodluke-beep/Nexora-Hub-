@@ -1243,11 +1243,11 @@
           </div>
 
 
-          <button
-            class="add-job-btn"
-            onclick="showAddJobMessage()">
-            + Add New Job
-          </button>
+         <button
+  class="add-job-btn"
+  onclick="openAddJobForm()">
+  + Add New Job
+         </button>
 
         </div>
 
@@ -1797,6 +1797,292 @@ const supabaseClient =
 </body>
 
 </html>
+        <!-- ADD JOB FORM -->
+
+<div
+  id="addJobModal"
+  style="
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.6);
+    z-index:9999;
+    padding:20px;
+    overflow:auto;
+  "
+>
+
+  <div
+    style="
+      max-width:650px;
+      margin:30px auto;
+      background:white;
+      border-radius:16px;
+      padding:24px;
+    "
+  >
+
+    <h2>Add New Job</h2>
+
+    <p style="color:#777;">
+      Add a real opportunity to the Nexora database.
+    </p>
+
+    <form id="addJobForm">
+
+      <input
+        id="jobCompany"
+        placeholder="Company"
+        required
+      >
+
+      <input
+        id="jobTitle"
+        placeholder="Job title"
+        required
+      >
+
+      <input
+        id="jobType"
+        placeholder="Job type e.g. Full-time, Contract"
+        required
+      >
+
+      <input
+        id="jobLocation"
+        placeholder="Location e.g. Nigeria / Remote"
+        required
+      >
+
+      <input
+        id="jobRegion"
+        placeholder="Region e.g. Nigeria, Africa, Worldwide"
+        required
+      >
+
+      <input
+        id="jobAudience"
+        placeholder="Audience e.g. Students & Beginners"
+        required
+      >
+
+      <input
+        id="jobEligibility"
+        placeholder="Eligibility"
+        required
+      >
+
+      <input
+        id="jobCategory"
+        placeholder="Category"
+        required
+      >
+
+      <textarea
+        id="jobDescription"
+        placeholder="Job description"
+        required
+      ></textarea>
+
+      <input
+        id="jobApplyUrl"
+        type="url"
+        placeholder="Application URL"
+        required
+      >
+
+      <input
+        id="jobSource"
+        placeholder="Source"
+        required
+      >
+
+      <select id="jobStatus">
+        <option value="active">Active</option>
+        <option value="network">Talent Network</option>
+      </select>
+
+      <input
+        id="jobVerified"
+        type="date"
+        required
+      >
+
+      <button type="submit">
+        Save Job
+      </button>
+
+      <button
+        type="button"
+        onclick="closeAddJobForm()"
+      >
+        Cancel
+      </button>
+
+    </form>
+
+    <p id="addJobMessage"></p>
+
+  </div>
+
+</div>
+
+
+<script>
+
+function openAddJobForm() {
+
+  document.getElementById(
+    "addJobModal"
+  ).style.display = "block";
+
+}
+
+
+function closeAddJobForm() {
+
+  document.getElementById(
+    "addJobModal"
+  ).style.display = "none";
+
+}
+
+
+document
+  .getElementById("addJobForm")
+  .addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+      const message =
+        document.getElementById(
+          "addJobMessage"
+        );
+
+      message.textContent =
+        "Saving job...";
+
+
+      const job = {
+
+        id:
+          Date.now().toString(),
+
+        company:
+          document.getElementById(
+            "jobCompany"
+          ).value.trim(),
+
+        title:
+          document.getElementById(
+            "jobTitle"
+          ).value.trim(),
+
+        type:
+          document.getElementById(
+            "jobType"
+          ).value.trim(),
+
+        location:
+          document.getElementById(
+            "jobLocation"
+          ).value.trim(),
+
+        region:
+          document.getElementById(
+            "jobRegion"
+          ).value.trim(),
+
+        audience:
+          document.getElementById(
+            "jobAudience"
+          ).value.trim(),
+
+        eligibility:
+          document.getElementById(
+            "jobEligibility"
+          ).value.trim(),
+
+        category:
+          document.getElementById(
+            "jobCategory"
+          ).value.trim(),
+
+        description:
+          document.getElementById(
+            "jobDescription"
+          ).value.trim(),
+
+        apply_url:
+          document.getElementById(
+            "jobApplyUrl"
+          ).value.trim(),
+
+        source:
+          document.getElementById(
+            "jobSource"
+          ).value.trim(),
+
+        status:
+          document.getElementById(
+            "jobStatus"
+          ).value,
+
+        verified:
+          document.getElementById(
+            "jobVerified"
+          ).value
+
+      };
+
+
+      const { error } =
+        await supabaseClient
+          .from("jobs")
+          .insert(job);
+
+
+      if (error) {
+
+        console.error(
+          "Add job error:",
+          error
+        );
+
+        message.textContent =
+          "Unable to save job: " +
+          error.message;
+
+        return;
+      }
+
+
+      message.textContent =
+        "Job added successfully!";
+
+
+      document
+        .getElementById("addJobForm")
+        .reset();
+
+
+      setTimeout(
+        () => {
+
+          closeAddJobForm();
+
+          loadAdminJobs();
+
+        },
+        1000
+      );
+
+    }
+  );
+
+</script>
 
 </body>
   </html>
