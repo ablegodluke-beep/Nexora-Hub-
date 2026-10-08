@@ -461,208 +461,208 @@
 
   </footer>
 
+<script>
 
-  <script>
+  const SUPABASE_URL =
+    "https://izjrazugqbnijzhlxegp.supabase.co";
 
-    const SUPABASE_URL =
-      "https://izjrazugqbnijzhlxegp.supabase.co";
+  const SUPABASE_KEY =
+    "sb_publishable_wOVNCGI_o5XwCISbgUK9Sw_r8iMXn7R";
 
-    const SUPABASE_KEY =
-      "sb_publishable_wOVNCGI_o5XwCISbgUK9Sw_r8iMXn7R";
+  const supabaseClient =
+    supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY,
+      {
+        db: {
+          schema: "public"
+        }
+      }
+    );
 
-    const supabaseClient =
-      supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
+
+  const productsGrid =
+    document.getElementById("productsGrid");
+
+  const storeMessage =
+    document.getElementById("storeMessage");
+
+
+  function escapeHtml(value) {
+
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  async function loadStoreProducts() {
+
+    console.log("Loading products from public.products...");
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .schema("public")
+        .from("products")
+        .select("*")
+        .eq("status", "published")
+        .order("created_at", {
+          ascending: false
+        });
+
+
+    console.log("Products:", data);
+    console.log("Error:", error);
+
+
+    if (error) {
+
+      console.error(
+        "Store loading error:",
+        error
       );
 
+      storeMessage.textContent =
+        "Unable to load products right now.";
 
-    const productsGrid =
-      document.getElementById(
-        "productsGrid"
-      );
+      storeMessage.className =
+        "store-message store-error";
 
-    const storeMessage =
-      document.getElementById(
-        "storeMessage"
-      );
-
-
-    function escapeHtml(value) {
-
-      return String(value || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
+      return;
     }
 
 
-    async function loadStoreProducts() {
+    if (!data || data.length === 0) {
 
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("products")
-          .select("*")
-          .eq(
-            "status",
-            "published"
-          )
-          .order(
-            "created_at",
-            {
-              ascending: false
-            }
-          );
+      storeMessage.textContent =
+        "No digital products are available yet.";
+
+      storeMessage.className =
+        "store-message";
+
+      return;
+    }
 
 
-      if (error) {
+    storeMessage.style.display =
+      "none";
 
-        console.error(
-          "Store loading error:",
-          error
-        );
-
-        storeMessage.textContent =
-          "Unable to load products right now.";
-
-        storeMessage.className =
-          "store-message store-error";
-
-        return;
-      }
+    productsGrid.style.display =
+      "grid";
 
 
-      if (!data || !data.length) {
+    productsGrid.innerHTML =
+      data.map(product => {
 
-        storeMessage.textContent =
-          "No digital products are available yet.";
-
-        storeMessage.className =
-          "store-message";
-
-        return;
-      }
-
-
-      storeMessage.style.display =
-        "none";
-
-      productsGrid.style.display =
-        "grid";
-
-
-      productsGrid.innerHTML =
-        data.map(product => {
-
-          const image =
-            product.image_url
-              ? `
-                <img
-                  src="${escapeHtml(product.image_url)}"
-                  alt="${escapeHtml(product.name)}"
-                  loading="lazy"
-                >
-              `
-              : `
-                <span class="no-image">
-                  Digital Product
-                </span>
-              `;
+        const image =
+          product.image_url
+            ? `
+              <img
+                src="${escapeHtml(product.image_url)}"
+                alt="${escapeHtml(product.name)}"
+                loading="lazy"
+              >
+            `
+            : `
+              <span class="no-image">
+                Digital Product
+              </span>
+            `;
 
 
-          const price =
-            Number(
-              product.price || 0
-            ).toLocaleString();
+        const price =
+          Number(
+            product.price || 0
+          ).toLocaleString();
 
 
-          const button =
-            product.product_url
-              ? `
-                <a
-                  href="${escapeHtml(product.product_url)}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="buy-button"
-                >
-                  Buy Now
-                </a>
-              `
-              : `
-                <span
-                  class="buy-button"
-                  style="
-                    background:#94a3b8;
-                    cursor:not-allowed;
-                  "
-                >
-                  Coming Soon
-                </span>
-              `;
+        const button =
+          product.product_url
+            ? `
+              <a
+                href="${escapeHtml(product.product_url)}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="buy-button"
+              >
+                Buy Now
+              </a>
+            `
+            : `
+              <span
+                class="buy-button"
+                style="
+                  background:#94a3b8;
+                  cursor:not-allowed;
+                "
+              >
+                Coming Soon
+              </span>
+            `;
 
 
-          return `
+        return `
 
-            <article class="product-card">
+          <article class="product-card">
 
-              <div class="product-image">
+            <div class="product-image">
 
-                ${image}
+              ${image}
 
-              </div>
-
-
-              <div class="product-body">
-
-                <h3>
-                  ${escapeHtml(
-                    product.name
-                  )}
-                </h3>
+            </div>
 
 
-                <p class="product-description">
+            <div class="product-body">
 
-                  ${escapeHtml(
-                    product.description ||
-                    "Digital product from Nexora Hub."
-                  )}
-
-                </p>
+              <h3>
+                ${escapeHtml(product.name)}
+              </h3>
 
 
-                <div class="product-bottom">
+              <p class="product-description">
 
-                  <div class="product-price">
+                ${escapeHtml(
+                  product.description ||
+                  "Digital product from Nexora Hub."
+                )}
 
-                    ₦${price}
+              </p>
 
-                  </div>
 
-                  ${button}
+              <div class="product-bottom">
+
+                <div class="product-price">
+
+                  ₦${price}
 
                 </div>
 
+                ${button}
+
               </div>
 
-            </article>
+            </div>
 
-          `;
+          </article>
 
-        }).join("");
+        `;
 
-    }
+      }).join("");
+
+  }
 
 
-    loadStoreProducts();
+  loadStoreProducts();
 
-  </script>
+</script>
+  
 
 
 </body>
