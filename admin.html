@@ -2023,12 +2023,6 @@ function updateStats() {
       `${total} job${total === 1 ? "" : "s"}`;
   }
 }
-
-
-/* =========================
-   RENDER JOBS
-   ========================= */
-
 function renderJobs(jobs) {
 
   if (!adminJobsTable) return;
@@ -2051,8 +2045,7 @@ function renderJobs(jobs) {
     `;
 
     if (jobCountText) {
-      jobCountText.textContent =
-        "0 jobs";
+      jobCountText.textContent = "0 jobs";
     }
 
     return;
@@ -2115,35 +2108,38 @@ function renderJobs(jobs) {
             >
               ${escapeHtml(statusLabel)}
             </span>
+          </td>
+
           <td>
 
-  <button
-    type="button"
-    class="job-action-btn"
-    onclick="editJob('${escapeJs(job.id)}')"
-  >
-    Edit
-  </button>
+            <button
+              type="button"
+              class="job-action-btn"
+              onclick="editJob('${escapeJs(job.id)}')"
+            >
+              Edit
+            </button>
 
-  <button
-    type="button"
-    class="job-action-btn"
-    onclick="viewJob('${escapeJs(job.id)}')"
-  >
-    View
-  </button>
+            <button
+              type="button"
+              class="job-action-btn"
+              onclick="viewJob('${escapeJs(job.id)}')"
+            >
+              View
+            </button>
 
-  <button
-    type="button"
-    class="job-action-btn"
-    onclick="openJobLink('${escapeJs(job.apply_url || "")}')"
-  >
-    Apply
-  </button>
+            <button
+              type="button"
+              class="job-action-btn"
+              onclick="openJobLink('${escapeJs(job.apply_url || "")}')"
+            >
+              Apply
+            </button>
 
-</td>
+          </td>
 
-          ;
+        </tr>
+      `;
 
     }).join("");
 
@@ -2151,8 +2147,7 @@ function renderJobs(jobs) {
     jobCountText.textContent =
       `${jobs.length} job${jobs.length === 1 ? "" : "s"}`;
   }
-}
-
+  }
 
 /* =========================
    SEARCH
