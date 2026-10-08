@@ -2244,7 +2244,21 @@ function openAddJobForm() {
       today;
   }
 }
+function goToJobs() {
 
+  const jobsSection =
+    document.getElementById("jobs");
+
+  if (jobsSection) {
+
+    jobsSection.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+  }
+
+}
 
 function closeAddJobForm() {
 
