@@ -2115,30 +2115,35 @@ function renderJobs(jobs) {
             >
               ${escapeHtml(statusLabel)}
             </span>
-          </td>
-
           <td>
 
-            <button
-              type="button"
-              class="job-action-btn"
-              onclick="viewJob('${escapeJs(job.id)}')"
-            >
-              View
-            </button>
+  <button
+    type="button"
+    class="job-action-btn"
+    onclick="editJob('${escapeJs(job.id)}')"
+  >
+    Edit
+  </button>
 
-            <button
-              type="button"
-              class="job-action-btn"
-              onclick="openJobLink('${escapeJs(job.apply_url || "")}')"
-            >
-              Apply
-            </button>
+  <button
+    type="button"
+    class="job-action-btn"
+    onclick="viewJob('${escapeJs(job.id)}')"
+  >
+    View
+  </button>
 
-          </td>
+  <button
+    type="button"
+    class="job-action-btn"
+    onclick="openJobLink('${escapeJs(job.apply_url || "")}')"
+  >
+    Apply
+  </button>
 
-        </tr>
-      `;
+</td>
+
+          ;
 
     }).join("");
 
