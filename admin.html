@@ -2554,7 +2554,69 @@ function viewJob(id) {
 
   alert(message);
 }
+function editJob(id) {
 
+  const job =
+    allJobs.find(
+      item =>
+        String(item.id) ===
+        String(id)
+    );
+
+  if (!job) {
+    alert("Job information could not be found.");
+    return;
+  }
+
+  document.getElementById("jobCompany").value =
+    job.company || "";
+
+  document.getElementById("jobTitle").value =
+    job.title || "";
+
+  document.getElementById("jobType").value =
+    job.type || "";
+
+  document.getElementById("jobLocation").value =
+    job.location || "";
+
+  document.getElementById("jobRegion").value =
+    job.region || "";
+
+  document.getElementById("jobAudience").value =
+    job.audience || "";
+
+  document.getElementById("jobEligibility").value =
+    job.eligibility || "";
+
+  document.getElementById("jobCategory").value =
+    job.category || "";
+
+  document.getElementById("jobDescription").value =
+    job.description || "";
+
+  document.getElementById("jobApplyUrl").value =
+    job.apply_url || "";
+
+  document.getElementById("jobSource").value =
+    job.source || "";
+
+  document.getElementById("jobStatus").value =
+    job.status || "active";
+
+  document.getElementById("jobVerified").value =
+    job.verified || "";
+
+  window.editingJobId = id;
+
+  document.querySelector("#addJobModal h2").textContent =
+    "Edit Job";
+
+  document.querySelector("#addJobForm .save-job-btn").textContent =
+    "Save Changes";
+
+  openAddJobForm();
+  }
 
 /* =========================
    OPEN APPLICATION
