@@ -1,1 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Supabase Product Test</title>
+</head>
 
+<body>
+
+  <h2>Testing Nexora Products...</h2>
+
+  <pre id="result">Testing...</pre>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+
+    const SUPABASE_URL =
+      "https://izjrazugqbnijzhlxegp.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_wOVNCGI_o5XwCISbgUK9Sw_r8iMXn7R";
+
+    const client =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+    async function testProducts() {
+
+      const result =
+        document.getElementById("result");
+
+      const {
+        data,
+        error
+      } =
+        await client
+          .from("products")
+          .select("*");
+
+      if (error) {
+
+        result.textContent =
+          "ERROR:\n\n" +
+          JSON.stringify(
+            error,
+            null,
+            2
+          );
+
+        console.error(error);
+
+        return;
+      }
+
+      result.textContent =
+        "SUCCESS!\n\n" +
+        JSON.stringify(
+          data,
+          null,
+          2
+        );
+
+    }
+
+    testProducts();
+
+  </script>
+
+</body>
+</html>
