@@ -1,303 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>Nexora Digital Store</title>
-
-  <meta
-    name="description"
-    content="Discover useful digital products from Nexora Hub."
-  >
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <title>Digital Products | Nexora Hub</title>
 
   <style>
     * {
       box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-      background: #f8fafc;
-      color: #0f172a;
-    }
-
-    a {
-      text-decoration: none;
+      font-family: Arial, sans-serif;
+      background: #f6f8fb;
+      color: #111827;
     }
 
     header {
       background: #ffffff;
       border-bottom: 1px solid #e5e7eb;
+      padding: 18px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       position: sticky;
       top: 0;
-      z-index: 100;
-    }
-
-    .header-inner {
-      max-width: 1150px;
-      margin: auto;
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
+      z-index: 10;
     }
 
     .logo {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 800;
       color: #111827;
+      text-decoration: none;
     }
 
-    .logo span {
-      color: #2563eb;
-    }
-
-    .back-link {
-      color: #475569;
-      font-size: 14px;
+    nav a {
+      text-decoration: none;
+      color: #374151;
+      margin-left: 20px;
       font-weight: 600;
     }
 
-    .back-link:hover {
+    nav a:hover {
       color: #2563eb;
     }
 
     .hero {
-      background: linear-gradient(135deg, #eff6ff, #ffffff);
-      padding: 65px 20px 55px;
       text-align: center;
-    }
-
-    .hero-content {
-      max-width: 750px;
-      margin: auto;
+      padding: 70px 20px 40px;
     }
 
     .hero h1 {
-      margin: 0 0 15px;
-      font-size: clamp(34px, 6vw, 54px);
-      line-height: 1.1;
+      font-size: 42px;
+      margin-bottom: 15px;
     }
 
     .hero p {
-      margin: 0 auto;
       max-width: 650px;
-      color: #64748b;
+      margin: auto;
+      color: #6b7280;
       font-size: 17px;
       line-height: 1.7;
     }
 
-    .store {
-      max-width: 1150px;
-      margin: auto;
-      padding: 45px 20px 70px;
-    }
-
-    .store-heading {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .store-heading h2 {
-      margin: 0 0 8px;
-      font-size: 30px;
-    }
-
-    .store-heading p {
-      margin: 0;
-      color: #64748b;
-    }
-
-    .products-grid {
+    .products {
+      max-width: 1100px;
+      margin: 20px auto 80px;
+      padding: 0 20px;
       display: grid;
-      grid-template-columns: repeat(
-        auto-fit,
-        minmax(250px, 1fr)
-      );
-      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
     }
 
     .product-card {
       background: #ffffff;
-      border: 1px solid #e5e7eb;
       border-radius: 18px;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-shadow:
-        0 8px 30px rgba(15, 23, 42, 0.06);
-      transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+      transition: 0.25s ease;
     }
 
     .product-card:hover {
-      transform: translateY(-4px);
-      box-shadow:
-        0 14px 40px rgba(15, 23, 42, 0.1);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.09);
     }
 
     .product-image {
-      width: 100%;
       height: 220px;
-      background: #e2e8f0;
+      background: linear-gradient(135deg, #111827, #2563eb);
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      padding: 25px;
+      text-align: center;
+      color: white;
     }
 
-    .product-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .product-image h2 {
+      font-size: 27px;
+      line-height: 1.25;
     }
 
-    .no-image {
-      color: #64748b;
-      font-size: 14px;
+    .product-content {
+      padding: 25px;
     }
 
-    .product-body {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
+    .product-content h2 {
+      font-size: 22px;
+      margin-bottom: 12px;
     }
 
-    .product-body h3 {
-      margin: 0 0 10px;
-      font-size: 20px;
-      line-height: 1.3;
-    }
-
-    .product-description {
-      color: #64748b;
-      font-size: 14px;
+    .description {
+      color: #6b7280;
       line-height: 1.6;
-      margin: 0 0 18px;
-      flex: 1;
+      margin-bottom: 20px;
     }
 
-    .product-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .product-price {
-      font-size: 20px;
+    .price {
+      font-size: 25px;
       font-weight: 800;
-      color: #111827;
+      margin-bottom: 20px;
     }
 
     .buy-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      display: block;
+      width: 100%;
       background: #2563eb;
-      color: #ffffff;
-      padding: 11px 17px;
-      border-radius: 9px;
-      font-size: 14px;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      border-radius: 10px;
+      text-decoration: none;
       font-weight: 700;
+      transition: 0.2s ease;
     }
 
     .buy-button:hover {
       background: #1d4ed8;
     }
 
-    .store-message {
+    .empty {
       text-align: center;
       padding: 50px 20px;
-      color: #64748b;
-    }
-
-    .store-error {
-      color: #dc2626;
+      color: #6b7280;
     }
 
     footer {
-      background: #0f172a;
-      color: #cbd5e1;
-      padding: 35px 20px;
+      background: #111827;
+      color: #d1d5db;
       text-align: center;
+      padding: 35px 20px;
     }
 
     footer p {
-      margin: 5px 0;
-      font-size: 14px;
-    }
-
-    footer a {
-      color: #ffffff;
+      margin: 8px 0;
     }
 
     @media (max-width: 600px) {
+      .hero {
+        padding-top: 50px;
+      }
 
-      .header-inner {
-        padding: 14px 15px;
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      nav a {
+        margin-left: 10px;
+        font-size: 14px;
       }
 
       .logo {
         font-size: 20px;
-      }
-
-      .hero {
-        padding: 48px 18px 42px;
-      }
-
-      .hero h1 {
-        font-size: 35px;
-      }
-
-      .hero p {
-        font-size: 15px;
-      }
-
-      .store {
-        padding: 35px 15px 55px;
-      }
-
-      .store-heading h2 {
-        font-size: 26px;
-      }
-
-      .products-grid {
-        grid-template-columns: 1fr;
-        gap: 18px;
-      }
-
-      .product-image {
-        height: 210px;
-      }
-
-      .product-bottom {
-        align-items: stretch;
-      }
-
-      .buy-button {
-        flex: 1;
       }
     }
   </style>
@@ -306,308 +185,69 @@
 <body>
 
   <header>
-    <div class="header-inner">
+    <a href="index.html" class="logo">Nexora Hub</a>
 
-      <a href="index.html" class="logo">
-        Nexora<span>Hub</span>
-      </a>
-
-      <a href="index.html" class="back-link">
-        ← Back to Home
-      </a>
-
-    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="jobs.html">Jobs</a>
+    </nav>
   </header>
 
-
   <section class="hero">
+    <h1>Digital Products</h1>
 
-    <div class="hero-content">
+    <p>
+      Useful digital resources designed to help you learn,
+      create, work smarter and build new opportunities.
+    </p>
+  </section>
 
-      <h1>
-        Nexora Digital Store
-      </h1>
+  <section class="products">
 
-      <p>
-        Discover useful digital products,
-        guides, resources and tools designed
-        to help you learn, grow and improve.
-      </p>
+    <!-- PRODUCT 1 -->
+    <div class="product-card">
 
+      <div class="product-image">
+        <h2>
+          50 AI Video Prompts<br>
+          for Beginners
+        </h2>
+      </div>
+
+      <div class="product-content">
+
+        <h2>50 AI Video Prompts for Beginners</h2>
+
+        <p class="description">
+          A beginner-friendly collection of 50 AI video prompts
+          to help you create better videos, explore AI tools,
+          and turn your ideas into engaging content.
+        </p>
+
+        <div class="price">
+          ₦5,000
+        </div>
+
+        <a
+          href="https://nestuge.com/tnwrxa0m0"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="buy-button"
+        >
+          Buy Now
+        </a>
+
+      </div>
     </div>
 
   </section>
 
-
-  <main class="store">
-
-    <div class="store-heading">
-
-      <h2>
-        Digital Products
-      </h2>
-
-      <p>
-        Choose a product and get started.
-      </p>
-
-    </div>
-
-
-    <div
-      id="storeMessage"
-      class="store-message"
-    >
-      Loading products...
-    </div>
-
-
-    <div
-      id="productsGrid"
-      class="products-grid"
-      style="display:none;"
-    ></div>
-
-  </main>
-
-
   <footer>
-
-    <p>
-      © 2026 Nexora Hub. All rights reserved.
-    </p>
-
-    <p>
-      <a href="mailto:ablegodluke@gmail.com">
-        ablegodluke@gmail.com
-      </a>
-    </p>
-
+    <p><strong>Nexora Hub</strong></p>
+    <p>Connecting Africa with opportunities, resources and digital products.</p>
+    <p>Email: ablegodluke@gmail.com</p>
+    <p>Phone: 09017579718</p>
   </footer>
 
-
-  <script>
-
-    const SUPABASE_URL =
-      "https://izjrazugqbnijzhlxegp.supabase.co";
-
-    const SUPABASE_KEY =
-      "sb_publishable_wOVNCGI_o5XwCISbgUK9Sw_r8iMXn7R";
-
-
-    const supabaseClient =
-      supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY,
-        {
-          db: {
-            schema: "public"
-          }
-        }
-      );
-
-
-    const productsGrid =
-      document.getElementById(
-        "productsGrid"
-      );
-
-    const storeMessage =
-      document.getElementById(
-        "storeMessage"
-      );
-
-
-    function escapeHtml(value) {
-
-      return String(value || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-    }
-
-
-    async function loadStoreProducts() {
-
-      console.log(
-        "Loading public.products..."
-      );
-
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .schema("public")
-          .from("products")
-          .select("*")
-          .eq(
-            "status",
-            "published"
-          )
-          .order(
-            "created_at",
-            {
-              ascending: false
-            }
-          );
-
-
-      console.log(
-        "Products:",
-        data
-      );
-
-      console.log(
-        "Supabase error:",
-        error
-      );
-
-
-      if (error) {
-
-        console.error(
-          "Store loading error:",
-          error
-        );
-
-        storeMessage.textContent =
-          "Unable to load products right now.";
-
-        storeMessage.className =
-          "store-message store-error";
-
-        return;
-      }
-
-
-      if (!data || data.length === 0) {
-
-        storeMessage.textContent =
-          "No digital products are available yet.";
-
-        storeMessage.className =
-          "store-message";
-
-        return;
-      }
-
-
-      storeMessage.style.display =
-        "none";
-
-      productsGrid.style.display =
-        "grid";
-
-
-      productsGrid.innerHTML =
-        data.map(
-          function(product) {
-
-            const image =
-              product.image_url
-                ? `
-                  <img
-                    src="${escapeHtml(
-                      product.image_url
-                    )}"
-                    alt="${escapeHtml(
-                      product.name
-                    )}"
-                    loading="lazy"
-                  >
-                `
-                : `
-                  <span class="no-image">
-                    Digital Product
-                  </span>
-                `;
-
-
-            const price =
-              Number(
-                product.price || 0
-              ).toLocaleString();
-
-
-            const button =
-              product.product_url
-                ? `
-                  <a
-                    href="${escapeHtml(
-                      product.product_url
-                    )}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="buy-button"
-                  >
-                    Buy Now
-                  </a>
-                `
-                : `
-                  <span
-                    class="buy-button"
-                    style="
-                      background:#94a3b8;
-                      cursor:not-allowed;
-                    "
-                  >
-                    Coming Soon
-                  </span>
-                `;
-
-
-            return `
-              <article class="product-card">
-
-                <div class="product-image">
-                  ${image}
-                </div>
-
-                <div class="product-body">
-
-                  <h3>
-                    ${escapeHtml(
-                      product.name
-                    )}
-                  </h3>
-
-                  <p class="product-description">
-                    ${escapeHtml(
-                      product.description ||
-                      "Digital product from Nexora Hub."
-                    )}
-                  </p>
-
-                  <div class="product-bottom">
-
-                    <div class="product-price">
-                      ₦${price}
-                    </div>
-
-                    ${button}
-
-                  </div>
-
-                </div>
-
-              </article>
-            `;
-
-          }
-        ).join("");
-
-    }
-
-
-    loadStoreProducts();
-
-  </script>
-
 </body>
-
-        </html>
+  </html>
