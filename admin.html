@@ -2269,9 +2269,8 @@ function closeAddJobForm() {
   }
 }
 
-
 /* =========================
-   ADD JOB
+   ADD / EDIT JOB
    ========================= */
 
 if (addJobForm) {
@@ -2287,138 +2286,145 @@ if (addJobForm) {
           ".save-job-btn"
         );
 
+      const isEditing =
+        !!window.editingJobId;
+
       if (saveButton) {
-
-        saveButton.disabled =
-          true;
-
+        saveButton.disabled = true;
         saveButton.textContent =
-          "Adding Job...";
+          isEditing
+            ? "Saving Changes..."
+            : "Adding Job...";
       }
 
       showJobMessage(
-        "Adding job...",
+        isEditing
+          ? "Saving changes..."
+          : "Adding job...",
         "info"
       );
 
       const company =
-        document.getElementById(
-          "jobCompany"
-        ).value.trim();
+        document.getElementById("jobCompany").value.trim();
 
       const title =
-        document.getElementById(
-          "jobTitle"
-        ).value.trim();
+        document.getElementById("jobTitle").value.trim();
 
       const type =
-        document.getElementById(
-          "jobType"
-        ).value.trim();
+        document.getElementById("jobType").value.trim();
 
       const location =
-        document.getElementById(
-          "jobLocation"
-        ).value.trim();
+        document.getElementById("jobLocation").value.trim();
 
       const region =
-        document.getElementById(
-          "jobRegion"
-        ).value;
+        document.getElementById("jobRegion").value;
 
       const audience =
-        document.getElementById(
-          "jobAudience"
-        ).value;
+        document.getElementById("jobAudience").value;
 
       const eligibility =
-        document.getElementById(
-          "jobEligibility"
-        ).value.trim();
+        document.getElementById("jobEligibility").value.trim();
 
       const category =
-        document.getElementById(
-          "jobCategory"
-        ).value.trim();
+        document.getElementById("jobCategory").value.trim();
 
       const description =
-        document.getElementById(
-          "jobDescription"
-        ).value.trim();
+        document.getElementById("jobDescription").value.trim();
 
       const applyUrl =
-        document.getElementById(
-          "jobApplyUrl"
-        ).value.trim();
+        document.getElementById("jobApplyUrl").value.trim();
 
       const source =
-        document.getElementById(
-          "jobSource"
-        ).value.trim();
+        document.getElementById("jobSource").value.trim();
 
       const status =
-        document.getElementById(
-          "jobStatus"
-        ).value;
+        document.getElementById("jobStatus").value;
 
       const verified =
-        document.getElementById(
-          "jobVerified"
-        ).value;
+        document.getElementById("jobVerified").value;
 
 
-      const jobId =
-        createJobId(
-          company,
-          title
-        );
+      const jobData = {
+        company: company,
+        title: title,
+        type: type,
+        location: location,
+        region: region,
+        audience: audience,
+        eligibility: eligibility,
+        category: category,
+        description: description,
+        apply_url: applyUrl,
+        source: source,
+        status: status,
+        verified: verified
+      };
+
+
+      let result;
+
+
+      if (isEditing) {
+
+        result =
+          await supabaseClient
+            .from("jobs")
+            .update(jobData)
+            .eq(
+              "id",
+              window.editingJobId
+            )
+            .select();
+
+      } else {
+
+        const jobId =
+          createJobId(
+            company,
+            title
+          );
+
+        result =
+          await supabaseClient
+            .from("jobs")
+            .insert([
+              {
+                id: jobId,
+                ...jobData
+              }
+            ])
+            .select();
+      }
 
 
       const {
         data,
         error
-      } = await supabaseClient
-        .from("jobs")
-        .insert([
-          {
-            id: jobId,
-            company: company,
-            title: title,
-            type: type,
-            location: location,
-            region: region,
-            audience: audience,
-            eligibility: eligibility,
-            category: category,
-            description: description,
-            apply_url: applyUrl,
-            source: source,
-            status: status,
-            verified: verified
-          }
-        ])
-        .select();
+      } = result;
 
 
       if (error) {
 
         console.error(
-          "Add job error:",
+          "Save job error:",
           error
         );
 
         showJobMessage(
-          "Unable to add job: " +
+          "Unable to save job: " +
           error.message,
           "error"
         );
 
         if (saveButton) {
+
           saveButton.disabled =
             false;
 
           saveButton.textContent =
-            "Add Job";
+            isEditing
+              ? "Save Changes"
+              : "Add Job";
         }
 
         return;
@@ -2426,14 +2432,16 @@ if (addJobForm) {
 
 
       showJobMessage(
-        "Job added successfully!",
+        isEditing
+          ? "Job updated successfully!"
+          : "Job added successfully!",
         "success"
       );
 
 
       if (saveButton) {
         saveButton.textContent =
-          "Added ✓";
+          "Saved ✓";
       }
 
 
@@ -2443,9 +2451,13 @@ if (addJobForm) {
       setTimeout(
         () => {
 
+          window.editingJobId =
+            null;
+
           closeAddJobForm();
 
           if (saveButton) {
+
             saveButton.disabled =
               false;
 
@@ -2460,7 +2472,6 @@ if (addJobForm) {
     }
   );
 }
-
 
 /* =========================
    MESSAGE HELPER
