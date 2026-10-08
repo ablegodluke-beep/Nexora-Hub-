@@ -1,211 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+const SUPABASE_URL =
+  "https://izjrazugqbnijzhlxegp.supabase.co";
 
-  <title>Nexora Hub — Admin Login</title>
+const SUPABASE_KEY =
+  "sb_publishable_wOVNCGI_o5XwCISbgUK9Sw_r8iMXn7R";
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
-  <style>
-    * {
-      box-sizing: border-box;
+const loginForm =
+  document.getElementById("loginForm");
+
+const loginButton =
+  document.getElementById("loginButton");
+
+const message =
+  document.getElementById("message");
+
+loginForm.addEventListener(
+  "submit",
+  async function(event) {
+
+    event.preventDefault();
+
+    const email =
+      document.getElementById("email").value.trim();
+
+    const password =
+      document.getElementById("password").value;
+
+    loginButton.disabled = true;
+    loginButton.textContent = "Signing in...";
+    message.textContent = "";
+
+    const result =
+      await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+    console.log("LOGIN RESULT:", result);
+
+    if (result.error) {
+      message.textContent =
+        result.error.message;
+
+      loginButton.disabled = false;
+      loginButton.textContent = "Sign In";
+
+      return;
     }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background: #f5f7fb;
-      font-family: Arial, sans-serif;
-    }
+    message.textContent =
+      "Login successful. Redirecting...";
 
-    .login-card {
-      width: 100%;
-      max-width: 420px;
-      background: white;
-      padding: 32px 24px;
-      border-radius: 20px;
-      box-shadow: 0 15px 45px rgba(0,0,0,0.08);
-    }
-
-    .logo {
-      text-align: center;
-      font-size: 28px;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-
-    .logo span {
-      color: #2563eb;
-    }
-
-    .subtitle {
-      text-align: center;
-      color: #718096;
-      margin-bottom: 28px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 700;
-      color: #1a202c;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #d9dee8;
-      border-radius: 10px;
-      margin-bottom: 18px;
-      font-size: 15px;
-      outline: none;
-    }
-
-    input:focus {
-      border-color: #2563eb;
-    }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      border: 0;
-      border-radius: 10px;
-      background: #2563eb;
-      color: white;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: 0.7;
-    }
-
-    #message {
-      margin-top: 15px;
-      text-align: center;
-      font-size: 14px;
-      color: #dc2626;
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="login-card">
-
-    <div class="logo">
-      Nexora<span>Hub</span>
-    </div>
-
-    <div class="subtitle">
-      Private Admin Dashboard
-    </div>
-
-    <form id="loginForm">
-
-      <label for="email">
-        Email
-      </label>
-
-      <input
-        type="email"
-        id="email"
-        placeholder="Admin email"
-        required
-      >
-
-      <label for="password">
-        Password
-      </label>
-
-      <input
-        type="password"
-        id="password"
-        placeholder="Password"
-        required
-      >
-
-      <button
-        type="submit"
-        id="loginButton"
-      >
-        Sign In
-      </button>
-
-      <div id="message"></div>
-
-    </form>
-
-  </div>
-
-  <script>
-
-    const SUPABASE_URL =
-      "https://izjrazugqbnijzhlxegp.supabase.co";
-
-    const SUPABASE_KEY =
-      "sb_publishable_wOVNCGI_o5XwCISbgUK9Sw_r8iMXn7R";
-
-    const supabaseClient =
-      supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-      );
-
-    const loginForm =
-      document.getElementById("loginForm");
-
-    const loginButton =
-      document.getElementById("loginButton");
-
-    const message =
-      document.getElementById("message");
-
-    loginForm.addEventListener(
-      "submit",
-      async function(event) {
-
-        event.preventDefault();
-
-        const email =
-          document.getElementById("email").value.trim();
-
-        const password =
-          document.getElementById("password").value;
-
-        loginButton.disabled = true;
-        loginButton.textContent = "Signing in...";
-        message.textContent = "";
-
-        const { error } =
-          await supabaseClient.auth.signInWithPassword({
-            email,
-            password
-          });
-
-        if (error) {
-
-  message.textContent =
-    error.message;
-
-  loginButton.disabled = false;
-  loginButton.textContent = "Sign In";
-
-  return;
-    }
-
-        window.location.href = "admin.html";
-      }
-    );
-
-  </script>
-
-</body>
-        </html>
+    window.location.href = "admin.html";
+  }
+);
+</script>
