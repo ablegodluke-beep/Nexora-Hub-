@@ -3217,6 +3217,734 @@ document.addEventListener(
 /* =========================
    START DASHBOARD
    ========================= */
+// =========================
+// DIGITAL PRODUCTS
+// =========================
+
+let allProducts = [];
+let editingProductId = null;
+
+const productModal =
+  document.getElementById("productModal");
+
+const productForm =
+  document.getElementById("productForm");
+
+const adminProductsTable =
+  document.getElementById("adminProductsTable");
+
+const totalProductsCount =
+  document.getElementById("totalProductsCount");
+
+const publishedProductsCount =
+  document.getElementById("publishedProductsCount");
+
+const draftProductsCount =
+  document.getElementById("draftProductsCount");
+
+const productMessage =
+  document.getElementById("productMessage");
+
+
+// =========================
+// LOAD PRODUCTS
+// =========================
+
+async function loadProducts() {
+
+  if (!adminProductsTable) return;
+
+  adminProductsTable.innerHTML = `
+    <tr>
+      <td colspan="4"
+        style="text-align:center;padding:35px;color:#718096;">
+        Loading products...
+      </td>
+    </tr>
+  `;
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("products")
+    .select("*")
+    .order("created_at", {
+      ascending: false
+    });
+
+  if (error) {
+
+    console.error(
+      "Products loading error:",
+      error
+    );
+
+    adminProductsTable.innerHTML = `
+      <tr>
+        <td colspan="4"
+          style="text-align:center;padding:35px;color:#dc2626;">
+          Unable to load products.
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  allProducts = data || [];
+
+  updateProductStats();
+
+  renderProducts(allProducts);
+}
+
+
+// =========================
+// PRODUCT STATS
+// =========================
+
+function updateProductStats() {
+
+  const total =
+    allProducts.length;
+
+  const published =
+    allProducts.filter(
+      product =>
+        product.status === "published"
+    ).length;
+
+  const drafts =
+    allProducts.filter(
+      product =>
+        product.status !== "published"
+    ).length;
+
+  if (totalProductsCount) {
+    totalProductsCount.textContent =
+      total;
+  }
+
+  if (publishedProductsCount) {
+    publishedProductsCount.textContent =
+      published;
+  }
+
+  if (draftProductsCount) {
+    draftProductsCount.textContent =
+      drafts;
+  }
+}
+
+
+// =========================
+// RENDER PRODUCTS
+// =========================
+
+function renderProducts(products) {
+
+  if (!adminProductsTable) return;
+
+  if (!products.length) {
+
+    adminProductsTable.innerHTML = `
+      <tr>
+        <td colspan="4"
+          style="text-align:center;padding:35px;color:#718096;">
+          No products yet.
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  adminProductsTable.innerHTML =
+    products.map(product => {
+
+      const status =
+        String(
+          product.status || "draft"
+        ).toLowerCase();
+
+      const statusStyle =
+        status === "published"
+          ? "background:#dcfce7;color:#166534;"
+          : "background:#fef3c7;color:#92400e;";
+
+      return `
+        <tr>
+
+          <td>
+
+            <strong>
+              ${escapeHtml(
+                product.name ||
+                "Untitled Product"
+              )}
+            </strong>
+
+            <small>
+              ${escapeHtml(
+                product.description || ""
+              ).slice(0,80)}
+            </small>
+
+          </td>
+
+          <td>
+            ₦${Number(
+              product.price || 0
+            ).toLocaleString()}
+          </td>
+
+          <td>
+
+            <span
+              style="
+                display:inline-block;
+                padding:5px 9px;
+                border-radius:20px;
+                font-size:11px;
+                font-weight:700;
+                ${statusStyle}
+              "
+            >
+              ${status === "published"
+                ? "Published"
+                : "Draft"}
+            </span>
+
+          </td>
+
+          <td>
+
+            <button
+              type="button"
+              class="job-action-btn"
+              onclick="editProduct('${escapeJs(product.id)}')"
+            >
+              Edit
+            </button>
+
+            <button
+              type="button"
+              class="job-action-btn"
+              onclick="toggleProductStatus('${escapeJs(product.id)}')"
+            >
+              ${status === "published"
+                ? "Unpublish"
+                : "Publish"}
+            </button>
+
+            <button
+              type="button"
+              class="job-action-btn"
+              onclick="deleteProduct('${escapeJs(product.id)}')"
+            >
+              Delete
+            </button>
+
+          </td>
+
+        </tr>
+      `;
+
+    }).join("");
+}
+
+
+// =========================
+// OPEN PRODUCT FORM
+// =========================
+
+function openProductForm() {
+
+  editingProductId = null;
+
+  if (productForm) {
+    productForm.reset();
+  }
+
+  const title =
+    document.getElementById(
+      "productModalTitle"
+    );
+
+  if (title) {
+    title.textContent =
+      "Add Digital Product";
+  }
+
+  const saveButton =
+    document.getElementById(
+      "saveProductButton"
+    );
+
+  if (saveButton) {
+    saveButton.textContent =
+      "Save Product";
+  }
+
+  hideProductMessage();
+
+  if (productModal) {
+
+    productModal.style.display =
+      "block";
+
+    document.body.style.overflow =
+      "hidden";
+  }
+}
+
+
+// =========================
+// CLOSE PRODUCT FORM
+// =========================
+
+function closeProductForm() {
+
+  if (productModal) {
+    productModal.style.display =
+      "none";
+  }
+
+  document.body.style.overflow =
+    "";
+
+  editingProductId = null;
+
+  hideProductMessage();
+}
+
+
+// =========================
+// PRODUCT MESSAGE
+// =========================
+
+function showProductMessage(
+  message,
+  type = "success"
+) {
+
+  if (!productMessage) return;
+
+  productMessage.textContent =
+    message;
+
+  productMessage.style.display =
+    "block";
+
+  if (type === "error") {
+
+    productMessage.style.background =
+      "#fee2e2";
+
+    productMessage.style.color =
+      "#991b1b";
+
+  } else {
+
+    productMessage.style.background =
+      "#dcfce7";
+
+    productMessage.style.color =
+      "#166534";
+  }
+}
+
+
+function hideProductMessage() {
+
+  if (!productMessage) return;
+
+  productMessage.style.display =
+    "none";
+
+  productMessage.textContent =
+    "";
+}
+
+
+// =========================
+// CREATE PRODUCT ID
+// =========================
+
+function createProductId(name) {
+
+  const slug =
+    String(name || "product")
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0,50);
+
+  return (
+    "nexora-" +
+    slug +
+    "-" +
+    Date.now()
+  );
+}
+
+
+// =========================
+// SAVE PRODUCT
+// =========================
+
+if (productForm) {
+
+  productForm.addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+      const name =
+        document.getElementById(
+          "productName"
+        ).value.trim();
+
+      const description =
+        document.getElementById(
+          "productDescription"
+        ).value.trim();
+
+      const price =
+        Number(
+          document.getElementById(
+            "productPrice"
+          ).value
+        );
+
+      const image_url =
+        document.getElementById(
+          "productImage"
+        ).value.trim();
+
+      const product_url =
+        document.getElementById(
+          "productUrl"
+        ).value.trim();
+
+      const status =
+        document.getElementById(
+          "productStatus"
+        ).value;
+
+      if (!name) {
+
+        showProductMessage(
+          "Please enter a product name.",
+          "error"
+        );
+
+        return;
+      }
+
+      if (Number.isNaN(price)) {
+
+        showProductMessage(
+          "Please enter a valid price.",
+          "error"
+        );
+
+        return;
+      }
+
+      const saveButton =
+        document.getElementById(
+          "saveProductButton"
+        );
+
+      if (saveButton) {
+
+        saveButton.disabled =
+          true;
+
+        saveButton.textContent =
+          "Saving...";
+      }
+
+      const productData = {
+
+        name,
+        description,
+        price,
+        image_url,
+        product_url,
+        status
+
+      };
+
+      let result;
+
+      if (editingProductId) {
+
+        result =
+          await supabaseClient
+            .from("products")
+            .update(productData)
+            .eq(
+              "id",
+              editingProductId
+            );
+
+      } else {
+
+        productData.id =
+          createProductId(name);
+
+        result =
+          await supabaseClient
+            .from("products")
+            .insert(
+              productData
+            );
+      }
+
+      if (result.error) {
+
+        console.error(
+          result.error
+        );
+
+        showProductMessage(
+          "Unable to save product: " +
+          result.error.message,
+          "error"
+        );
+
+        if (saveButton) {
+
+          saveButton.disabled =
+            false;
+
+          saveButton.textContent =
+            editingProductId
+              ? "Update Product"
+              : "Save Product";
+        }
+
+        return;
+      }
+
+      showProductMessage(
+        editingProductId
+          ? "Product updated successfully."
+          : "Product added successfully."
+      );
+
+      await loadProducts();
+
+      setTimeout(
+        function() {
+          closeProductForm();
+        },
+        800
+      );
+
+    }
+  );
+
+}
+
+
+// =========================
+// EDIT PRODUCT
+// =========================
+
+function editProduct(id) {
+
+  const product =
+    allProducts.find(
+      item =>
+        String(item.id) ===
+        String(id)
+    );
+
+  if (!product) {
+
+    alert(
+      "Product not found."
+    );
+
+    return;
+  }
+
+  editingProductId =
+    product.id;
+
+  document.getElementById(
+    "productName"
+  ).value =
+    product.name || "";
+
+  document.getElementById(
+    "productDescription"
+  ).value =
+    product.description || "";
+
+  document.getElementById(
+    "productPrice"
+  ).value =
+    product.price || 0;
+
+  document.getElementById(
+    "productImage"
+  ).value =
+    product.image_url || "";
+
+  document.getElementById(
+    "productUrl"
+  ).value =
+    product.product_url || "";
+
+  document.getElementById(
+    "productStatus"
+  ).value =
+    product.status || "draft";
+
+  const title =
+    document.getElementById(
+      "productModalTitle"
+    );
+
+  if (title) {
+    title.textContent =
+      "Edit Digital Product";
+  }
+
+  const saveButton =
+    document.getElementById(
+      "saveProductButton"
+    );
+
+  if (saveButton) {
+    saveButton.textContent =
+      "Update Product";
+  }
+
+  hideProductMessage();
+
+  if (productModal) {
+
+    productModal.style.display =
+      "block";
+
+    document.body.style.overflow =
+      "hidden";
+  }
+}
+
+
+// =========================
+// PUBLISH / UNPUBLISH
+// =========================
+
+async function toggleProductStatus(id) {
+
+  const product =
+    allProducts.find(
+      item =>
+        String(item.id) ===
+        String(id)
+    );
+
+  if (!product) return;
+
+  const newStatus =
+    product.status === "published"
+      ? "draft"
+      : "published";
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("products")
+      .update({
+        status: newStatus
+      })
+      .eq(
+        "id",
+        product.id
+      );
+
+  if (error) {
+
+    alert(
+      "Unable to update product: " +
+      error.message
+    );
+
+    return;
+  }
+
+  await loadProducts();
+}
+
+
+// =========================
+// DELETE PRODUCT
+// =========================
+
+async function deleteProduct(id) {
+
+  const product =
+    allProducts.find(
+      item =>
+        String(item.id) ===
+        String(id)
+    );
+
+  if (!product) return;
+
+  const confirmed =
+    confirm(
+      `Delete "${product.name}"?`
+    );
+
+  if (!confirmed) return;
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("products")
+      .delete()
+      .eq(
+        "id",
+        product.id
+      );
+
+  if (error) {
+
+    alert(
+      "Unable to delete product: " +
+      error.message
+    );
+
+    return;
+  }
+
+  await loadProducts();
+}
+
+
+// =========================
+// START PRODUCT SYSTEM
+// =========================
+
+loadProducts();
+
+
+// =========================
+// START DASHBOARD
+// =========================
 
 loadJobs();
   
