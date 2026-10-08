@@ -2259,22 +2259,33 @@ function closeAddJobForm() {
 
   if (!addJobModal) return;
 
-  addJobModal.style.display =
-    "none";
-
-  document.body.style.overflow =
-    "";
+  addJobModal.style.display = "none";
+  document.body.style.overflow = "";
 
   if (addJobForm) {
     addJobForm.reset();
   }
 
-  if (addJobMessage) {
-    addJobMessage.style.display =
-      "none";
+  window.editingJobId = null;
 
-    addJobMessage.textContent =
-      "";
+  const modalTitle =
+    document.querySelector("#addJobModal h2");
+
+  if (modalTitle) {
+    modalTitle.textContent = "Add New Job";
+  }
+
+  const saveButton =
+    document.querySelector("#addJobForm .save-job-btn");
+
+  if (saveButton) {
+    saveButton.disabled = false;
+    saveButton.textContent = "Add Job";
+  }
+
+  if (addJobMessage) {
+    addJobMessage.style.display = "none";
+    addJobMessage.textContent = "";
   }
 }
 
