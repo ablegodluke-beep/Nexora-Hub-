@@ -192,14 +192,14 @@
 
         if (error) {
 
-          message.textContent =
-            "Invalid email or password.";
+  message.textContent =
+    error.message;
 
-          loginButton.disabled = false;
-          loginButton.textContent = "Sign In";
+  loginButton.disabled = false;
+  loginButton.textContent = "Sign In";
 
-          return;
-        }
+  return;
+    }
 
         window.location.href = "admin.html";
       }
