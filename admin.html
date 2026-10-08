@@ -652,39 +652,382 @@
 
 
       <!-- =========================
-           DIGITAL PRODUCTS
-           ========================= -->
+   DIGITAL PRODUCTS
+   ========================= -->
 
-      <section class="admin-section" id="products">
+<section class="admin-section" id="products">
 
-        <div class="section-header">
-          <div>
-            <h2>Digital Products</h2>
-            <p>Manage products sold through Nexora Hub.</p>
-          </div>
-        </div>
+  <div class="section-header">
 
-        <div class="empty-panel">
+    <div>
+      <h2>Digital Products</h2>
 
-          <div class="empty-icon">🛍️</div>
+      <p>
+        Manage products sold through Nexora Hub.
+      </p>
+    </div>
 
-          <h3>Nexora Digital Store</h3>
+    <button
+      type="button"
+      class="add-job-btn"
+      onclick="openProductForm()"
+    >
+      + Add Product
+    </button>
 
-          <p>
-            Add, edit and manage digital products,
-            prices, sales and customer orders here.
-          </p>
+  </div>
 
-          <button
-            type="button"
-            onclick="alert('Digital product management will be added next.')"
+
+  <!-- PRODUCT STATS -->
+
+  <div
+    style="
+      display:grid;
+      grid-template-columns:
+        repeat(auto-fit,minmax(180px,1fr));
+      gap:16px;
+      margin-bottom:25px;
+    "
+  >
+
+    <div class="stat-card">
+
+      <span
+        style="
+          font-size:13px;
+          color:#718096;
+        "
+      >
+        Total Products
+      </span>
+
+      <strong
+        id="totalProductsCount"
+        style="
+          display:block;
+          font-size:26px;
+          margin-top:6px;
+        "
+      >
+        0
+      </strong>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <span
+        style="
+          font-size:13px;
+          color:#718096;
+        "
+      >
+        Published
+      </span>
+
+      <strong
+        id="publishedProductsCount"
+        style="
+          display:block;
+          font-size:26px;
+          margin-top:6px;
+        "
+      >
+        0
+      </strong>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <span
+        style="
+          font-size:13px;
+          color:#718096;
+        "
+      >
+        Drafts
+      </span>
+
+      <strong
+        id="draftProductsCount"
+        style="
+          display:block;
+          font-size:26px;
+          margin-top:6px;
+        "
+      >
+        0
+      </strong>
+
+    </div>
+
+  </div>
+
+
+  <!-- PRODUCT TABLE -->
+
+  <div class="table-container">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>Product</th>
+
+          <th>Price</th>
+
+          <th>Status</th>
+
+          <th>Actions</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody id="adminProductsTable">
+
+        <tr>
+
+          <td
+            colspan="4"
+            style="
+              text-align:center;
+              padding:35px;
+              color:#718096;
+            "
           >
-            Coming Soon
-          </button>
+            No products yet.
+          </td>
 
-        </div>
+        </tr>
 
-      </section>
+      </tbody>
+
+    </table>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+   ADD PRODUCT MODAL
+   ========================= -->
+
+<div
+  id="productModal"
+  style="
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:9999;
+    padding:20px;
+    overflow:auto;
+  "
+>
+
+  <div
+    style="
+      max-width:650px;
+      margin:40px auto;
+      background:#fff;
+      border-radius:16px;
+      padding:25px;
+      box-shadow:0 20px 60px rgba(0,0,0,.2);
+    "
+  >
+
+    <div
+      style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:15px;
+        margin-bottom:20px;
+      "
+    >
+
+      <h2
+        id="productModalTitle"
+        style="margin:0;"
+      >
+        Add Digital Product
+      </h2>
+
+      <button
+        type="button"
+        onclick="closeProductForm()"
+        style="
+          border:0;
+          background:#f1f5f9;
+          width:38px;
+          height:38px;
+          border-radius:50%;
+          font-size:20px;
+          cursor:pointer;
+        "
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="productForm">
+
+      <div class="form-group">
+
+        <label>Product Name</label>
+
+        <input
+          type="text"
+          id="productName"
+          required
+          placeholder="Example: The Complete Period Guide"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Description</label>
+
+        <textarea
+          id="productDescription"
+          rows="5"
+          required
+          placeholder="Describe what the customer will receive."
+        ></textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Price (₦)</label>
+
+        <input
+          type="number"
+          id="productPrice"
+          min="0"
+          step="0.01"
+          required
+          placeholder="5000"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Product Image URL</label>
+
+        <input
+          type="url"
+          id="productImage"
+          placeholder="https://..."
+        >
+
+        <small>
+          Add the URL of your product cover/image.
+        </small>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Product / Download Link</label>
+
+        <input
+          type="url"
+          id="productUrl"
+          placeholder="https://..."
+        >
+
+        <small>
+          This can be your Nestuge product link for now.
+        </small>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Status</label>
+
+        <select id="productStatus">
+
+          <option value="draft">
+            Draft
+          </option>
+
+          <option value="published">
+            Published
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div
+        id="productMessage"
+        style="
+          display:none;
+          margin:15px 0;
+          padding:12px;
+          border-radius:8px;
+        "
+      ></div>
+
+
+      <div
+        style="
+          display:flex;
+          gap:10px;
+          justify-content:flex-end;
+          margin-top:20px;
+        "
+      >
+
+        <button
+          type="button"
+          onclick="closeProductForm()"
+          style="
+            padding:11px 18px;
+            border:1px solid #ddd;
+            background:#fff;
+            border-radius:8px;
+            cursor:pointer;
+          "
+        >
+          Cancel
+        </button>
+
+
+        <button
+          type="submit"
+          class="save-job-btn"
+          id="saveProductButton"
+        >
+          Save Product
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+    </div>
 
 
       <!-- =========================
