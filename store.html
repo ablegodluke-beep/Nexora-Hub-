@@ -5,23 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Digital Store | Nexora Hub</title>
-  <meta name="description" content="Discover digital products, AI video prompts, ebooks, templates and resources to help you learn, create and grow.">
+  <meta name="description" content="Discover premium digital products, AI video prompts, ebooks and useful resources on Nexora Hub.">
 
   <style>
     :root {
-      --bg: #080808;
-      --panel: #111111;
-      --gold: #e9b949;
-      --gold-light: #ffdf86;
+      --purple: #6254f5;
+      --purple-dark: #5142e8;
+      --purple-light: #f0edff;
+      --black: #111827;
+      --text: #374151;
+      --muted: #737b8c;
       --white: #ffffff;
-      --muted: #b9b9b9;
-      --border: #302a1d;
+      --background: #fafaff;
+      --border: #e5e7eb;
+      --gold: #c99a32;
+      --gold-light: #fff4d8;
+      --shadow: 0 16px 45px rgba(36, 29, 88, 0.08);
     }
 
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
     html {
@@ -30,31 +35,39 @@
 
     body {
       font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
-      color: var(--white);
+      color: var(--black);
+      background: var(--white);
       line-height: 1.6;
     }
 
     a {
-      color: inherit;
       text-decoration: none;
+      color: inherit;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
     }
 
     .container {
       width: min(1120px, 92%);
-      margin: auto;
+      margin: 0 auto;
     }
+
+    /* NAVIGATION */
 
     header {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(8, 8, 8, 0.96);
+      background: rgba(255, 255, 255, 0.96);
       border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
     }
 
     .navbar {
-      min-height: 76px;
+      min-height: 78px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -63,97 +76,118 @@
 
     .brand {
       font-size: 25px;
-      font-weight: 800;
+      font-weight: 900;
+      letter-spacing: -1.2px;
       white-space: nowrap;
     }
 
     .brand span {
-      color: var(--gold);
-    }
-
-    .brand small {
-      display: block;
-      font-size: 10px;
-      font-weight: 400;
-      color: var(--muted);
-      letter-spacing: 2px;
+      background: linear-gradient(120deg, #6254f5, #a16cf7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
     nav {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 25px;
     }
 
     nav a {
       font-size: 14px;
-      color: #dddddd;
+      font-weight: 700;
+      color: var(--text);
       transition: color 0.2s;
     }
 
     nav a:hover,
     nav a.active {
-      color: var(--gold);
+      color: var(--purple);
     }
 
     .nav-button {
-      border: 1px solid var(--gold);
-      padding: 10px 17px;
-      border-radius: 24px;
-      color: var(--gold-light);
+      color: white !important;
+      background: linear-gradient(120deg, var(--purple), #7964ff);
+      padding: 12px 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(98, 84, 245, 0.17);
     }
 
+    /* HERO */
+
     .hero {
-      padding: 78px 0 65px;
+      position: relative;
+      overflow: hidden;
+      padding: 76px 0 58px;
       background:
-        radial-gradient(ellipse at 85% 30%, rgba(185, 128, 28, 0.15), transparent 42%),
-        linear-gradient(120deg, #080808 45%, #17120a);
-      border-bottom: 1px solid var(--border);
+        radial-gradient(
+          circle at 90% 20%,
+          rgba(98, 84, 245, 0.12),
+          transparent 34%
+        ),
+        linear-gradient(180deg, #ffffff, #faf9ff);
+      border-bottom: 1px solid #f0effb;
     }
 
     .hero-content {
-      max-width: 760px;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
     }
 
     .eyebrow {
-      display: inline-block;
-      color: var(--gold-light);
-      border: 1px solid #a9822f;
-      border-radius: 30px;
-      padding: 6px 14px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      margin-bottom: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 17px;
+      background: var(--purple-light);
+      color: var(--purple-dark);
+      border: 1px solid #e4deff;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 24px;
     }
 
     .hero h1 {
       font-size: clamp(36px, 6vw, 62px);
       line-height: 1.12;
-      letter-spacing: -1.5px;
-      margin-bottom: 20px;
+      letter-spacing: -2px;
+      margin-bottom: 22px;
     }
 
     .hero h1 span {
-      color: var(--gold);
+      background: linear-gradient(110deg, #6254f5, #9473ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
-    .hero p {
-      color: #c7c7c7;
+    .hero-description {
+      max-width: 680px;
+      margin: 0 auto;
       font-size: 17px;
-      max-width: 590px;
-      margin-bottom: 28px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 30px;
     }
 
     .button {
       display: inline-flex;
-      align-items: center;
       justify-content: center;
-      gap: 10px;
-      background: linear-gradient(120deg, var(--gold-light), var(--gold));
-      color: #17120a;
-      padding: 14px 24px;
-      border-radius: 9px;
+      align-items: center;
+      gap: 9px;
+      padding: 15px 24px;
+      border-radius: 12px;
       font-size: 14px;
       font-weight: 800;
       transition: transform 0.2s, box-shadow 0.2s;
@@ -161,49 +195,85 @@
 
     .button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(233, 185, 73, 0.2);
     }
+
+    .button-primary {
+      color: white;
+      background: linear-gradient(120deg, #6254f5, #7964ff);
+      box-shadow: 0 10px 24px rgba(98, 84, 245, 0.2);
+    }
+
+    .button-primary:hover {
+      box-shadow: 0 14px 30px rgba(98, 84, 245, 0.28);
+    }
+
+    .button-secondary {
+      background: white;
+      color: var(--black);
+      border: 1px solid var(--border);
+    }
+
+    /* TRUST BENEFITS */
 
     .benefits {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      margin-top: 45px;
+      gap: 18px;
+      margin-top: 48px;
+      text-align: left;
     }
 
     .benefit {
-      border-right: 1px solid var(--border);
-      padding-right: 12px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.8);
     }
 
-    .benefit:last-child {
-      border-right: 0;
+    .benefit-icon {
+      width: 39px;
+      height: 39px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: var(--purple-light);
+      color: var(--purple);
+      font-size: 20px;
+      margin-bottom: 12px;
     }
 
     .benefit strong {
       display: block;
-      color: var(--gold-light);
-      font-size: 13px;
-      margin-bottom: 4px;
+      font-size: 14px;
+      margin-bottom: 5px;
     }
 
-    .benefit span {
-      font-size: 12px;
+    .benefit p {
       color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
     }
+
+    /* GENERAL SECTION */
 
     .section {
-      padding: 65px 0;
+      padding: 68px 0;
     }
 
     .section-heading {
       text-align: center;
-      margin-bottom: 35px;
+      margin-bottom: 36px;
+    }
+
+    .section-heading .eyebrow {
+      margin-bottom: 14px;
     }
 
     .section-heading h2 {
-      font-size: clamp(27px, 4vw, 36px);
-      margin-bottom: 8px;
+      font-size: clamp(28px, 4vw, 38px);
+      letter-spacing: -1px;
+      margin-bottom: 9px;
     }
 
     .section-heading p {
@@ -211,186 +281,294 @@
       font-size: 15px;
     }
 
+    /* FEATURED PRODUCT */
+
     .featured-card {
       display: grid;
-      grid-template-columns: 1fr 1.15fr;
-      background: linear-gradient(130deg, #14110b, #0d0d0d 65%);
-      border: 1px solid var(--border);
-      border-radius: 18px;
+      grid-template-columns: 1fr 1.1fr;
       overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid #e5e0ff;
+      background: linear-gradient(135deg, #ffffff, #faf8ff);
+      box-shadow: var(--shadow);
     }
 
     .product-art {
-      min-height: 370px;
+      min-height: 400px;
+      padding: 35px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 35px;
+      position: relative;
+      overflow: hidden;
       background:
-        radial-gradient(ellipse at center, rgba(208, 151, 39, 0.23), transparent 65%),
-        #0c0c0c;
+        radial-gradient(
+          circle at 50% 50%,
+          rgba(98, 84, 245, 0.18),
+          transparent 65%
+        ),
+        linear-gradient(145deg, #f4f1ff, #e8e7ff);
+    }
+
+    .product-art::before,
+    .product-art::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(98, 84, 245, 0.12);
+    }
+
+    .product-art::before {
+      width: 340px;
+      height: 340px;
+    }
+
+    .product-art::after {
+      width: 260px;
+      height: 260px;
     }
 
     .book {
-      width: min(270px, 100%);
+      position: relative;
+      z-index: 1;
+      width: min(275px, 100%);
       aspect-ratio: 0.73;
-      padding: 25px 17px;
+      padding: 25px 19px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border: 1px solid #5269a8;
-      border-radius: 5px 12px 12px 5px;
-      background:
-        radial-gradient(ellipse at 50% 85%, #1760b6, transparent 50%),
-        linear-gradient(145deg, #101d43, #03050c 65%);
-      box-shadow: -7px 0 0 #253858, 0 18px 35px rgba(0,0,0,0.5);
       text-align: center;
+      color: white;
+      border: 1px solid #5865a8;
+      border-radius: 5px 13px 13px 5px;
+      background:
+        radial-gradient(
+          ellipse at 50% 88%,
+          rgba(41, 155, 255, 0.85),
+          transparent 45%
+        ),
+        linear-gradient(145deg, #182f6e, #070b1c 70%);
+      box-shadow:
+        -7px 0 0 #c2b8ff,
+        0 22px 45px rgba(39, 28, 112, 0.28);
+      transform: rotate(-2deg);
     }
 
     .book-label {
-      color: var(--gold-light);
-      font-size: 10px;
+      font-size: 9px;
       letter-spacing: 2px;
+      color: #f6d981;
+      font-weight: 700;
     }
 
     .book h3 {
-      font-size: 30px;
+      font-size: 29px;
       line-height: 1.13;
       font-weight: 900;
+      letter-spacing: -0.5px;
     }
 
     .book h3 span {
-      color: var(--gold);
+      color: #ffda64;
     }
 
     .book p {
       font-size: 12px;
-      color: #dddddd;
+      line-height: 1.5;
+      color: #e6eaff;
     }
 
     .product-info {
-      padding: 40px;
+      padding: 42px;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: flex-start;
     }
 
     .product-info .eyebrow {
-      align-self: flex-start;
-      margin-bottom: 15px;
+      background: #fff6df;
+      color: #8d6417;
+      border-color: #f1dfac;
+      margin-bottom: 17px;
     }
 
     .product-info h2 {
-      font-size: clamp(25px, 3vw, 34px);
+      font-size: clamp(26px, 3vw, 35px);
       line-height: 1.2;
+      letter-spacing: -0.8px;
       margin-bottom: 15px;
     }
 
     .product-description {
-      color: #c2c2c2;
+      color: var(--muted);
       font-size: 15px;
+      line-height: 1.8;
       margin-bottom: 20px;
     }
 
     .product-features {
       list-style: none;
-      margin-bottom: 23px;
+      margin-bottom: 22px;
     }
 
     .product-features li {
-      color: #e0e0e0;
       font-size: 14px;
-      margin: 8px 0;
+      color: var(--text);
+      margin: 9px 0;
     }
 
     .product-features li::before {
       content: "✓";
-      color: var(--gold);
+      color: var(--purple);
       font-weight: 900;
       margin-right: 10px;
     }
 
+    .price-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
     .price {
-      color: var(--gold-light);
-      font-size: 32px;
+      color: var(--black);
+      font-size: 35px;
       font-weight: 900;
-      margin-bottom: 18px;
+      margin: 0 0 18px;
+      letter-spacing: -1px;
+    }
+
+    .price span {
+      color: var(--purple);
     }
 
     .product-info .button {
       width: 100%;
-      max-width: 330px;
     }
 
     .secure-note {
+      display: flex;
+      align-items: center;
+      gap: 7px;
       color: var(--muted);
       font-size: 11px;
-      margin-top: 12px;
+      margin-top: 13px;
+    }
+
+    .gold-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+      display: inline-block;
+    }
+
+    /* CATEGORIES */
+
+    .categories-section {
+      background: var(--background);
+      border-top: 1px solid #f0effb;
+      border-bottom: 1px solid #f0effb;
     }
 
     .categories {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 15px;
+      gap: 17px;
     }
 
     .category {
-      border: 1px solid var(--border);
-      background: var(--panel);
-      border-radius: 12px;
-      padding: 25px 15px;
+      padding: 27px 16px;
       text-align: center;
-      transition: border-color 0.2s, transform 0.2s;
+      border-radius: 17px;
+      background: white;
+      border: 1px solid var(--border);
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
     }
 
     .category:hover {
-      border-color: var(--gold);
-      transform: translateY(-4px);
+      transform: translateY(-5px);
+      border-color: #c8c0ff;
+      box-shadow: 0 12px 30px rgba(55, 43, 130, 0.08);
     }
 
     .category-icon {
-      font-size: 28px;
-      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 55px;
+      height: 55px;
+      margin: 0 auto 15px;
+      border-radius: 17px;
+      background: linear-gradient(135deg, #f0edff, #e2dcff);
+      color: var(--purple);
+      font-size: 25px;
+      font-weight: 800;
     }
 
     .category h3 {
-      color: var(--gold-light);
       font-size: 15px;
       margin-bottom: 8px;
     }
 
     .category p {
       font-size: 12px;
+      line-height: 1.7;
       color: var(--muted);
     }
 
+    .coming-soon {
+      display: inline-block;
+      font-size: 9px;
+      color: #87621b;
+      background: var(--gold-light);
+      border-radius: 20px;
+      padding: 4px 9px;
+      margin-top: 12px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+    }
+
+    /* CALL TO ACTION */
+
     .future-banner {
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 42px 0;
-      background: linear-gradient(100deg, #201707, #0c0c0c);
+      padding: 48px 0;
+      background:
+        radial-gradient(
+          ellipse at 90% 50%,
+          rgba(98, 84, 245, 0.17),
+          transparent 45%
+        ),
+        #111128;
+      color: white;
     }
 
     .banner-content {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 25px;
+      gap: 28px;
     }
 
     .banner-content h2 {
-      font-size: clamp(24px, 4vw, 34px);
-      margin-bottom: 8px;
+      font-size: clamp(25px, 4vw, 35px);
+      margin-bottom: 10px;
     }
 
     .banner-content p {
-      max-width: 540px;
-      color: #c5c5c5;
+      color: #d1d0e2;
+      max-width: 580px;
+      font-size: 15px;
     }
 
+    /* FOOTER */
+
     footer {
-      padding: 45px 0 20px;
-      background: #050505;
+      padding: 48px 0 22px;
+      background: #ffffff;
     }
 
     .footer-grid {
@@ -401,7 +579,6 @@
     }
 
     .footer-grid h3 {
-      color: var(--gold-light);
       font-size: 14px;
       margin-bottom: 15px;
     }
@@ -409,33 +586,42 @@
     .footer-grid p,
     .footer-grid a {
       display: block;
-      font-size: 13px;
       color: var(--muted);
-      margin-bottom: 8px;
+      font-size: 13px;
+      margin-bottom: 9px;
       overflow-wrap: anywhere;
     }
 
     .footer-grid a:hover {
-      color: var(--gold);
+      color: var(--purple);
+    }
+
+    .footer-brand-description {
+      max-width: 300px;
+      margin-top: 14px;
+      line-height: 1.8;
     }
 
     .copyright {
-      border-top: 1px solid #252525;
+      border-top: 1px solid var(--border);
       padding-top: 20px;
       display: flex;
       justify-content: space-between;
       gap: 15px;
-      color: #8d8d8d;
+      color: var(--muted);
       font-size: 12px;
     }
+
+    .copyright span {
+      color: var(--purple);
+      font-weight: 700;
+    }
+
+    /* MOBILE */
 
     @media (max-width: 850px) {
       nav {
         gap: 14px;
-      }
-
-      .categories {
-        grid-template-columns: repeat(3, 1fr);
       }
 
       .featured-card {
@@ -443,23 +629,24 @@
       }
 
       .product-info {
-        padding: 25px;
+        padding: 28px;
       }
 
-      .product-art {
-        padding: 20px;
+      .categories {
+        grid-template-columns: repeat(3, 1fr);
       }
     }
 
     @media (max-width: 600px) {
       .navbar {
-        min-height: 68px;
+        min-height: 70px;
         flex-wrap: wrap;
+        gap: 12px;
         padding: 12px 0;
       }
 
       .brand {
-        font-size: 21px;
+        font-size: 23px;
       }
 
       nav {
@@ -473,29 +660,43 @@
       }
 
       .nav-button {
-        padding: 7px 10px;
+        padding: 8px 11px;
+        border-radius: 9px;
       }
 
       .hero {
-        padding: 52px 0 40px;
+        padding: 54px 0 42px;
       }
 
-      .hero p {
+      .hero h1 {
+        letter-spacing: -1.4px;
+      }
+
+      .hero-description {
         font-size: 15px;
+        line-height: 1.8;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .hero-actions .button {
+        width: 100%;
       }
 
       .benefits {
         grid-template-columns: repeat(2, 1fr);
-        gap: 20px 12px;
-        margin-top: 32px;
+        gap: 12px;
+        margin-top: 35px;
       }
 
-      .benefit:nth-child(2) {
-        border-right: 0;
+      .benefit {
+        padding: 14px;
       }
 
       .section {
-        padding: 45px 0;
+        padding: 48px 0;
       }
 
       .featured-card {
@@ -503,11 +704,12 @@
       }
 
       .product-art {
-        min-height: 300px;
+        min-height: 330px;
+        padding: 25px;
       }
 
       .book {
-        width: 205px;
+        width: 220px;
       }
 
       .book h3 {
@@ -515,29 +717,38 @@
       }
 
       .product-info {
-        padding: 25px 22px 30px;
+        padding: 28px 23px 30px;
+      }
+
+      .product-info h2 {
+        font-size: 28px;
       }
 
       .product-info .button {
-        max-width: none;
+        width: 100%;
       }
 
       .categories {
         grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
       }
 
       .category {
-        padding: 20px 10px;
+        padding: 22px 11px;
       }
 
       .banner-content {
-        align-items: flex-start;
         flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .banner-content .button {
+        width: 100%;
       }
 
       .footer-grid {
         grid-template-columns: 1fr 1fr;
-        gap: 25px;
+        gap: 25px 18px;
       }
 
       .footer-grid > div:first-child {
@@ -546,6 +757,21 @@
 
       .copyright {
         flex-direction: column;
+        gap: 8px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .categories {
+        grid-template-columns: 1fr;
+      }
+
+      .benefits {
+        grid-template-columns: 1fr;
+      }
+
+      .benefit {
+        border: 1px solid var(--border);
       }
     }
   </style>
@@ -553,12 +779,12 @@
 
 <body>
 
+  <!-- HEADER -->
   <header>
     <div class="container navbar">
 
       <a href="index.html" class="brand">
-        Nexora <span>Hub</span>
-        <small>LEARN · CREATE · GROW</small>
+        Nexora<span>Hub</span>
       </a>
 
       <nav aria-label="Main navigation">
@@ -574,49 +800,63 @@
 
   <main>
 
+    <!-- HERO -->
     <section class="hero">
       <div class="container">
 
         <div class="hero-content">
 
-          <span class="eyebrow">THE NEXORA DIGITAL STORE</span>
+          <span class="eyebrow">
+            ✦ PREMIUM DIGITAL RESOURCES
+          </span>
 
           <h1>
-            Build Your Skills.<br>
-            <span>Unlock New Opportunities.</span>
+            Learn More.<br>
+            <span>Create Without Limits.</span>
           </h1>
 
-          <p>
-            Discover digital resources designed to help you learn,
-            create, work smarter and turn your ideas into opportunities.
+          <p class="hero-description">
+            Discover useful digital products designed to help you
+            build skills, create better content, work smarter and
+            unlock new opportunities.
           </p>
 
-          <a href="#featured" class="button">
-            Explore Digital Products →
-          </a>
+          <div class="hero-actions">
+            <a href="#featured" class="button button-primary">
+              Explore Digital Products →
+            </a>
+
+            <a href="index.html" class="button button-secondary">
+              Back to Homepage
+            </a>
+          </div>
 
         </div>
 
         <div class="benefits">
 
           <div class="benefit">
-            <strong>Instant Access</strong>
-            <span>Access your purchase through the product provider.</span>
+            <div class="benefit-icon">✦</div>
+            <strong>Practical Resources</strong>
+            <p>Digital materials designed to support your goals.</p>
           </div>
 
           <div class="benefit">
+            <div class="benefit-icon">✓</div>
+            <strong>Simple to Use</strong>
+            <p>Resources suitable for beginners and learners.</p>
+          </div>
+
+          <div class="benefit">
+            <div class="benefit-icon">◇</div>
             <strong>Secure Checkout</strong>
-            <span>Checkout handled by the linked payment platform.</span>
+            <p>Payments handled by the linked checkout provider.</p>
           </div>
 
           <div class="benefit">
-            <strong>Useful Resources</strong>
-            <span>Practical digital learning materials.</span>
-          </div>
-
-          <div class="benefit">
-            <strong>Learn & Grow</strong>
-            <span>Build skills at your own pace.</span>
+            <div class="benefit-icon">↗</div>
+            <strong>Keep Growing</strong>
+            <p>Discover new resources as our store expands.</p>
           </div>
 
         </div>
@@ -624,15 +864,25 @@
       </div>
     </section>
 
+    <!-- FEATURED PRODUCT -->
     <section class="section" id="featured">
       <div class="container">
+
+        <div class="section-heading">
+          <span class="eyebrow">HANDPICKED FOR YOU</span>
+          <h2>Featured Digital Product</h2>
+          <p>Start creating with our beginner-friendly AI video prompts.</p>
+        </div>
 
         <div class="featured-card">
 
           <div class="product-art">
 
             <div class="book">
-              <span class="book-label">NEXORA HUB PRESENTS</span>
+
+              <span class="book-label">
+                NEXORA HUB DIGITAL RESOURCE
+              </span>
 
               <h3>
                 <span>50 AI</span><br>
@@ -641,43 +891,52 @@
                 <span>FOR BEGINNERS</span>
               </h3>
 
-              <p>CREATE BETTER VIDEOS WITH AI</p>
+              <p>
+                CREATE BETTER VIDEOS<br>
+                WITH AI
+              </p>
+
             </div>
 
           </div>
 
           <div class="product-info">
 
-            <span class="eyebrow">FEATURED PRODUCT</span>
+            <span class="eyebrow">BEST FOR BEGINNERS</span>
 
             <h2>50 AI Video Prompts for Beginners</h2>
 
             <p class="product-description">
-              Get 50 ready-to-use AI video prompts for storytelling,
-              ancient history, Christian inspiration, social media,
-              wildlife and nature discovery.
+              Get 50 ready-to-use prompts to help you explore
+              AI video creation, storytelling, ancient history,
+              Christian inspiration, social media and nature.
             </p>
 
             <ul class="product-features">
-              <li>50 ready-to-use prompts</li>
-              <li>5 useful prompt categories</li>
-              <li>Made for beginners</li>
-              <li>Ideas for different AI video tools</li>
+              <li>50 ready-to-use AI video prompts</li>
+              <li>5 categories to explore</li>
+              <li>Beginner-friendly prompt ideas</li>
+              <li>Useful for different creative projects</li>
             </ul>
 
-            <div class="price">₦5,000</div>
+            <p class="price-label">One-time purchase</p>
+
+            <div class="price">
+              <span>₦</span>5,000
+            </div>
 
             <a
               href="https://nestuge.com/tnwrxa0m0"
               target="_blank"
               rel="noopener noreferrer"
-              class="button"
+              class="button button-primary"
             >
-              🛒 Buy Now ↗
+              Buy Now on Nestuge ↗
             </a>
 
             <p class="secure-note">
-              Checkout and product delivery are handled through Nestuge.
+              <span class="gold-dot"></span>
+              You'll complete your purchase on Nestuge.
             </p>
 
           </div>
@@ -687,44 +946,51 @@
       </div>
     </section>
 
-    <section class="section" id="categories">
+    <!-- CATEGORIES -->
+    <section class="section categories-section" id="categories">
       <div class="container">
 
         <div class="section-heading">
-          <h2>Explore Our Categories</h2>
-          <p>Discover resources for your learning and creative journey.</p>
+          <span class="eyebrow">EXPLORE & DISCOVER</span>
+          <h2>Browse by Category</h2>
+          <p>Explore our growing collection of digital resources.</p>
         </div>
 
         <div class="categories">
 
           <div class="category">
-            <div class="category-icon">✦</div>
+            <div class="category-icon">✧</div>
             <h3>AI Tools</h3>
-            <p>Explore resources for working smarter with AI.</p>
+            <p>Discover resources to help you work smarter with AI.</p>
+            <span class="coming-soon">MORE COMING SOON</span>
           </div>
 
           <div class="category">
             <div class="category-icon">▶</div>
             <h3>Video Prompts</h3>
-            <p>Create engaging videos with useful prompt ideas.</p>
+            <p>Find ideas for creating engaging AI-generated videos.</p>
+            <span class="coming-soon">EXPLORE FEATURED</span>
           </div>
 
           <div class="category">
             <div class="category-icon">▤</div>
             <h3>Ebooks</h3>
-            <p>Learn new skills through digital reading materials.</p>
+            <p>Explore digital reading materials and practical guides.</p>
+            <span class="coming-soon">MORE COMING SOON</span>
           </div>
 
           <div class="category">
             <div class="category-icon">▧</div>
             <h3>Templates</h3>
-            <p>Discover resources for work and creativity.</p>
+            <p>Discover useful resources for work and creativity.</p>
+            <span class="coming-soon">MORE COMING SOON</span>
           </div>
 
           <div class="category">
             <div class="category-icon">◇</div>
-            <h3>More Resources</h3>
-            <p>Find more digital products as our store grows.</p>
+            <h3>Other Resources</h3>
+            <p>Find more tools and learning materials as we grow.</p>
+            <span class="coming-soon">MORE COMING SOON</span>
           </div>
 
         </div>
@@ -732,19 +998,22 @@
       </div>
     </section>
 
+    <!-- CALL TO ACTION -->
     <section class="future-banner">
       <div class="container banner-content">
 
         <div>
-          <h2>Invest in Your Future</h2>
+          <h2>Invest in Your Growth.</h2>
+
           <p>
-            The right resources can help you learn new skills,
-            create better content and discover opportunities.
+            The right resource can give you a starting point
+            for learning, creating and building new skills.
+            Start with our AI video prompts today.
           </p>
         </div>
 
-        <a href="#featured" class="button">
-          Explore Our Product →
+        <a href="#featured" class="button button-primary">
+          Discover the Product →
         </a>
 
       </div>
@@ -752,6 +1021,7 @@
 
   </main>
 
+  <!-- FOOTER -->
   <footer>
     <div class="container">
 
@@ -759,27 +1029,31 @@
 
         <div>
           <a href="index.html" class="brand">
-            Nexora <span>Hub</span>
-            <small>LEARN · CREATE · GROW</small>
+            Nexora<span>Hub</span>
           </a>
 
-          <p style="margin-top: 15px;">
-            Connecting Africa with opportunities, resources
-            and digital products.
+          <p class="footer-brand-description">
+            Connecting Africa with legitimate opportunities,
+            useful resources and digital products.
           </p>
         </div>
 
         <div>
           <h3>Quick Links</h3>
-          <a href="index.html">Home</a>
+          <a href="index.html">Homepage</a>
           <a href="jobs.html">Jobs & Opportunities</a>
           <a href="store.html">Digital Store</a>
+          <a href="index.html#about">About Nexora</a>
         </div>
 
         <div>
           <h3>Contact Us</h3>
-          <a href="mailto:ablegodluke@gmail.com">ablegodluke@gmail.com</a>
-          <a href="tel:09017579718">09017579718</a>
+          <a href="mailto:ablegodluke@gmail.com">
+            ablegodluke@gmail.com
+          </a>
+          <a href="tel:09017579718">
+            09017579718
+          </a>
           <p>Nigeria</p>
         </div>
 
@@ -787,7 +1061,7 @@
 
       <div class="copyright">
         <p>© 2026 Nexora Hub. All rights reserved.</p>
-        <p>Learn · Create · Grow</p>
+        <p><span>Learn · Create · Grow</span></p>
       </div>
 
     </div>
