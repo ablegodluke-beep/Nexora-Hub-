@@ -569,49 +569,193 @@
 
       </section>
 
+<section class="admin-section" id="revenue">
 
-      <!-- =========================
-           REVENUE
-           ========================= -->
+  <div class="section-header">
+    <div>
+      <h2>Revenue Management</h2>
+      <p>Track income, payments and business earnings.</p>
+    </div>
+  </div>
 
-      <section class="admin-section" id="revenue">
+  <!-- Revenue summary cards -->
+  <div class="revenue-grid">
 
-        <div class="section-header">
-          <div>
-            <h2>Revenue</h2>
-            <p>Monitor Nexora Hub's future income streams.</p>
-          </div>
+    <div class="revenue-card">
+      <small>Total Revenue</small>
+      <strong id="totalRevenue">₦0.00</strong>
+      <span>Confirmed payments only</span>
+    </div>
+
+    <div class="revenue-card">
+      <small>Digital Products</small>
+      <strong id="digitalRevenue">₦0.00</strong>
+      <span>Product earnings</span>
+    </div>
+
+    <div class="revenue-card">
+      <small>Company Projects</small>
+      <strong id="projectRevenue">₦0.00</strong>
+      <span>Project payments</span>
+    </div>
+
+    <div class="revenue-card">
+      <small>Affiliate Revenue</small>
+      <strong id="affiliateRevenue">₦0.00</strong>
+      <span>Affiliate commissions</span>
+    </div>
+
+    <div class="revenue-card">
+      <small>AdSense Revenue</small>
+      <strong id="adsenseRevenue">₦0.00</strong>
+      <span>Advertising earnings</span>
+    </div>
+
+    <div class="revenue-card">
+      <small>Pending Payments</small>
+      <strong id="pendingRevenue">₦0.00</strong>
+      <span>Not included in total revenue</span>
+    </div>
+
+  </div>
+
+  <!-- Add revenue record -->
+  <div class="admin-card revenue-form-card">
+
+    <div class="revenue-heading">
+      <h3>Record a Payment</h3>
+      <p>Enter a payment after checking its details.</p>
+    </div>
+
+    <form id="revenueForm">
+
+      <div class="revenue-form-grid">
+
+        <div class="form-group">
+          <label for="revenueTitle">Payment Description</label>
+          <input
+            type="text"
+            id="revenueTitle"
+            placeholder="e.g. 50 AI Video Prompts sale"
+            required
+          >
         </div>
 
-        <div class="revenue-grid">
-
-          <div class="revenue-card">
-            <small>Digital Products</small>
-            <strong>₦0</strong>
-            <span>No sales recorded yet</span>
-          </div>
-
-          <div class="revenue-card">
-            <small>Company Projects</small>
-            <strong>₦0</strong>
-            <span>Project revenue coming soon</span>
-          </div>
-
-          <div class="revenue-card">
-            <small>Affiliate Revenue</small>
-            <strong>₦0</strong>
-            <span>Affiliate tracking coming soon</span>
-          </div>
-
-          <div class="revenue-card">
-            <small>Total Revenue</small>
-            <strong>₦0</strong>
-            <span>Platform total</span>
-          </div>
-
+        <div class="form-group">
+          <label for="revenueAmount">Amount (₦)</label>
+          <input
+            type="number"
+            id="revenueAmount"
+            min="0.01"
+            step="0.01"
+            placeholder="5000"
+            required
+          >
         </div>
 
-      </section>
+        <div class="form-group">
+          <label for="revenueSource">Income Source</label>
+          <select id="revenueSource" required>
+            <option value="digital">Digital Products</option>
+            <option value="project">Company Projects</option>
+            <option value="affiliate">Affiliate Revenue</option>
+            <option value="adsense">Google AdSense</option>
+            <option value="other">Other Income</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="revenueDate">Payment Date</label>
+          <input
+            type="date"
+            id="revenueDate"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="revenueStatus">Payment Status</label>
+          <select id="revenueStatus" required>
+            <option value="paid">Paid / Confirmed</option>
+            <option value="pending">Pending</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="revenueNotes">Notes (Optional)</label>
+          <input
+            type="text"
+            id="revenueNotes"
+            placeholder="Reference or additional details"
+          >
+        </div>
+
+      </div>
+
+      <button type="submit" class="revenue-submit-btn">
+        + Record Payment
+      </button>
+
+      <p id="revenueMessage" role="status"></p>
+
+    </form>
+
+  </div>
+
+  <!-- Revenue history -->
+  <div class="admin-card revenue-history-card">
+
+    <div class="revenue-history-header">
+      <div>
+        <h3>Revenue History</h3>
+        <p>Review the payments you have recorded.</p>
+      </div>
+
+      <button
+        type="button"
+        id="exportRevenueBtn"
+        class="revenue-export-btn"
+      >
+        Export CSV
+      </button>
+    </div>
+
+    <div class="revenue-table-wrapper">
+
+      <table class="revenue-table">
+
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Source</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody id="revenueTableBody">
+          <tr>
+            <td colspan="6">Loading revenue records...</td>
+          </tr>
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <p class="revenue-note">
+      Revenue totals include confirmed payments only.
+      Pending payments are displayed separately.
+      Recording a payment does not independently verify that money was received.
+    </p>
+
+  </div>
+
+</section>
+
+      
 
 
       <!-- =========================
@@ -619,8 +763,7 @@
            ========================= -->
 
       <section class="admin-section" id="companies">
-
-        <div class="section-header">
+ class="section-header">
           <div>
             <h2>Companies</h2>
             <p>Manage companies and projects on Nexora Hub.</p>
