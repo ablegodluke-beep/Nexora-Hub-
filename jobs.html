@@ -749,7 +749,24 @@ async function loadJobs() {
   return;
   }
 
-  jobsData = data || [];
+  jobsData = (data || []).map(job => ({
+...job,
+id: job.id ?? job.Id,
+company: job.company ?? job.Company,
+title: job.title ?? job.Title,
+type: job.type ?? job.Type,
+location: job.location ?? job.Location,
+region: job.region ?? job.Region,
+audience: job.audience ?? job.Audience,
+eligibility: job.eligibility ?? job.Eligibility,
+description: job.description ?? job.Description,
+apply_url: job.apply_url ?? job["Apply URL"],
+status: job.status ?? job.Status,
+created_at: job.created_at ?? job["Created at"],
+category: job.category ?? job.Category,
+source: job.source ?? job.Source,
+verified: job.verified ?? job.Verified
+}));
 
   renderJobs();
 }
