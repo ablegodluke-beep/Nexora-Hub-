@@ -3088,6 +3088,40 @@ if (byId("revenueTableBody")) {
 ========================================= */
 
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
+    // FIX: ADD JOB BUTTON
+    const addJobButton = document.getElementById("addJobButton");
+
+    if (addJobButton) {
+        addJobButton.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            if (typeof openJobForm === "function") {
+                openJobForm();
+            } else {
+                alert("Job form function is missing. We need to fix Part 3.");
+            }
+        });
+    }
+
+    // FIX: ADD PRODUCT BUTTON
+    const addProductButton = document.getElementById("addProductButton");
+
+    if (addProductButton) {
+        addProductButton.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            if (typeof openProductForm === "function") {
+                openProductForm();
+            } else {
+                alert("Product form function is missing. We need to fix Part 4.");
+            }
+        });
+    }
+
+});
+</script>
 </body>
   </html>
