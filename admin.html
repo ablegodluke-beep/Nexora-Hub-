@@ -2067,7 +2067,7 @@ function renderRecentJobs() {
    OPEN JOB FORM
 ========================================== */
 
-function openJobForm(job) {
+window.openJobForm = function(job) {
     editingJobId = job ? job.id : null;
 
     byId("jobFormHeading").textContent = job
@@ -2102,7 +2102,7 @@ function openJobForm(job) {
         behavior: "smooth",
         block: "start"
     });
-}
+};
 
 function closeJobForm() {
     byId("jobForm").reset();
