@@ -2569,7 +2569,7 @@ function renderProducts() {
    OPEN PRODUCT FORM
 ========================================== */
 
-function openProductForm(product) {
+window.openProductForm = function(product) {
     editingProductId = product ? product.id : null;
 
     byId("productFormHeading").textContent = product
@@ -2607,7 +2607,7 @@ function openProductForm(product) {
         behavior: "smooth",
         block: "start"
     });
-}
+};
 
 function closeProductForm() {
     byId("productForm").reset();
