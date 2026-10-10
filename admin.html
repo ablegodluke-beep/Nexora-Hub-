@@ -1,730 +1,2384 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexora Hub — Admin Dashboard</title>
-<style>
-:root{--navy:#07111f;--navy2:#10243a;--purple:#7138d8;--purple2:#5b21b6;--ink:#172033;--muted:#718096;--line:#e6eaf0;--bg:#f5f7fb;--white:#fff;--green:#15803d;--red:#b91c1c;--amber:#946200}
-*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth;scroll-padding-top:100px}body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}button,input,select,textarea{font:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}
-.sidebar{position:fixed;inset:0 auto 0 0;width:250px;background:var(--navy);color:#fff;padding:25px 16px;display:flex;flex-direction:column;overflow-y:auto;z-index:1000;transition:transform .25s}.logo{font-size:24px;font-weight:850;padding:0 12px 25px;letter-spacing:-.8px}.logo span{color:#b89aff}.nav-label{font-size:11px;color:#8290a4;text-transform:uppercase;letter-spacing:1px;font-weight:800;padding:18px 12px 9px}.nav{display:flex;flex-direction:column;gap:5px}.nav a{padding:12px;border-radius:10px;color:#b9c4d2;font-size:14px;font-weight:650;display:flex;gap:12px;align-items:center}.nav a:hover,.nav a.active{background:#182b43;color:white}.nav a.active{box-shadow:inset 3px 0 #a78bfa}.nav-icon{width:22px;text-align:center}.sidebar-bottom{margin-top:auto;padding:20px 8px 0}.view-site{display:block;text-align:center;padding:12px;border:1px solid #2d4057;border-radius:10px;color:#d4dbe5;font-size:13px;font-weight:650}
-.overlay{display:none}.main{margin-left:250px;min-height:100vh}.topbar{height:82px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:800}.topbar-left{display:flex;align-items:center;gap:14px}.topbar h1{font-size:21px}.topbar p{font-size:12px;color:var(--muted);margin-top:4px}.profile{display:flex;align-items:center;gap:10px}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:white;background:linear-gradient(135deg,#8b5cf6,#4f46e5);font-weight:800}.profile small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.mobile-menu{display:none;border:0;background:#eef2f7;border-radius:9px;width:40px;height:40px;font-size:20px}
-.content{max-width:1500px;margin:auto;padding:28px}.welcome{padding:29px;background:radial-gradient(circle at top right,rgba(167,139,250,.3),transparent 35%),linear-gradient(135deg,#17132e,#31205d);border-radius:18px;color:#fff;margin-bottom:23px}.welcome h2{font-size:24px;margin-bottom:8px}.welcome p{font-size:14px;line-height:1.7;color:#ddd6fe;max-width:700px}.stats,.analytics-grid,.revenue-grid,.quick-grid{display:grid;gap:15px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:24px}.stat,.card,.section{background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:0 4px 16px rgba(15,23,42,.035)}.stat{padding:20px}.stat small,.revenue-card small,.analytics-card small{display:block;font-size:12px;color:var(--muted);font-weight:700;margin-bottom:10px}.stat strong,.analytics-card strong{display:block;font-size:27px;overflow-wrap:anywhere}.stat span,.revenue-card span,.analytics-card span{font-size:12px;color:#8993a3;display:block;margin-top:8px}.section{padding:23px;margin-bottom:22px;scroll-margin-top:100px}.section-header{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:19px}.section-header h2{font-size:19px;margin-bottom:5px}.section-header p{font-size:13px;color:var(--muted);line-height:1.5}.quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.quick-action{border:1px solid var(--line);background:#fafaff;border-radius:12px;padding:17px;text-align:left}.quick-action strong{display:block;margin-bottom:8px;font-size:14px}.quick-action span{display:block;color:var(--muted);font-size:12px;line-height:1.6}.quick-action:hover{border-color:#c4b5fd;background:#f5f3ff}
-.btn{border:0;border-radius:9px;padding:11px 15px;font-size:13px;font-weight:750;background:var(--purple);color:white}.btn:hover{background:var(--purple2)}.btn.secondary{background:#f1eaff;color:#5b21b6}.btn.dark{background:#182238}.btn.danger{background:#fff1f2;color:#b91c1c;border:1px solid #fecdd3}.toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:15px}.toolbar input{max-width:520px;width:100%;padding:12px;border:1px solid #dce2e9;border-radius:9px;background:#fafbfc}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:11px}table{width:100%;border-collapse:collapse;min-width:760px}th{font-size:11px;text-transform:uppercase;letter-spacing:.35px;color:#6b7280;background:#f8fafc;text-align:left;padding:13px}td{font-size:13px;padding:14px 13px;border-top:1px solid #edf0f3;vertical-align:middle}td strong{display:block;margin-bottom:3px}td small{color:var(--muted)}.action-btn{border:0;background:#f1eaff;color:#5b21b6;border-radius:7px;padding:7px 9px;font-size:11px;font-weight:750;margin:2px}.status{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:750}.status.paid,.status.published,.status.active{background:#dcfce7;color:#166534}.status.pending,.status.draft,.status.network{background:#fef3c7;color:#92400e}
-.analytics-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.analytics-card{padding:20px;background:#fafbff;border:1px solid var(--line);border-radius:12px}.empty{padding:35px 20px;text-align:center;background:#fafbfc;border:1px dashed #d8e0e8;border-radius:12px;color:var(--muted);font-size:13px;line-height:1.7}.revenue-grid{grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:20px}.revenue-card{padding:19px;border:1px solid #e9e3f5;border-radius:13px;background:linear-gradient(145deg,#fff,#fbf9ff)}.revenue-card strong{display:block;color:#25134b;font-size:23px;font-weight:850;overflow-wrap:anywhere}.revenue-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.form-group{display:flex;flex-direction:column;gap:7px;min-width:0}.form-group label{font-size:12px;font-weight:750;color:#374151}.form-group input,.form-group select,.form-group textarea{width:100%;min-height:43px;border:1px solid #dce2e9;border-radius:9px;padding:11px 12px;background:#fff;color:#172033}.form-group textarea{resize:vertical}.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:2px solid #ddd6fe;border-color:#8b5cf6}.form-actions{margin-top:17px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}.message{font-size:13px;margin-top:12px}.message.success{color:#15803d}.message.error{color:#b91c1c}.history-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:22px 0 15px}.history-head h3,.subheading{font-size:17px;margin-bottom:5px}.history-head p{font-size:12px;color:var(--muted)}.revenue-table{min-width:820px}.note{font-size:12px;color:var(--muted);line-height:1.7;margin-top:15px}.setting-row{padding:16px;border-bottom:1px solid var(--line)}.setting-row:last-child{border-bottom:0}.setting-row strong{display:block;font-size:13px;margin-bottom:5px}.setting-row span{font-size:13px;color:var(--muted)}
-.modal{display:none;position:fixed;inset:0;background:rgba(3,10,20,.65);z-index:2000;padding:18px;overflow:auto}.modal-box{max-width:720px;margin:30px auto;background:#fff;border-radius:16px;padding:23px;box-shadow:0 25px 80px #0003}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:12px}.modal-head h2{font-size:20px}.close{border:0;background:#f1f5f9;border-radius:9px;width:38px;height:38px;font-size:23px}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.full{grid-column:1/-1}
-@media(max-width:1100px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.revenue-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:800px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.mobile-menu{display:block}.overlay.show{display:block;position:fixed;inset:0;background:#0007;z-index:900}.topbar{padding:0 16px}.profile-text{display:none}.content{padding:18px 13px}.section{padding:17px}.section-header{align-items:flex-start;flex-direction:column}.section-header>.btn{width:100%}.toolbar{align-items:stretch;flex-direction:column}.toolbar input{max-width:none}.analytics-grid{grid-template-columns:1fr}}
-  @media(max-width:560px){.topbar{height:72px}.topbar h1{font-size:17px}.topbar p{font-size:11px}.welcome{padding:22px}.welcome h2{font-size:20px}.stats,.quick-grid,.revenue-grid,.revenue-form-grid,.form-grid{grid-template-columns:1fr}.form-actions>.btn{width:100%}.full{grid-column:auto}.modal-box{padding:17px;margin:12px auto}.history-head{align-items:flex-start;flex-direction:column}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Nexora Hub | Admin Dashboard</title>
+
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --background: #f3f6fb;
+      --white: #ffffff;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --danger: #dc2626;
+      --success: #15803d;
+      --sidebar: #111827;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar {
+      width: 245px;
+      background: var(--sidebar);
+      color: var(--white);
+      padding: 25px 16px;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      font-size: 23px;
+      font-weight: 800;
+      margin: 0 0 8px;
+    }
+
+    .brand span {
+      color: #60a5fa;
+    }
+
+    .sidebar-subtitle {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 30px;
+    }
+
+    .nav-label {
+      font-size: 11px;
+      color: #9ca3af;
+      margin: 22px 10px 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .nav-button {
+      display: block;
+      width: 100%;
+      padding: 13px 12px;
+      margin-bottom: 6px;
+      color: #d1d5db;
+      background: transparent;
+      border: 0;
+      border-radius: 8px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .nav-button:hover,
+    .nav-button.active {
+      background: #263449;
+      color: #ffffff;
+    }
+
+    /* MAIN CONTENT */
+
+    .main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .topbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .topbar h1 {
+      font-size: 22px;
+    }
+
+    .topbar p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .admin-badge {
+      background: #dbeafe;
+      color: #1d4ed8;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .content {
+      padding: 28px;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .section-heading h2 {
+      font-size: 21px;
+      margin-bottom: 6px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* BUTTONS */
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 11px 16px;
+      border: 0;
+      border-radius: 7px;
+      background: var(--primary);
+      color: white;
+      font-size: 13px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .btn-secondary:hover {
+      background: #cbd5e1;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-small {
+      padding: 7px 10px;
+      font-size: 12px;
+    }
+
+    /* DASHBOARD CARDS */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 26px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+    }
+
+    .stat-card p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .stat-card h3 {
+      font-size: 29px;
+      overflow-wrap: anywhere;
+    }
+
+    /* PANELS */
+
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    .panel h3 {
+      font-size: 17px;
+      margin-bottom: 12px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* TABLES */
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 650px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 13px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: bold;
+    }
+
+    td {
+      line-height: 1.5;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status.inactive {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* NOTIFICATIONS */
+
+    .notice {
+      display: none;
+      padding: 13px 15px;
+      border-radius: 8px;
+      margin-bottom: 18px;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .notice.show {
+      display: block;
+    }
+
+    .notice.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .notice.success {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .notice.info {
+      background: #dbeafe;
+      color: #1e40af;
+      border: 1px solid #bfdbfe;
+    }
+
+    /* FORMS */
+
+    .form-group {
+      margin-bottom: 17px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      background: white;
+      color: var(--text);
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px #dbeafe;
+    }
+
+    .form-group textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 16px;
+    }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    /* MODALS */
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.65);
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    /* IMPORTANT: this makes opened modals visible */
+    .modal.open {
+      display: block;
+    }
+
+    .modal-content {
+      background: white;
+      width: 100%;
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .modal-header h2 {
+      font-size: 20px;
+    }
+
+    .close-button {
+      width: 35px;
+      height: 35px;
+      border: 0;
+      border-radius: 7px;
+      background: #f1f5f9;
+      font-size: 22px;
+      color: #334155;
+    }
+
+    .close-button:hover {
+      background: #e2e8f0;
+    }
+
+    /* LOADING AND EMPTY STATES */
+
+    .loading,
+    .empty-state {
+      text-align: center;
+      padding: 28px 15px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 850px) {
+      .sidebar {
+        width: 205px;
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .app {
+        display: block;
+      }
+
+      .sidebar {
+        width: 100%;
+        padding: 15px;
+      }
+
+      .sidebar-subtitle {
+        margin-bottom: 15px;
+      }
+
+      .nav-label {
+        margin-top: 15px;
+      }
+
+      .nav-button {
+        display: inline-block;
+        width: auto;
+        margin: 0 4px 5px 0;
+        padding: 10px;
+      }
+
+      .topbar {
+        padding: 17px;
+      }
+
+      .topbar h1 {
+        font-size: 19px;
+      }
+
+      .content {
+        padding: 15px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .modal {
+        padding: 10px;
+      }
+
+      .modal-content {
+        margin: 10px auto;
+        padding: 18px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<aside class="sidebar" id="adminSidebar">
-  <a href="#" class="logo">Nexora<span>Hub</span></a>
-  <div class="nav-label">Main</div>
-  <nav class="nav">
-    <a class="active" href="#overview"><span class="nav-icon">⌂</span>Overview</a>
-    <a href="#jobs"><span class="nav-icon">💼</span>Jobs</a>
-    <a href="#companies"><span class="nav-icon">🏢</span>Companies</a>
-    <a href="#products"><span class="nav-icon">🛍️</span>Digital Products</a>
-    <a href="#messages"><span class="nav-icon">✉</span>Messages</a>
-  </nav>
-  <div class="nav-label">Management</div>
-  <nav class="nav">
-    <a href="#analytics"><span class="nav-icon">📊</span>Analytics</a>
-    <a href="#revenue"><span class="nav-icon">💰</span>Revenue</a>
-    <a href="#settings"><span class="nav-icon">⚙</span>Settings</a>
-  </nav>
-  <div class="sidebar-bottom"><a class="view-site" href="index.html">View Website</a></div>
-</aside>
-<div class="overlay" id="sidebarOverlay"></div>
-<main class="main">
-<header class="topbar">
-  <div class="topbar-left"><button class="mobile-menu" id="mobileMenuBtn" type="button">☰</button><div><h1>Admin Dashboard</h1><p>Manage Nexora Hub</p></div></div>
-  <div class="profile"><div class="avatar">AL</div><div class="profile-text"><strong>Nexora Admin</strong><small>Administrator</small></div></div>
-</header>
-<div class="content">
-<section class="welcome" id="overview"><h2>Welcome to Nexora Hub 👋</h2><p>Manage opportunities, digital products and revenue from one place. Use the dashboard to keep your platform organised.</p></section>
-<section class="stats">
-  <div class="stat"><small>Total Jobs</small><strong id="totalJobsCount">—</strong><span>Opportunities in database</span></div>
-  <div class="stat"><small>Active Jobs</small><strong id="activeJobsCount">—</strong><span>Currently active</span></div>
-  <div class="stat"><small>Total Products</small><strong id="totalProductsCount">0</strong><span id="publishedProductsSummary">Published products: 0</span></div>
-  <div class="stat"><small>Confirmed Revenue</small><strong id="overviewRevenue">₦0.00</strong><span>From your revenue records</span></div>
-</section>
-<section class="section">
-  <div class="section-header"><div><h2>Quick Actions</h2><p>Go directly to an important part of the dashboard.</p></div></div>
-  <div class="quick-grid">
-    <button class="quick-action" onclick="openAddJobForm()"><strong>➕ Add Job</strong><span>Add an opportunity to the Nexora database.</span></button>
-    <button class="quick-action" onclick="goToJobs()"><strong>💼 Manage Jobs</strong><span>Search and edit existing opportunities.</span></button>
-    <button class="quick-action" onclick="goToSection('companies')"><strong>🏢 Companies</strong><span>Company management area.</span></button>
-    <button class="quick-action" onclick="goToSection('revenue')"><strong>💰 Record Revenue</strong><span>Record a verified payment.</span></button>
-  </div>
-</section>
-<section class="section" id="jobs">
-  <div class="section-header"><div><h2>Job Management</h2><p>Manage opportunities displayed on Nexora Hub.</p></div><button class="btn" onclick="openAddJobForm()">+ Add Job</button></div>
-  <div class="toolbar"><input type="search" id="adminJobSearch" placeholder="Search jobs, companies, locations..."><span id="jobCountText">Loading jobs...</span></div>
-  <div class="table-wrap"><table><thead><tr><th>Job</th><th>Location</th><th>Type</th><th>Audience</th><th>Status</th><th>Actions</th></tr></thead><tbody id="adminJobsTable"><tr><td colspan="6">Loading opportunities...</td></tr></tbody></table></div>
-</section>
-<section class="section" id="companies">
-  <div class="section-header"><div><h2>Companies</h2><p>Company profiles and project management.</p></div></div>
-  <div class="empty"><strong>Company management is coming soon.</strong><br>This area is reserved for company profiles, project submissions and worker assignments.</div>
-</section>
-<section class="section" id="products">
-  <div class="section-header"><div><h2>Digital Products</h2><p>Manage products sold through Nexora Hub.</p></div><button class="btn" type="button" onclick="openProductForm()">+ Add Product</button></div>
-  <div class="stats" style="margin-bottom:18px">
-    <div class="stat"><small>Total Products</small><strong id="productTotalStat">0</strong></div>
-    <div class="stat"><small>Published</small><strong id="publishedProductsCount">0</strong></div>
-    <div class="stat"><small>Drafts</small><strong id="draftProductsCount">0</strong></div>
-    <div class="stat"><small>Store Checkout</small><strong style="font-size:17px">Nestuge</strong><span>Checkout handled externally</span></div>
-  </div>
-  <div class="table-wrap"><table><thead><tr><th>Product</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead><tbody id="adminProductsTable"><tr><td colspan="4">Loading products...</td></tr></tbody></table></div>
-  <p class="note">Note: product management uses the Supabase products table. If its schema-cache issue persists, product actions may still show an error; the Revenue section works separately in this browser.</p>
-</section>
-<section class="section" id="messages">
-  <div class="section-header"><div><h2>Messages</h2><p>Enquiries from Nexora users and companies.</p></div></div>
-  <div class="empty">Messages are not connected yet. This section is reserved for future contact-form integration.</div>
-</section>
-<section class="section" id="analytics">
-  <div class="section-header"><div><h2>Platform Analytics</h2><p>Track platform growth as analytics are connected.</p></div></div>
-  <div class="analytics-grid"><div class="analytics-card"><small>Job Views</small><strong>—</strong><span>Analytics coming soon</span></div><div class="analytics-card"><small>Applications</small><strong>—</strong><span>Analytics coming soon</span></div><div class="analytics-card"><small>Visitors</small><strong>—</strong><span>Analytics coming soon</span></div></div>
-</section>
-<section class="section" id="revenue">
-  <div class="section-header"><div><h2>Revenue Management</h2><p>Record and review payments from your different income sources.</p></div></div>
-  <div class="revenue-grid">
-    <div class="revenue-card"><small>Total Confirmed Revenue</small><strong id="totalRevenue">₦0.00</strong><span>Paid / confirmed records only</span></div>
-    <div class="revenue-card"><small>Digital Products</small><strong id="digitalRevenue">₦0.00</strong><span>Product earnings</span></div>
-    <div class="revenue-card"><small>Company Projects</small><strong id="projectRevenue">₦0.00</strong><span>Project payments</span></div>
-    <div class="revenue-card"><small>Affiliate Revenue</small><strong id="affiliateRevenue">₦0.00</strong><span>Affiliate commissions</span></div>
-    <div class="revenue-card"><small>Google AdSense</small><strong id="adsenseRevenue">₦0.00</strong><span>Advertising earnings</span></div>
-    <div class="revenue-card"><small>Pending Payments</small><strong id="pendingRevenue">₦0.00</strong><span>Not included in confirmed total</span></div>
-  </div>
-  <div class="card" style="padding:22px;margin-bottom:20px">
-    <div class="section-header"><div><h3 style="font-size:17px;margin-bottom:5px">Record a Payment</h3><p>Only mark a payment as paid after confirming that you received it.</p></div></div>
-    <form id="revenueForm">
-      <div class="revenue-form-grid">
-        <div class="form-group"><label for="revenueTitle">Payment Description</label><input type="text" id="revenueTitle" required maxlength="160" placeholder="e.g. 50 AI Video Prompts sale"></div>
-        <div class="form-group"><label for="revenueAmount">Amount (₦)</label><input type="number" id="revenueAmount" min="0.01" step="0.01" required placeholder="5000"></div>
-        <div class="form-group"><label for="revenueSource">Income Source</label><select id="revenueSource" required><option value="digital">Digital Products</option><option value="project">Company Projects</option><option value="affiliate">Affiliate Revenue</option><option value="adsense">Google AdSense</option><option value="other">Other Income</option></select></div>
-        <div class="form-group"><label for="revenueDate">Payment Date</label><input type="date" id="revenueDate" required></div>
-        <div class="form-group"><label for="revenueStatus">Payment Status</label><select id="revenueStatus" required><option value="paid">Paid / Confirmed</option><option value="pending">Pending</option></select></div>
-        <div class="form-group"><label for="revenueNotes">Notes (Optional)</label><input type="text" id="revenueNotes" maxlength="300" placeholder="Reference or additional details"></div>
+  <div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">NEXORA <span>HUB</span></div>
+      <p class="sidebar-subtitle">Website Administration</p>
+
+      <p class="nav-label">Main Menu</p>
+
+      <button type="button"
+        class="nav-button active"
+        onclick="goToSection('dashboard')">
+        Dashboard
+      </button>
+
+      <button type="button"
+        class="nav-button"
+        onclick="goToSection('jobs')">
+        Manage Jobs
+      </button>
+
+      <button type="button"
+        class="nav-button"
+        onclick="goToSection('products')">
+        Digital Products
+      </button>
+
+      <button type="button"
+        class="nav-button"
+        onclick="goToSection('companies')">
+        Companies
+      </button>
+
+      <button type="button"
+        class="nav-button"
+        onclick="goToSection('revenue')">
+        Revenue
+      </button>
+
+      <p class="nav-label">Website</p>
+
+      <a
+        href="/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn"
+        style="width:100%; text-align:center;">
+        View Website
+      </a>
+    </aside>
+
+    <!-- MAIN AREA -->
+    <main class="main">
+
+      <header class="topbar">
+        <div>
+          <h1 id="pageTitle">Dashboard Overview</h1>
+          <p>Manage your Nexora Hub website.</p>
+        </div>
+
+        <span class="admin-badge">Admin Panel</span>
+      </header>
+
+      <div class="content">
+
+        <!-- GLOBAL NOTIFICATION -->
+        <div
+          id="globalNotice"
+          class="notice"
+          role="status"
+          aria-live="polite">
+        </div>
+
+                <!-- DASHBOARD SECTION -->
+        <section id="dashboard" class="section active">
+
+          <div class="section-heading">
+            <div>
+              <h2>Welcome to Nexora Hub</h2>
+              <p>Manage your opportunities and monitor your website.</p>
+            </div>
+
+            <button
+              type="button"
+              class="btn"
+              onclick="openAddJobForm()">
+              + Add New Job
+            </button>
+          </div>
+
+          <div class="stats-grid">
+
+            <div class="stat-card">
+              <p>Total Jobs</p>
+              <h3 id="totalJobs">0</h3>
+            </div>
+
+            <div class="stat-card">
+              <p>Active Jobs</p>
+              <h3 id="activeJobs">0</h3>
+            </div>
+
+            <div class="stat-card">
+              <p>Total Products</p>
+              <h3 id="totalProducts">0</h3>
+            </div>
+
+          </div>
+
+          <div class="panel">
+            <h3>Quick Guide</h3>
+
+            <p class="muted">
+              Use Manage Jobs to add new job opportunities, update
+              existing listings, and remove expired opportunities.
+              Your saved listings will be connected to your Supabase
+              database in Part 3.
+            </p>
+
+            <br>
+
+            <button
+              type="button"
+              class="btn"
+              onclick="goToSection('jobs')">
+              Manage Jobs
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="goToSection('products')">
+              Manage Products
+            </button>
+          </div>
+
+          <div class="panel">
+            <h3>Recent Job Listings</h3>
+
+            <div id="recentJobs">
+              <div class="empty-state">
+                Recent jobs will appear here after the database is connected.
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+
+        <!-- JOB MANAGEMENT SECTION -->
+        <section id="jobs" class="section">
+
+          <div class="section-heading">
+            <div>
+              <h2>Manage Jobs</h2>
+              <p>Add, edit, publish, and manage job opportunities.</p>
+            </div>
+
+            <button
+              type="button"
+              class="btn"
+              onclick="openAddJobForm()">
+              + Add Job
+            </button>
+          </div>
+
+          <div id="jobsNotice" class="notice" role="status" aria-live="polite"></div>
+
+          <div class="panel">
+
+            <div class="form-group">
+              <label for="jobSearch">Search Jobs</label>
+
+              <input
+                type="search"
+                id="jobSearch"
+                placeholder="Search by job title or company..."
+                oninput="filterJobs()">
+            </div>
+
+            <div class="table-wrap">
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody id="jobsTableBody">
+                  <tr>
+                    <td colspan="5" class="loading">
+                      Jobs will load after Part 3 connects Supabase.
+                    </td>
+                  </tr>
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ADD / EDIT JOB MODAL -->
+        <div
+          id="addJobModal"
+          class="modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="jobModalTitle">
+
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h2 id="jobModalTitle">Add New Job</h2>
+
+              <button
+                type="button"
+                class="close-button"
+                aria-label="Close job form"
+                onclick="closeAddJobForm()">
+                &times;
+              </button>
+            </div>
+
+            <div
+              id="jobFormNotice"
+              class="notice"
+              role="status"
+              aria-live="polite">
+            </div>
+
+            <form id="jobForm">
+
+              <div class="form-grid">
+
+                <div class="form-group">
+                  <label for="jobTitle">Job Title *</label>
+
+                  <input
+                    type="text"
+                    id="jobTitle"
+                    name="title"
+                    placeholder="e.g. Customer Service Representative"
+                    required>
+                </div>
+
+                <div class="form-group">
+                  <label for="jobCompany">Company Name *</label>
+
+                  <input
+                    type="text"
+                    id="jobCompany"
+                    name="company"
+                    placeholder="Enter company name"
+                    required>
+                </div>
+
+                <div class="form-group">
+                  <label for="jobType">Employment Type *</label>
+
+                  <select id="jobType" name="type" required>
+                    <option value="">Select employment type</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Internship">Internship</option>
+                    <option value="Remote">Remote</option>
+                    <option value="Temporary">Temporary</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="jobLocation">Location *</label>
+
+                  <input
+                    type="text"
+                    id="jobLocation"
+                    name="location"
+                    placeholder="e.g. Lagos or Remote"
+                    required>
+                </div>
+
+                <div class="form-group">
+                  <label for="jobRegion">Region</label>
+
+                  <select id="jobRegion" name="region">
+                    <option value="Nigeria">Nigeria</option>
+                    <option value="Africa">Africa</option>
+                    <option value="International">International</option>
+                    <option value="Remote Worldwide">Remote Worldwide</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="jobAudience">Target Audience</label>
+
+                  <select id="jobAudience" name="audience">
+                    <option value="Everyone">Everyone</option>
+                    <option value="Students">Students</option>
+                    <option value="Graduates">Graduates</option>
+                    <option value="Experienced Workers">Experienced Workers</option>
+                    <option value="Entry Level">Entry Level</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="jobCategory">Job Category *</label>
+
+                  <select id="jobCategory" name="category" required>
+                    <option value="">Select category</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Administration">Administration</option>
+                    <option value="Customer Service">Customer Service</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Education">Education</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Hospitality">Hospitality</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Media">Media</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="jobEligibility">Eligibility</label>
+
+                  <input
+                    type="text"
+                    id="jobEligibility"
+                    name="eligibility"
+                    placeholder="e.g. Graduates, HND or BSc">
+                </div>
+
+              </div>
+
+              <div class="form-group">
+                <label for="jobDescription">Job Description *</label>
+
+                <textarea
+                  id="jobDescription"
+                  name="description"
+                  placeholder="Describe the responsibilities and requirements..."
+                  required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="jobApplyUrl">Application Link *</label>
+
+                <input
+                  type="url"
+                  id="jobApplyUrl"
+                  name="apply_url"
+                  placeholder="https://example.com/apply"
+                  required>
+              </div>
+
+              <div class="form-group">
+                <label for="jobSource">Source / Official Website</label>
+
+                <input
+                  type="url"
+                  id="jobSource"
+                  name="source"
+                  placeholder="https://company.com/careers">
+              </div>
+
+              <div class="form-group">
+                <label for="jobStatus">Publication Status</label>
+
+                <select id="jobStatus" name="status">
+                  <option value="active">Active / Published</option>
+                  <option value="draft">Draft</option>
+                  <option value="closed">Closed</option>
+                </select>
+              </div>
+
+              <div class="form-actions">
+
+                <button
+                  type="submit"
+                  id="saveJobButton"
+                  class="btn">
+                  Save Job
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  onclick="closeAddJobForm()">
+                  Cancel
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
+
+        </div>
+
+
+               <!-- PART 3: JAVASCRIPT AND SUPABASE CONNECTION -->
+
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+        <script>
+        "use strict";
+
+        /*
+         * SUPABASE CONFIGURATION
+         *
+         * Replace the two placeholder values below with your
+         * existing Supabase project URL and publishable/anon key.
+         *
+         * Never use a service_role or secret key in browser code.
+         */
+
+        const SUPABASE_URL = "https://webulddwoayqiewairhz.supabase.co/rest/v1/";
+        const SUPABASE_KEY = "sb_publishable_0kyYhouRdBFmRzb5BhAEEQ_NZ-r3A-3";
+
+        let supabaseClient = null;
+        let jobs = [];
+        let editingJobId = null;
+
+        const $ = (id) => document.getElementById(id);
+
+        /* ---------- NOTIFICATIONS ---------- */
+
+        function showNotice(id, message, type = "info") {
+          const element = $(id);
+
+          if (!element) return;
+
+          element.textContent = message;
+          element.className = "notice show " + type;
+        }
+
+        function hideNotice(id) {
+          const element = $(id);
+
+          if (!element) return;
+
+          element.textContent = "";
+          element.className = "notice";
+        }
+
+        function escapeHTML(value) {
+          return String(value ?? "").replace(/[&<>"']/g, (character) => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+          })[character]);
+        }
+
+        /* ---------- NAVIGATION ---------- */
+
+        function goToSection(sectionId) {
+          const section = $(sectionId);
+
+          if (!section) {
+            showNotice("globalNotice", "This section is not available yet.", "error");
+            return;
+          }
+
+          document.querySelectorAll(".section").forEach((item) => {
+            item.classList.remove("active");
+          });
+
+          section.classList.add("active");
+
+          document.querySelectorAll(".nav-button").forEach((button) => {
+            button.classList.remove("active");
+          });
+
+          const activeButton = Array.from(
+            document.querySelectorAll(".nav-button")
+          ).find((button) =>
+            button.getAttribute("onclick") === `goToSection('${sectionId}')`
+          );
+
+          if (activeButton) {
+            activeButton.classList.add("active");
+          }
+
+          const titles = {
+            dashboard: "Dashboard Overview",
+            jobs: "Manage Jobs",
+            products: "Digital Products",
+            companies: "Companies",
+            revenue: "Revenue Management"
+          };
+
+          $("pageTitle").textContent = titles[sectionId] || "Nexora Hub Admin";
+        }
+
+        /* ---------- JOB FORM ---------- */
+
+        function openAddJobForm() {
+          if (!$("addJobModal")) {
+            alert("The job form could not be found. Check Part 2.");
+            return;
+          }
+
+          editingJobId = null;
+
+          $("jobForm").reset();
+          $("jobModalTitle").textContent = "Add New Job";
+          $("saveJobButton").textContent = "Save Job";
+
+          hideNotice("jobFormNotice");
+
+          $("addJobModal").classList.add("open");
+
+          document.body.style.overflow = "hidden";
+        }
+
+        function closeAddJobForm() {
+          $("addJobModal").classList.remove("open");
+          document.body.style.overflow = "";
+
+          editingJobId = null;
+          $("jobForm").reset();
+
+          hideNotice("jobFormNotice");
+
+          $("jobModalTitle").textContent = "Add New Job";
+          $("saveJobButton").textContent = "Save Job";
+        }
+
+        /* ---------- SUPABASE INITIALIZATION ---------- */
+
+        function initializeSupabase() {
+          if (!window.supabase || !window.supabase.createClient) {
+            showNotice(
+              "globalNotice",
+              "The Supabase library did not load. Check your internet connection and reload the page.",
+              "error"
+            );
+
+            return false;
+          }
+
+          if (
+            SUPABASE_URL === "YOUR_SUPABASE_PROJECT_URL" ||
+            SUPABASE_KEY === "YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY"
+          ) {
+            showNotice(
+              "globalNotice",
+              "Supabase is not configured yet. Add your project URL and publishable key in Part 3.",
+              "error"
+            );
+
+            return false;
+          }
+
+          try {
+            supabaseClient = window.supabase.createClient(
+              SUPABASE_URL,
+              SUPABASE_KEY
+            );
+
+            return true;
+          } catch (error) {
+            showNotice(
+              "globalNotice",
+              "Could not initialize Supabase: " + error.message,
+              "error"
+            );
+
+            return false;
+          }
+        }
+
+        /* ---------- LOAD JOBS ---------- */
+
+        async function loadJobs() {
+          if (!supabaseClient) {
+            showNotice(
+              "jobsNotice",
+              "Supabase is not connected. Check the configuration above.",
+              "error"
+            );
+
+            return;
+          }
+
+          $("jobsTableBody").innerHTML =
+            '<tr><td colspan="5" class="loading">Loading jobs...</td></tr>';
+
+          try {
+            const { data, error } = await supabaseClient
+              .from("jobs")
+              .select("*")
+              .order("created_at", { ascending: false });
+
+            if (error) throw error;
+
+            jobs = data || [];
+
+            renderJobs();
+            updateDashboardStats();
+            renderRecentJobs();
+
+            hideNotice("jobsNotice");
+
+          } catch (error) {
+            $("jobsTableBody").innerHTML =
+              '<tr><td colspan="5" class="empty-state">Could not load jobs.</td></tr>';
+
+            showNotice(
+              "jobsNotice",
+              "Unable to load jobs: " + error.message,
+              "error"
+            );
+          }
+        }
+
+        /* ---------- DISPLAY JOBS ---------- */
+
+        function renderJobs() {
+          const body = $("jobsTableBody");
+
+          if (!jobs.length) {
+            body.innerHTML =
+              '<tr><td colspan="5" class="empty-state">No jobs found. Tap Add Job to create your first listing.</td></tr>';
+
+            return;
+          }
+
+          const searchInput = $("jobSearch");
+          const searchTerm = searchInput
+            ? searchInput.value.trim().toLowerCase()
+            : "";
+
+          const filteredJobs = jobs.filter((job) => {
+            const title = String(job.title || "").toLowerCase();
+            const company = String(job.company || "").toLowerCase();
+            const location = String(job.location || "").toLowerCase();
+
+            return (
+              title.includes(searchTerm) ||
+              company.includes(searchTerm) ||
+              location.includes(searchTerm)
+            );
+          });
+
+          if (!filteredJobs.length) {
+            body.innerHTML =
+              '<tr><td colspan="5" class="empty-state">No matching jobs found.</td></tr>';
+
+            return;
+          }
+
+          body.innerHTML = filteredJobs.map((job) => {
+            const id = escapeHTML(job.id);
+            const title = escapeHTML(job.title);
+            const company = escapeHTML(job.company);
+            const location = escapeHTML(job.location);
+            const status = String(job.status || "active").toLowerCase();
+
+            const statusClass = status === "active" ? "" : " inactive";
+
+            return `
+              <tr>
+                <td>${title}</td>
+                <td>${company}</td>
+                <td>${location}</td>
+                <td>
+                  <span class="status${statusClass}">
+                    ${escapeHTML(status)}
+                  </span>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-small btn-secondary"
+                    onclick="editJob('${id}')">
+                    Edit
+                  </button>
+
+                  <button
+                    type="button"
+                    class="btn btn-small btn-danger"
+                    onclick="deleteJob('${id}')">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            `;
+          }).join("");
+        }
+
+        function filterJobs() {
+          renderJobs();
+        }
+
+        /* ---------- SAVE NEW OR UPDATED JOB ---------- */
+
+        $("jobForm").addEventListener("submit", async function(event) {
+          event.preventDefault();
+
+          hideNotice("jobFormNotice");
+
+          if (!supabaseClient) {
+            showNotice(
+              "jobFormNotice",
+              "Supabase is not connected. Configure your URL and key first.",
+              "error"
+            );
+
+            return;
+          }
+
+          const saveButton = $("saveJobButton");
+          const originalText = saveButton.textContent;
+
+          const jobData = {
+            title: $("jobTitle").value.trim(),
+            company: $("jobCompany").value.trim(),
+            type: $("jobType").value,
+            location: $("jobLocation").value.trim(),
+            region: $("jobRegion").value,
+            audience: $("jobAudience").value,
+            category: $("jobCategory").value,
+            eligibility: $("jobEligibility").value.trim(),
+            description: $("jobDescription").value.trim(),
+            apply_url: $("jobApplyUrl").value.trim(),
+            source: $("jobSource").value.trim() || null,
+            status: $("jobStatus").value,
+            verified_date: new Date().toISOString().slice(0, 10)
+          };
+
+          saveButton.disabled = true;
+          saveButton.textContent = "Saving...";
+
+          try {
+            let result;
+
+            if (editingJobId !== null) {
+              result = await supabaseClient
+                .from("jobs")
+                .update(jobData)
+                .eq("id", editingJobId)
+                .select();
+            } else {
+              result = await supabaseClient
+                .from("jobs")
+                .insert([jobData])
+                .select();
+            }
+
+            if (result.error) {
+              throw result.error;
+            }
+
+            if (!result.data || result.data.length === 0) {
+              throw new Error(
+                "No job was returned. Check your Supabase permissions and database policies."
+              );
+            }
+
+            showNotice(
+              "globalNotice",
+              editingJobId !== null
+                ? "Job updated successfully."
+                : "Job added successfully.",
+              "success"
+            );
+
+            closeAddJobForm();
+
+            await loadJobs();
+
+          } catch (error) {
+            showNotice(
+              "jobFormNotice",
+              "Could not save job: " + error.message,
+              "error"
+            );
+
+          } finally {
+            saveButton.disabled = false;
+            saveButton.textContent = originalText;
+          }
+        });
+
+        /* ---------- EDIT JOB ---------- */
+
+        async function editJob(id) {
+          const job = jobs.find((item) => String(item.id) === String(id));
+
+          if (!job) {
+            showNotice("jobsNotice", "The selected job was not found.", "error");
+            return;
+          }
+
+          editingJobId = job.id;
+
+          $("jobForm").reset();
+
+          $("jobTitle").value = job.title || "";
+          $("jobCompany").value = job.company || "";
+          $("jobType").value = job.type || "";
+          $("jobLocation").value = job.location || "";
+          $("jobRegion").value = job.region || "Nigeria";
+          $("jobAudience").value = job.audience || "Everyone";
+          $("jobCategory").value = job.category || "";
+          $("jobEligibility").value = job.eligibility || "";
+          $("jobDescription").value = job.description || "";
+          $("jobApplyUrl").value = job.apply_url || "";
+          $("jobSource").value = job.source || "";
+          $("jobStatus").value = job.status || "active";
+
+          $("jobModalTitle").textContent = "Edit Job";
+          $("saveJobButton").textContent = "Update Job";
+
+          hideNotice("jobFormNotice");
+
+          $("addJobModal").classList.add("open");
+          document.body.style.overflow = "hidden";
+        }
+
+        /* ---------- DELETE JOB ---------- */
+
+        async function deleteJob(id) {
+          const confirmed = confirm(
+            "Are you sure you want to delete this job? This cannot be undone."
+          );
+
+          if (!confirmed) return;
+
+          if (!supabaseClient) {
+            showNotice("jobsNotice", "Supabase is not connected.", "error");
+            return;
+          }
+
+          try {
+            const { error } = await supabaseClient
+              .from("jobs")
+              .delete()
+              .eq("id", id);
+
+            if (error) throw error;
+
+            showNotice("jobsNotice", "Job deleted successfully.", "success");
+
+            await loadJobs();
+
+          } catch (error) {
+            showNotice(
+              "jobsNotice",
+              "Could not delete job: " + error.message,
+              "error"
+            );
+          }
+        }
+
+        /* ---------- DASHBOARD STATISTICS ---------- */
+
+        function updateDashboardStats() {
+          $("totalJobs").textContent = jobs.length;
+
+          $("activeJobs").textContent = jobs.filter(
+            (job) => String(job.status || "active").toLowerCase() === "active"
+          ).length;
+        }
+
+        function renderRecentJobs() {
+          const container = $("recentJobs");
+
+          if (!jobs.length) {
+            container.innerHTML =
+              '<div class="empty-state">No jobs have been added yet.</div>';
+
+            return;
+          }
+
+          container.innerHTML = `
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Location</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${jobs.slice(0, 5).map((job) => `
+                    <tr>
+                      <td>${escapeHTML(job.title)}</td>
+                      <td>${escapeHTML(job.company)}</td>
+                      <td>${escapeHTML(job.location)}</td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+          `;
+        }
+
+        /* ---------- INITIAL PAGE SETUP ---------- */
+
+        document.addEventListener("DOMContentLoaded", async function() {
+          const connected = initializeSupabase();
+
+          if (connected) {
+            await loadJobs();
+          }
+
+          $("totalProducts").textContent = "0";
+        });
+
+        /* ---------- CLOSE MODAL WHEN CLICKING OUTSIDE ---------- */
+
+        $("addJobModal").addEventListener("click", function(event) {
+          if (event.target === this) {
+            closeAddJobForm();
+          }
+        });
+
+        /* ---------- END OF PART 3 ---------- */
+        </script>
+
+                 <!-- PART 4: DIGITAL PRODUCTS AND COMPANIES -->
+
+        <!-- DIGITAL PRODUCTS SECTION -->
+        <section id="products" class="section">
+
+          <div class="section-heading">
+            <div>
+              <h2>Digital Products</h2>
+              <p>Manage the digital products displayed on Nexora Hub.</p>
+            </div>
+
+            <button
+              type="button"
+              class="btn"
+              onclick="openProductForm()">
+              + Add Product
+            </button>
+          </div>
+
+          <div id="productsNotice" class="notice"
+               role="status" aria-live="polite"></div>
+
+          <div class="panel">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody id="productsTableBody">
+                  <tr>
+                    <td colspan="4" class="loading">
+                      Products will load after the database connection is added.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </section>
+
+
+        <!-- ADD / EDIT PRODUCT MODAL -->
+        <div
+          id="productModal"
+          class="modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="productModalTitle">
+
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h2 id="productModalTitle">Add Digital Product</h2>
+
+              <button
+                type="button"
+                class="close-button"
+                aria-label="Close product form"
+                onclick="closeProductForm()">
+                &times;
+              </button>
+            </div>
+
+            <div
+              id="productFormNotice"
+              class="notice"
+              role="status"
+              aria-live="polite">
+            </div>
+
+            <form id="productForm">
+
+              <div class="form-group">
+                <label for="productName">Product Name *</label>
+
+                <input
+                  type="text"
+                  id="productName"
+                  name="name"
+                  placeholder="Enter product name"
+                  required>
+              </div>
+
+              <div class="form-group">
+                <label for="productDescription">Description *</label>
+
+                <textarea
+                  id="productDescription"
+                  name="description"
+                  placeholder="Describe the product"
+                  required></textarea>
+              </div>
+
+              <div class="form-grid">
+
+                <div class="form-group">
+                  <label for="productPrice">Price (₦) *</label>
+
+                  <input
+                    type="number"
+                    id="productPrice"
+                    name="price"
+                    min="0"
+                    step="0.01"
+                    placeholder="e.g. 5000"
+                    required>
+                </div>
+
+                <div class="form-group">
+                  <label for="productStatus">Status</label>
+
+                  <select id="productStatus" name="status">
+                    <option value="active">Active</option>
+                    <option value="draft">Draft</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+
+              </div>
+
+              <div class="form-group">
+                <label for="productImage">Product Image URL</label>
+
+                <input
+                  type="url"
+                  id="productImage"
+                  name="image_url"
+                  placeholder="https://example.com/image.jpg">
+              </div>
+
+              <div class="form-group">
+                <label for="productUrl">Product Purchase URL *</label>
+
+                <input
+                  type="url"
+                  id="productUrl"
+                  name="product_url"
+                  placeholder="https://example.com/product"
+                  required>
+              </div>
+
+              <div class="form-actions">
+
+                <button
+                  type="submit"
+                  id="saveProductButton"
+                  class="btn">
+                  Save Product
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  onclick="closeProductForm()">
+                  Cancel
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
+
+        </div>
+
+
+        <!-- COMPANIES SECTION -->
+        <section id="companies" class="section">
+
+          <div class="section-heading">
+            <div>
+              <h2>Companies</h2>
+              <p>Review the companies associated with job listings.</p>
+            </div>
+          </div>
+
+          <div class="panel">
+            <p class="muted">
+              This section will generate a company list from your saved
+              job listings. It does not require a separate companies
+              table for this initial version.
+            </p>
+
+            <br>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Company</th>
+                    <th>Number of Jobs</th>
+                    <th>Locations</th>
+                  </tr>
+                </thead>
+
+                <tbody id="companiesTableBody">
+                  <tr>
+                    <td colspan="3" class="loading">
+                      Company information will appear when jobs load.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+        </section>
+
+              <!-- REVENUE SECTION -->
+        <section id="revenue" class="section">
+
+          <div class="section-heading">
+            <div>
+              <h2>Revenue Management</h2>
+              <p>Track revenue records for your digital products.</p>
+            </div>
+
+            <button
+              type="button"
+              class="btn"
+              onclick="openRevenueForm()">
+              + Add Revenue
+            </button>
+          </div>
+
+          <div id="revenueNotice" class="notice"
+               role="status" aria-live="polite"></div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <p>Total Recorded Revenue</p>
+              <h3 id="totalRevenue">₦0</h3>
+            </div>
+
+            <div class="stat-card">
+              <p>Completed Payments</p>
+              <h3 id="completedPayments">0</h3>
+            </div>
+
+            <div class="stat-card">
+              <p>Pending Payments</p>
+              <h3 id="pendingPayments">0</h3>
+            </div>
+          </div>
+
+          <div class="panel">
+            <p class="muted">
+              These are manually recorded figures, not verified payment
+              transactions. Connect a payment provider before relying on
+              this section for actual sales accounting.
+            </p>
+
+            <br>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody id="revenueTableBody">
+                  <tr>
+                    <td colspan="4" class="empty-state">
+                      No revenue records yet.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </section>
+
+
+        <!-- REVENUE FORM MODAL -->
+        <div id="revenueModal" class="modal"
+             role="dialog" aria-modal="true"
+             aria-labelledby="revenueModalTitle">
+
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h2 id="revenueModalTitle">Add Revenue Record</h2>
+
+              <button type="button"
+                      class="close-button"
+                      onclick="closeRevenueForm()"
+                      aria-label="Close revenue form">
+                &times;
+              </button>
+            </div>
+
+            <div id="revenueFormNotice"
+                 class="notice"
+                 role="status" aria-live="polite"></div>
+
+            <form id="revenueForm">
+
+              <div class="form-group">
+                <label for="revenueDescription">Description *</label>
+
+                <input id="revenueDescription"
+                       type="text"
+                       required
+                       placeholder="e.g. Digital product sale">
+              </div>
+
+              <div class="form-group">
+                <label for="revenueAmount">Amount (₦) *</label>
+
+                <input id="revenueAmount"
+                       type="number"
+                       min="0"
+                       step="0.01"
+                       required
+                       placeholder="Enter amount">
+              </div>
+
+              <div class="form-group">
+                <label for="revenueStatus">Payment Status</label>
+
+                <select id="revenueStatus">
+                  <option value="pending">Pending</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn">
+                  Save Record
+                </button>
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        onclick="closeRevenueForm()">
+                  Cancel
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+
+        <!-- PRODUCT AND REVENUE JAVASCRIPT -->
+        <script>
+        (() => {
+          "use strict";
+
+          const byId = (id) => document.getElementById(id);
+
+          let products = [];
+          let revenueRecords = [];
+          let editingProductId = null;
+
+          function notify(id, message, type = "info") {
+            const element = byId(id);
+            if (!element) return;
+
+            element.textContent = message;
+            element.className = "notice show " + type;
+          }
+
+          function hide(id) {
+            const element = byId(id);
+            if (!element) return;
+
+            element.textContent = "";
+            element.className = "notice";
+          }
+
+          function safe(value) {
+            return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;"
+            })[char]);
+          }
+
+          function client() {
+            return window.supabaseClientForAdmin || null;
+          }
+
+          /*
+           * Part 3 creates supabaseClient as a top-level let variable.
+           * Expose it through this getter after initialization.
+           */
+          function getClient() {
+            try {
+              return typeof supabaseClient !== "undefined"
+                ? supabaseClient
+                : null;
+            } catch {
+              return null;
+            }
+          }
+
+          function money(value) {
+            const number = Number(value || 0);
+
+            return "₦" + number.toLocaleString("en-NG", {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 2
+            });
+          }
+
+          /* ---------- PRODUCT FORM ---------- */
+
+          window.openProductForm = function(productId = null) {
+            editingProductId = productId;
+
+            byId("productForm").reset();
+            hide("productFormNotice");
+
+            const product = products.find(
+              (item) => String(item.id) === String(productId)
+            );
+
+            if (product) {
+              byId("productName").value = product.name || "";
+              byId("productDescription").value = product.description || "";
+              byId("productPrice").value = product.price ?? "";
+              byId("productStatus").value = product.status || "active";
+              byId("productImage").value = product.image_url || "";
+              byId("productUrl").value = product.product_url || "";
+
+              byId("productModalTitle").textContent = "Edit Product";
+              byId("saveProductButton").textContent = "Update Product";
+            } else {
+              byId("productModalTitle").textContent = "Add Digital Product";
+              byId("saveProductButton").textContent = "Save Product";
+            }
+
+            byId("productModal").classList.add("open");
+            document.body.style.overflow = "hidden";
+          };
+
+          window.closeProductForm = function() {
+            byId("productModal").classList.remove("open");
+            document.body.style.overflow = "";
+
+            byId("productForm").reset();
+            hide("productFormNotice");
+
+            editingProductId = null;
+            byId("productModalTitle").textContent = "Add Digital Product";
+            byId("saveProductButton").textContent = "Save Product";
+          };
+
+          async function loadProducts() {
+            const db = getClient();
+
+            if (!db) {
+              byId("productsTableBody").innerHTML =
+                '<tr><td colspan="4" class="empty-state">Configure Supabase first.</td></tr>';
+              return;
+            }
+
+            try {
+              const { data, error } = await db
+                .from("products")
+                .select("*")
+                .order("created_at", { ascending: false });
+
+              if (error) throw error;
+
+              products = data || [];
+              renderProducts();
+
+              byId("totalProducts").textContent = products.length;
+
+            } catch (error) {
+              notify(
+                "productsNotice",
+                "Unable to load products: " + error.message,
+                "error"
+              );
+            }
+          }
+
+          function renderProducts() {
+            const body = byId("productsTableBody");
+
+            if (!products.length) {
+              body.innerHTML =
+                '<tr><td colspan="4" class="empty-state">No products found.</td></tr>';
+              byId("totalProducts").textContent = "0";
+              return;
+            }
+
+            body.innerHTML = products.map((product) => {
+              const id = safe(product.id);
+              const status = String(product.status || "active").toLowerCase();
+
+              return `
+                <tr>
+                  <td>${safe(product.name)}</td>
+                  <td>${money(product.price)}</td>
+                  <td>
+                    <span class="status${status === "active" ? "" : " inactive"}">
+                      ${safe(status)}
+                    </span>
+                  </td>
+                  <td>
+                    <button type="button"
+                            class="btn btn-small btn-secondary"
+                            onclick="openProductForm('${id}')">
+                      Edit
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-small btn-danger"
+                            onclick="deleteProduct('${id}')">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              `;
+            }).join("");
+
+            byId("totalProducts").textContent = products.length;
+          }
+
+          byId("productForm").addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const db = getClient();
+
+            if (!db) {
+              notify("productFormNotice", "Supabase is not connected.", "error");
+              return;
+            }
+
+            const button = byId("saveProductButton");
+            const previousText = button.textContent;
+
+            const productData = {
+              name: byId("productName").value.trim(),
+              description: byId("productDescription").value.trim(),
+              price: Number(byId("productPrice").value),
+              status: byId("productStatus").value,
+              image_url: byId("productImage").value.trim() || null,
+              product_url: byId("productUrl").value.trim()
+            };
+
+            button.disabled = true;
+            button.textContent = "Saving...";
+
+            try {
+              let result;
+
+              if (editingProductId !== null) {
+                result = await db
+                  .from("products")
+                  .update(productData)
+                  .eq("id", editingProductId)
+                  .select();
+              } else {
+                result = await db
+                  .from("products")
+                  .insert([productData])
+                  .select();
+              }
+
+              if (result.error) throw result.error;
+
+              if (!result.data || !result.data.length) {
+                throw new Error(
+                  "No product was returned. Check database permissions."
+                );
+              }
+
+              notify(
+                "globalNotice",
+                editingProductId !== null
+                  ? "Product updated."
+                  : "Product added.",
+                "success"
+              );
+
+              closeProductForm();
+              await loadProducts();
+
+            } catch (error) {
+              notify(
+                "productFormNotice",
+                "Unable to save product: " + error.message,
+                "error"
+              );
+            } finally {
+              button.disabled = false;
+              button.textContent = previousText;
+            }
+          });
+
+          window.deleteProduct = async function(id) {
+            if (!confirm("Delete this product permanently?")) return;
+
+            const db = getClient();
+
+            if (!db) {
+              notify("productsNotice", "Supabase is not connected.", "error");
+              return;
+            }
+
+            try {
+              const { error } = await db
+                .from("products")
+                .delete()
+                .eq("id", id);
+
+              if (error) throw error;
+
+              notify("productsNotice", "Product deleted.", "success");
+              await loadProducts();
+
+            } catch (error) {
+              notify(
+                "productsNotice",
+                "Unable to delete product: " + error.message,
+                "error"
+              );
+            }
+          };
+
+          /* ---------- COMPANIES ---------- */
+
+          function renderCompanies() {
+            const body = byId("companiesTableBody");
+
+            const companyMap = new Map();
+
+            (Array.isArray(window.jobsForAdmin) ? window.jobsForAdmin : [])
+              .forEach((job) => {
+                const name = String(job.company || "").trim();
+
+                if (!name) return;
+
+                if (!companyMap.has(name)) {
+                  companyMap.set(name, {
+                    count: 0,
+                    locations: new Set()
+                  });
+                }
+
+                const item = companyMap.get(name);
+                item.count++;
+
+                if (job.location) {
+                  item.locations.add(job.location);
+                }
+              });
+
+            const entries = Array.from(companyMap.entries());
+
+            if (!entries.length) {
+              body.innerHTML =
+                '<tr><td colspan="3" class="empty-state">No companies found in the loaded job listings.</td></tr>';
+              return;
+            }
+
+            body.innerHTML = entries.map(([name, info]) => `
+              <tr>
+                <td>${safe(name)}</td>
+                <td>${info.count}</td>
+                <td>${safe(Array.from(info.locations).join(", "))}</td>
+              </tr>
+            `).join("");
+          }
+
+          /* ---------- REVENUE: LOCAL RECORDS ---------- */
+
+          /*
+           * Revenue records are stored in this browser only.
+           * They are not verified transactions and are not shared
+           * across devices. Payment-provider integration is separate.
+           */
+
+          function saveRevenueLocally() {
+            try {
+              localStorage.setItem(
+                "nexoraHubRevenueRecords",
+                JSON.stringify(revenueRecords)
+              );
+              return true;
+            } catch (error) {
+              notify(
+                "revenueNotice",
+                "Unable to save revenue records in this browser: " + error.message,
+                "error"
+              );
+              return false;
+            }
+          }
+
+          function loadRevenueLocally() {
+            try {
+              const stored = localStorage.getItem("nexoraHubRevenueRecords");
+              revenueRecords = stored ? JSON.parse(stored) : [];
+
+              if (!Array.isArray(revenueRecords)) {
+                revenueRecords = [];
+              }
+            } catch {
+              revenueRecords = [];
+            }
+
+            renderRevenue();
+          }
+
+          window.openRevenueForm = function() {
+            byId("revenueForm").reset();
+            hide("revenueFormNotice");
+
+            byId("revenueModal").classList.add("open");
+            document.body.style.overflow = "hidden";
+          };
+
+          window.closeRevenueForm = function() {
+            byId("revenueModal").classList.remove("open");
+            document.body.style.overflow = "";
+
+            byId("revenueForm").reset();
+            hide("revenueFormNotice");
+          };
+
+          byId("revenueForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const record = {
+              id: String(Date.now()) + Math.random().toString(16).slice(2),
+              description: byId("revenueDescription").value.trim(),
+              amount: Number(byId("revenueAmount").value),
+              status: byId("revenueStatus").value,
+              created_at: new Date().toISOString()
+            };
+
+            revenueRecords.unshift(record);
+
+            if (!saveRevenueLocally()) {
+              revenueRecords.shift();
+              return;
+            }
+
+            renderRevenue();
+            closeRevenueForm();
+
+            notify("revenueNotice", "Revenue record saved in this browser.", "success");
+          });
+
+          function renderRevenue() {
+            const body = byId("revenueTableBody");
+
+            if (!revenueRecords.length) {
+              body.innerHTML =
+                '<tr><td colspan="4" class="empty-state">No revenue records yet.</td></tr>';
+            } else {
+              body.innerHTML = revenueRecords.map((record) => `
+                <tr>
+                  <td>${safe(record.description)}</td>
+                  <td>${money(record.amount)}</td>
+                  <td>
+                    <span class="status${record.status === "completed" ? "" : " inactive"}">
+                      ${safe(record.status)}
+                    </span>
+                  </td>
+                  <td>
+                    <button type="button"
+                            class="btn btn-small btn-secondary"
+                            onclick="toggleRevenueStatus('${safe(record.id)}')">
+                      Change Status
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-small btn-danger"
+                            onclick="deleteRevenue('${safe(record.id)}')">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              `).join("");
+            }
+
+            const completed = revenueRecords.filter(
+              (record) => record.status === "completed"
+            );
+
+            const pending = revenueRecords.filter(
+              (record) => record.status === "pending"
+            );
+
+            byId("totalRevenue").textContent = money(
+              completed.reduce((sum, record) => sum + Number(record.amount || 0), 0)
+            );
+
+            byId("completedPayments").textContent = completed.length;
+            byId("pendingPayments").textContent = pending.length;
+          }
+
+          window.toggleRevenueStatus = function(id) {
+            const record = revenueRecords.find(
+              (item) => String(item.id) === String(id)
+            );
+
+            if (!record) return;
+
+            record.status = record.status === "completed"
+              ? "pending"
+              : "completed";
+
+            if (saveRevenueLocally()) {
+              renderRevenue();
+            }
+          };
+
+          window.deleteRevenue = function(id) {
+            if (!confirm("Delete this revenue record?")) return;
+
+            const previous = revenueRecords;
+
+            revenueRecords = revenueRecords.filter(
+              (item) => String(item.id) !== String(id)
+            );
+
+            if (saveRevenueLocally()) {
+              renderRevenue();
+            } else {
+              revenueRecords = previous;
+            }
+          };
+
+          /* ---------- MODAL EVENTS ---------- */
+
+          byId("productModal").addEventListener("click", (event) => {
+            if (event.target === event.currentTarget) {
+              window.closeProductForm();
+            }
+          });
+
+          byId("revenueModal").addEventListener("click", (event) => {
+            if (event.target === event.currentTarget) {
+              window.closeRevenueForm();
+            }
+          });
+
+          document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+              window.closeProductForm();
+              window.closeRevenueForm();
+            }
+          });
+
+          /* ---------- INITIALIZATION ---------- */
+
+          document.addEventListener("DOMContentLoaded", async () => {
+            loadRevenueLocally();
+
+            const originalLoadJobs = window.loadJobs;
+
+            /*
+             * Wait for Part 3's Supabase initialization before loading
+             * products. If the dashboard is not connected, show a message.
+             */
+            setTimeout(async () => {
+              if (getClient()) {
+                await loadProducts();
+
+                const originalJobs = Array.isArray(window.jobsForAdmin)
+                  ? window.jobsForAdmin
+                  : [];
+
+                window.jobsForAdmin = originalJobs;
+                renderCompanies();
+              } else {
+                byId("productsTableBody").innerHTML =
+                  '<tr><td colspan="4" class="empty-state">Connect Supabase to manage products.</td></tr>';
+              }
+            }, 500);
+
+            /*
+             * Refresh companies when the Companies section is opened.
+             */
+            document.querySelectorAll(".nav-button").forEach((button) => {
+              button.addEventListener("click", () => {
+                setTimeout(renderCompanies, 0);
+              });
+            });
+          });
+
+        })();
+        </script>
+
+        <!-- END OF ADMIN CONTENT -->
       </div>
-      <div class="form-actions"><button type="submit" class="btn">+ Record Payment</button><button type="button" class="btn secondary" id="exportRevenueBtn">Export CSV</button></div>
-      <p id="revenueMessage" class="message" role="status"></p>
-    </form>
+    </main>
   </div>
-  <div class="card" style="padding:22px">
-    <div class="history-head" style="margin-top:0"><div><h3>Revenue History</h3><p>Review payments recorded in this browser.</p></div><button type="button" class="btn secondary" id="backupRevenueBtn">Download JSON Backup</button></div>
-    <div class="table-wrap"><table class="revenue-table"><thead><tr><th>Description</th><th>Source</th><th>Amount</th><th>Date</th><th>Status</th><th>Notes</th><th>Action</th></tr></thead><tbody id="revenueTableBody"><tr><td colspan="7">No revenue records yet.</td></tr></tbody></table></div>
-    <p class="note">Revenue is not imported automatically from Nestuge or Google AdSense. Enter payments manually after checking the relevant provider. Records are saved in this browser on this device only. Export a backup regularly. This is not yet a secure, shared financial database.</p>
-  </div>
-</section>
-<section class="section" id="settings">
-  <div class="section-header"><div><h2>Settings</h2><p>Public contact details and platform status.</p></div></div>
-  <div class="card"><div class="setting-row"><strong>Public Contact Email</strong><span>ablegodluke@gmail.com</span></div><div class="setting-row"><strong>Public Contact Phone</strong><span>09017579718</span></div><div class="setting-row"><strong>Platform Status</strong><span>🟢 Nexora Hub is online</span></div></div>
-</section>
-</div>
-</main>
-
-<!-- Add/Edit Job Modal -->
-<div class="modal" id="addJobModal" role="dialog" aria-modal="true" aria-labelledby="jobModalTitle">
-  <div class="modal-box">
-    <div class="modal-head"><div><h2 id="jobModalTitle">Add New Job</h2><p style="color:#718096;font-size:13px;margin-top:5px">Enter verified opportunity details.</p></div><button type="button" class="close" onclick="closeAddJobForm()">×</button></div>
-    <form id="addJobForm">
-      <div class="form-grid">
-        <div class="form-group"><label for="jobCompany">Company</label><input id="jobCompany" required placeholder="e.g. LILT"></div>
-        <div class="form-group"><label for="jobTitle">Job Title</label><input id="jobTitle" required placeholder="e.g. Content Writer"></div>
-        <div class="form-group"><label for="jobType">Job Type</label><input id="jobType" required placeholder="e.g. Full-time"></div>
-        <div class="form-group"><label for="jobLocation">Location</label><input id="jobLocation" required placeholder="Nigeria / Remote"></div>
-        <div class="form-group"><label for="jobRegion">Region</label><select id="jobRegion" required><option value="">Select region</option><option>Nigeria</option><option>Africa</option><option>Worldwide</option></select></div>
-        <div class="form-group"><label for="jobAudience">Audience</label><select id="jobAudience" required><option value="">Select audience</option><option>Students &amp; Beginners</option><option>Experienced</option></select></div>
-        <div class="form-group"><label for="jobEligibility">Eligibility</label><input id="jobEligibility" required placeholder="e.g. Nigeria eligible"></div>
-        <div class="form-group"><label for="jobCategory">Category</label><input id="jobCategory" required placeholder="e.g. AI & Data"></div>
-        <div class="form-group full"><label for="jobDescription">Description</label><textarea id="jobDescription" rows="4" required placeholder="Briefly describe the opportunity"></textarea></div>
-        <div class="form-group"><label for="jobApplyUrl">Application URL</label><input id="jobApplyUrl" type="url" required placeholder="https://..."></div>
-        <div class="form-group"><label for="jobSource">Source</label><input id="jobSource" required placeholder="Company careers page"></div>
-        <div class="form-group"><label for="jobStatus">Status</label><select id="jobStatus" required><option value="active">Active</option><option value="network">Network</option></select></div>
-        <div class="form-group"><label for="jobVerified">Verified Date</label><input id="jobVerified" type="date" required></div>
-      </div>
-      <div class="form-actions"><button type="button" class="btn secondary" onclick="closeAddJobForm()">Cancel</button><button type="submit" class="btn" id="saveJobButton">Add Job</button></div><p id="addJobMessage" class="message" role="status"></p>
-    </form>
-  </div>
-</div>
-
-<!-- Add/Edit Product Modal -->
-<div class="modal" id="productModal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
-  <div class="modal-box">
-    <div class="modal-head"><h2 id="productModalTitle">Add Digital Product</h2><button type="button" class="close" onclick="closeProductForm()">×</button></div>
-    <form id="productForm">
-      <div class="form-grid">
-        <div class="form-group full"><label for="productName">Product Name</label><input id="productName" required placeholder="50 AI Video Prompts for beginners"></div>
-        <div class="form-group full"><label for="productDescription">Description</label><textarea id="productDescription" rows="4" required placeholder="Describe what the customer receives"></textarea></div>
-        <div class="form-group"><label for="productPrice">Price (₦)</label><input id="productPrice" type="number" min="0" step="0.01" required placeholder="5000"></div>
-        <div class="form-group"><label for="productStatus">Status</label><select id="productStatus"><option value="draft">Draft</option><option value="published">Published</option></select></div>
-        <div class="form-group full"><label for="productImage">Product Image URL</label><input id="productImage" type="url" placeholder="https://..."></div>
-        <div class="form-group full"><label for="productUrl">Product / Checkout Link</label><input id="productUrl" type="url" placeholder="https://nestuge.com/..."></div>
-      </div>
-      <p id="productMessage" class="message" role="status"></p>
-      <div class="form-actions"><button type="button" class="btn secondary" onclick="closeProductForm()">Cancel</button><button type="submit" class="btn" id="saveProductButton">Save Product</button></div>
-    </form>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-"use strict";
-
-/* SUPABASE: public publishable key only; never put a service-role key in browser code. */
-const SUPABASE_URL = "https://izjrazugqbnijzhlxegp.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_wOVNCGI_o5XwCISbgUK9Sw_r8iMXn7R";
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-let editingJobId = null;
-let editingProductId = null;
-let allJobs = [];
-let allProducts = [];
-
-const $ = (id) => document.getElementById(id);
-
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, (char) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[char]);
-}
-
-function formatNaira(amount) {
-  return new Intl.NumberFormat("en-NG", {
-    style: "currency",
-    currency: "NGN",
-    minimumFractionDigits: 2
-  }).format(Number(amount) || 0);
-}
-
-function showMessage(id, message, isError = false) {
-  const element = $(id);
-  if (!element) return;
-  element.textContent = message;
-  element.className = isError ? "message error" : "message success";
-}
-
-function goToSection(sectionId) {
-  const section = $(sectionId);
-  if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
-}
-
-function goToJobs() {
-  goToSection("jobs");
-}
-
-function openAddJobForm() {
-  editingJobId = null;
-  $("addJobForm").reset();
-  $("jobModalTitle").textContent = "Add New Job";
-  $("saveJobButton").textContent = "Add Job";
-  $("jobVerified").value = new Date().toISOString().slice(0, 10);
-  showMessage("addJobMessage", "");
-  $("addJobModal").classList.add("open");
-}
-
-function closeAddJobForm() {
-  $("addJobModal").classList.remove("open");
-  editingJobId = null;
-}
-
-function openProductForm(product = null) {
-  editingProductId = product?.id ?? null;
-  $("productForm").reset();
-  $("productModalTitle").textContent = product ? "Edit Digital Product" : "Add Digital Product";
-  $("saveProductButton").textContent = product ? "Update Product" : "Save Product";
-
-  if (product) {
-    $("productName").value = product.name ?? "";
-    $("productDescription").value = product.description ?? "";
-    $("productPrice").value = product.price ?? "";
-    $("productStatus").value = product.status ?? "draft";
-    $("productImage").value = product.image_url ?? "";
-    $("productUrl").value = product.product_url ?? "";
-  }
-
-  showMessage("productMessage", "");
-  $("productModal").classList.add("open");
-}
-
-function closeProductForm() {
-  $("productModal").classList.remove("open");
-  editingProductId = null;
-}
-
-function getJobValue(job, ...keys) {
-  for (const key of keys) {
-    if (job[key] !== undefined && job[key] !== null) return job[key];
-  }
-  return "";
-}
-
-function renderJobs(jobs) {
-  const tbody = $("adminJobsTable");
-
-  $("totalJobsCount").textContent = allJobs.length;
-  $("activeJobsCount").textContent = allJobs.filter(job =>
-    String(getJobValue(job, "status")).toLowerCase() === "active"
-  ).length;
-  $("jobCountText").textContent = `${jobs.length} opportunity${jobs.length === 1 ? "" : "ies"}`;
-
-  if (!jobs.length) {
-    tbody.innerHTML = '<tr><td colspan="6">No opportunities found.</td></tr>';
-    return;
-  }
-
-  tbody.innerHTML = jobs.map(job => `
-    <tr>
-      <td><strong>${escapeHTML(getJobValue(job, "title", "job_title"))}</strong><br><small>${escapeHTML(getJobValue(job, "company", "company_name"))}</small></td>
-      <td>${escapeHTML(getJobValue(job, "location"))}</td>
-      <td>${escapeHTML(getJobValue(job, "type", "job_type"))}</td>
-      <td>${escapeHTML(getJobValue(job, "audience"))}</td>
-      <td><span class="status ${String(getJobValue(job, "status")).toLowerCase() === "active" ? "paid" : "pending"}">${escapeHTML(getJobValue(job, "status") || "unknown")}</span></td>
-      <td class="actions">
-        <button class="btn small secondary" onclick="editJob('${escapeHTML(job.id)}')">Edit</button>
-        <button class="btn small danger" onclick="deleteJob('${escapeHTML(job.id)}')">Delete</button>
-      </td>
-    </tr>
-  `).join("");
-}
-
-async function loadJobs() {
-  const tbody = $("adminJobsTable");
-  tbody.innerHTML = '<tr><td colspan="6">Loading opportunities...</td></tr>';
-
-  try {
-    const { data, error } = await supabaseClient
-      .from("jobs")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) throw error;
-
-    allJobs = data || [];
-    renderJobs(allJobs);
-  } catch (error) {
-    console.error("Unable to load jobs:", error);
-    tbody.innerHTML = '<tr><td colspan="6">Unable to load opportunities. Check the Supabase jobs table and permissions.</td></tr>';
-    $("jobCountText").textContent = "Could not load jobs";
-    $("totalJobsCount").textContent = "—";
-    $("activeJobsCount").textContent = "—";
-  }
-}
-
-$("adminJobSearch").addEventListener("input", event => {
-  const query = event.target.value.toLowerCase().trim();
-
-  const filtered = allJobs.filter(job =>
-    [
-      getJobValue(job, "title", "job_title"),
-      getJobValue(job, "company", "company_name"),
-      getJobValue(job, "location"),
-      getJobValue(job, "type", "job_type"),
-      getJobValue(job, "audience")
-    ].some(value => String(value).toLowerCase().includes(query))
-  );
-
-  renderJobs(filtered);
-});
-
-async function editJob(id) {
-  const job = allJobs.find(item => String(item.id) === String(id));
-  if (!job) return alert("Job not found.");
-
-  editingJobId = job.id;
-
-  $("jobCompany").value = getJobValue(job, "company", "company_name");
-  $("jobTitle").value = getJobValue(job, "title", "job_title");
-  $("jobType").value = getJobValue(job, "type", "job_type");
-  $("jobLocation").value = getJobValue(job, "location");
-  $("jobRegion").value = getJobValue(job, "region") || "Nigeria";
-  $("jobAudience").value = getJobValue(job, "audience") || "Students & Beginners";
-  $("jobEligibility").value = getJobValue(job, "eligibility");
-  $("jobCategory").value = getJobValue(job, "category");
-  $("jobDescription").value = getJobValue(job, "description");
-  $("jobApplyUrl").value = getJobValue(job, "apply_url", "application_url");
-  $("jobSource").value = getJobValue(job, "source");
-  $("jobStatus").value = getJobValue(job, "status") || "active";
-  $("jobVerified").value = String(getJobValue(job, "verified_date") || new Date().toISOString().slice(0, 10)).slice(0, 10);
-
-  $("jobModalTitle").textContent = "Edit Job";
-  $("saveJobButton").textContent = "Update Job";
-  showMessage("addJobMessage", "");
-  $("addJobModal").classList.add("open");
-}
-
-$("addJobForm").addEventListener("submit", async event => {
-  event.preventDefault();
-
-  const button = $("saveJobButton");
-  button.disabled = true;
-  button.textContent = "Saving...";
-
-  const job = {
-    company: $("jobCompany").value.trim(),
-    title: $("jobTitle").value.trim(),
-    type: $("jobType").value.trim(),
-    location: $("jobLocation").value.trim(),
-    region: $("jobRegion").value,
-    audience: $("jobAudience").value,
-    eligibility: $("jobEligibility").value.trim(),
-    category: $("jobCategory").value.trim(),
-    description: $("jobDescription").value.trim(),
-    apply_url: $("jobApplyUrl").value.trim(),
-    source: $("jobSource").value.trim(),
-    status: $("jobStatus").value,
-    verified_date: $("jobVerified").value
-  };
-
-  try {
-    const result = editingJobId
-      ? await supabaseClient.from("jobs").update(job).eq("id", editingJobId)
-      : await supabaseClient.from("jobs").insert([job]);
-
-    if (result.error) throw result.error;
-
-    showMessage("addJobMessage", editingJobId ? "Job updated successfully." : "Job added successfully.");
-    await loadJobs();
-    setTimeout(closeAddJobForm, 800);
-  } catch (error) {
-    console.error("Unable to save job:", error);
-    showMessage("addJobMessage", `Unable to save job: ${error.message}`, true);
-  } finally {
-    button.disabled = false;
-    button.textContent = editingJobId ? "Update Job" : "Add Job";
-  }
-});
-
-async function deleteJob(id) {
-  if (!confirm("Are you sure you want to delete this job?")) return;
-
-  try {
-    const { error } = await supabaseClient.from("jobs").delete().eq("id", id);
-    if (error) throw error;
-
-    await loadJobs();
-    alert("Job deleted successfully.");
-  } catch (error) {
-    console.error("Unable to delete job:", error);
-    alert(`Unable to delete job: ${error.message}`);
-  }
-}
-
-function renderProducts(products) {
-  $("totalProductsCount").textContent = allProducts.length;
-  $("productTotalStat").textContent = allProducts.length;
-
-  const published = allProducts.filter(product => product.status === "published").length;
-  $("publishedProductsCount").textContent = published;
-  $("publishedProductsSummary").textContent = `Published products: ${published}`;
-  $("draftProductsCount").textContent = allProducts.length - published;
-
-  const tbody = $("adminProductsTable");
-
-  if (!products.length) {
-    tbody.innerHTML = '<tr><td colspan="4">No products found.</td></tr>';
-    return;
-  }
-
-  tbody.innerHTML = products.map(product => `
-    <tr>
-      <td><strong>${escapeHTML(product.name)}</strong><br><small>${escapeHTML(product.description || "")}</small></td>
-      <td>${formatNaira(product.price)}</td>
-      <td><span class="status ${product.status === "published" ? "paid" : "pending"}">${escapeHTML(product.status || "draft")}</span></td>
-      <td class="actions">
-        <button class="btn small secondary" onclick="editProduct('${escapeHTML(product.id)}')">Edit</button>
-        <button class="btn small danger" onclick="deleteProduct('${escapeHTML(product.id)}')">Delete</button>
-      </td>
-    </tr>
-  `).join("");
-  }
-  async function loadProducts() {
-  const tbody = $("adminProductsTable");
-  tbody.innerHTML = '<tr><td colspan="4">Loading products...</td></tr>';
-
-  try {
-    const { data, error } = await supabaseClient
-      .from("products")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) throw error;
-
-    allProducts = data || [];
-    renderProducts(allProducts);
-  } catch (error) {
-    console.error("Unable to load products:", error);
-    tbody.innerHTML = '<tr><td colspan="4">Unable to load products. Check the Supabase products table and permissions.</td></tr>';
-  }
-}
-
-function editProduct(id) {
-  const product = allProducts.find(item => String(item.id) === String(id));
-  if (product) openProductForm(product);
-}
-
-$("productForm").addEventListener("submit", async event => {
-  event.preventDefault();
-
-  const button = $("saveProductButton");
-  button.disabled = true;
-  button.textContent = "Saving...";
-
-  const product = {
-    name: $("productName").value.trim(),
-    description: $("productDescription").value.trim(),
-    price: Number($("productPrice").value),
-    status: $("productStatus").value,
-    image_url: $("productImage").value.trim() || null,
-    product_url: $("productUrl").value.trim() || null
-  };
-
-  try {
-    const result = editingProductId
-      ? await supabaseClient.from("products").update(product).eq("id", editingProductId)
-      : await supabaseClient.from("products").insert([product]);
-
-    if (result.error) throw result.error;
-
-    showMessage("productMessage", editingProductId ? "Product updated successfully." : "Product added successfully.");
-    await loadProducts();
-    setTimeout(closeProductForm, 800);
-  } catch (error) {
-    console.error("Unable to save product:", error);
-    showMessage("productMessage", `Unable to save product: ${error.message}`, true);
-  } finally {
-    button.disabled = false;
-    button.textContent = editingProductId ? "Update Product" : "Save Product";
-  }
-});
-
-async function deleteProduct(id) {
-  if (!confirm("Are you sure you want to delete this product?")) return;
-
-  try {
-    const { error } = await supabaseClient.from("products").delete().eq("id", id);
-    if (error) throw error;
-
-    await loadProducts();
-    alert("Product deleted successfully.");
-  } catch (error) {
-    console.error("Unable to delete product:", error);
-    alert(`Unable to delete product: ${error.message}`);
-  }
-}
-
-/* REVENUE MANAGEMENT
-   Records are saved in this browser only. */
-const REVENUE_STORAGE_KEY = "nexoraHubRevenueRecords";
-
-function getRevenueRecords() {
-  try {
-    const records = JSON.parse(localStorage.getItem(REVENUE_STORAGE_KEY) || "[]");
-    return Array.isArray(records) ? records : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveRevenueRecords(records) {
-  localStorage.setItem(REVENUE_STORAGE_KEY, JSON.stringify(records));
-}
-
-function getRevenueSourceLabel(source) {
-  const labels = {
-    digital: "Digital Products",
-    project: "Company Projects",
-    affiliate: "Affiliate Revenue",
-    adsense: "Google AdSense",
-    other: "Other Income"
-  };
-
-  return labels[source] || source || "Other Income";
-}
-
-function renderRevenue() {
-  const records = getRevenueRecords();
-
-  const total = records
-    .filter(record => record.status === "paid")
-    .reduce((sum, record) => sum + Number(record.amount || 0), 0);
-
-  const sourceTotal = source => records
-    .filter(record => record.status === "paid" && record.source === source)
-    .reduce((sum, record) => sum + Number(record.amount || 0), 0);
-
-  const pending = records
-    .filter(record => record.status === "pending")
-    .reduce((sum, record) => sum + Number(record.amount || 0), 0);
-
-  $("totalRevenue").textContent = formatNaira(total);
-  $("overviewRevenue").textContent = formatNaira(total);
-  $("digitalRevenue").textContent = formatNaira(sourceTotal("digital"));
-  $("projectRevenue").textContent = formatNaira(sourceTotal("project"));
-  $("affiliateRevenue").textContent = formatNaira(sourceTotal("affiliate"));
-  $("adsenseRevenue").textContent = formatNaira(sourceTotal("adsense"));
-  $("pendingRevenue").textContent = formatNaira(pending);
-
-  const tbody = $("revenueTableBody");
-
-  if (!records.length) {
-    tbody.innerHTML = '<tr><td colspan="7">No revenue records yet.</td></tr>';
-    return;
-  }
-
-  tbody.innerHTML = records.map(record => `
-    <tr>
-      <td><strong>${escapeHTML(record.title)}</strong></td>
-      <td>${escapeHTML(getRevenueSourceLabel(record.source))}</td>
-      <td>${formatNaira(record.amount)}</td>
-      <td>${escapeHTML(record.date)}</td>
-      <td><span class="status ${record.status === "paid" ? "paid" : "pending"}">${record.status === "paid" ? "Confirmed" : "Pending"}</span></td>
-      <td>${escapeHTML(record.notes || "—")}</td>
-      <td class="actions">
-        <button class="btn small secondary" onclick="toggleRevenueStatus('${escapeHTML(record.id)}')">${record.status === "paid" ? "Mark Pending" : "Confirm"}</button>
-        <button class="btn small danger" onclick="deleteRevenue('${escapeHTML(record.id)}')">Delete</button>
-      </td>
-    </tr>
-  `).join("");
-}
-
-$("revenueDate").value = new Date().toISOString().slice(0, 10);
-
-$("revenueForm").addEventListener("submit", event => {
-  event.preventDefault();
-
-  const title = $("revenueTitle").value.trim();
-  const amount = Number($("revenueAmount").value);
-
-  if (!title || !Number.isFinite(amount) || amount <= 0) {
-    showMessage("revenueMessage", "Enter a description and a valid amount.", true);
-    return;
-  }
-
-  const record = {
-    id: (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`),
-    title,
-    amount,
-    source: $("revenueSource").value,
-    date: $("revenueDate").value,
-    status: $("revenueStatus").value,
-    notes: $("revenueNotes").value.trim(),
-    createdAt: new Date().toISOString()
-  };
-
-  try {
-    const records = getRevenueRecords();
-    records.unshift(record);
-    saveRevenueRecords(records);
-
-    $("revenueForm").reset();
-    $("revenueDate").value = new Date().toISOString().slice(0, 10);
-    $("revenueStatus").value = "paid";
-
-    renderRevenue();
-    showMessage("revenueMessage", "Payment recorded successfully.");
-  } catch (error) {
-    console.error("Unable to save revenue:", error);
-    showMessage("revenueMessage", "Unable to save. Check your browser storage.", true);
-  }
-});
-
-function toggleRevenueStatus(id) {
-  const records = getRevenueRecords();
-  const record = records.find(item => String(item.id) === String(id));
-
-  if (!record) return;
-
-  record.status = record.status === "paid" ? "pending" : "paid";
-  saveRevenueRecords(records);
-  renderRevenue();
-}
-
-function deleteRevenue(id) {
-  if (!confirm("Delete this revenue record? This cannot be undone.")) return;
-
-  const records = getRevenueRecords().filter(item => String(item.id) !== String(id));
-  saveRevenueRecords(records);
-  renderRevenue();
-}
-
-function downloadFile(filename, content, mimeType) {
-  const blob = new Blob([content], { type: mimeType });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-
-  URL.revokeObjectURL(url);
-}
-
-$("exportRevenueBtn").addEventListener("click", () => {
-  const records = getRevenueRecords();
-  const columns = ["title", "source", "amount", "date", "status", "notes", "createdAt"];
-
-  const csvCell = value => `"${String(value ?? "").replace(/"/g, '""')}"`;
-  const csv = [
-    columns.join(","),
-    ...records.map(record => columns.map(column => csvCell(record[column])).join(","))
-  ].join("\r\n");
-
-  downloadFile("nexora-revenue.csv", csv, "text/csv;charset=utf-8;");
-});
-
-$("backupRevenueBtn").addEventListener("click", () => {
-  downloadFile(
-    "nexora-revenue-backup.json",
-    JSON.stringify(getRevenueRecords(), null, 2),
-    "application/json;charset=utf-8;"
-  );
-});
-
-/* MOBILE NAVIGATION */
-$("mobileMenuBtn").addEventListener("click", () => {
-  $("adminSidebar").classList.toggle("open");
-  $("sidebarOverlay").classList.toggle("show");
-});
-
-$("sidebarOverlay").addEventListener("click", () => {
-  $("adminSidebar").classList.remove("open");
-  $("sidebarOverlay").classList.remove("show");
-});
-
-document.querySelectorAll(".sidebar .nav a").forEach(link => {
-  link.addEventListener("click", () => {
-    document.querySelectorAll(".sidebar .nav a").forEach(item => item.classList.remove("active"));
-    link.classList.add("active");
-    $("adminSidebar").classList.remove("open");
-    $("sidebarOverlay").classList.remove("show");
-  });
-});
-
-$("addJobModal").addEventListener("click", event => {
-  if (event.target === $("addJobModal")) closeAddJobForm();
-});
-
-$("productModal").addEventListener("click", event => {
-  if (event.target === $("productModal")) closeProductForm();
-});
-
-/* INITIAL LOAD */
-renderRevenue();
-loadJobs();
-loadProducts();
-</script>
 </body>
-</html>
-
-    
-    
+  </html>
+        
