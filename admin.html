@@ -2255,10 +2255,11 @@ async function deleteJob(jobId) {
 /* ==========================================
    JOB BUTTON EVENTS
 ========================================== */
-
 byId("addJobButton").addEventListener("click", function() {
+    alert("Add Job button is working!");
     openJobForm(null);
 });
+
 
 byId("cancelJobButton").addEventListener("click", closeJobForm);
 
