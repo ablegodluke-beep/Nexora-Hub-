@@ -1875,3 +1875,101 @@ footer {
   }
 
     }
+/* NEXORA HUB — FIX MOBILE JOB CARD WIDTH */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.jobs-navbar,
+.jobs-hero,
+.students-section,
+#opportunities,
+.container {
+  max-width: 100%;
+}
+
+#jobsContainer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  gap: 18px;
+}
+
+#jobsContainer .job-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  padding: 20px !important;
+}
+
+#jobsContainer .job-card * {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+#jobsContainer .job-card h3,
+#jobsContainer .job-card p {
+  width: 100%;
+  height: auto !important;
+  max-height: none !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  display: block;
+  line-height: 1.7;
+}
+
+#jobsContainer .job-card-top,
+#jobsContainer .job-meta,
+#jobsContainer .job-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+#jobsContainer .job-button {
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  white-space: normal;
+}
+
+@media (max-width: 600px) {
+  #jobsContainer {
+    padding: 0 14px;
+  }
+
+  #jobsContainer .job-card {
+    padding: 17px !important;
+    border-radius: 18px;
+  }
+
+  #jobsContainer .job-card h3 {
+    font-size: 20px;
+  }
+
+  #jobsContainer .job-card p {
+    font-size: 15px;
+  }
+
+  #jobsContainer .job-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  }
