@@ -914,9 +914,6 @@ tbody tr:last-child td {
                         placeholder="Search jobs or companies...">
 
                     <button class="btn btn-primary" id="addJobButton">
-                        + Add New Job
-                    </button>
-                </div>
 
                 <div class="table-wrap">
                     <table>
@@ -944,7 +941,10 @@ tbody tr:last-child td {
             <div class="panel" id="jobFormPanel" style="display:none">
                 <div class="panel-header">
                     <div>
-                        <h3 id="jobFormHeading">Add New Job</h3>
+                        <button type="button" class="btn btn-primary" id="addJobButton"
+    onclick="document.getElementById('jobFormPanel').style.display='block'; document.getElementById('jobFormPanel').scrollIntoView({behavior:'smooth'});">
+    + Add New Job
+                        </button>
                         <p>Enter the details of the opportunity.</p>
                     </div>
                 </div>
