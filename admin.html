@@ -3127,5 +3127,66 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    // FIX: OPEN THE ADD JOB FORM
+    const addJobButton = document.getElementById("addJobButton");
+    const jobFormPanel = document.getElementById("jobFormPanel");
+    const jobForm = document.getElementById("jobForm");
+    const jobFormHeading = document.getElementById("jobFormHeading");
+
+    if (addJobButton) {
+        addJobButton.onclick = function (event) {
+            event.preventDefault();
+
+            if (jobForm) {
+                jobForm.reset();
+            }
+
+            if (jobFormHeading) {
+                jobFormHeading.textContent = "Add New Job";
+            }
+
+            if (jobFormPanel) {
+                jobFormPanel.style.display = "block";
+                jobFormPanel.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+        };
+    }
+
+    // FIX: OPEN THE ADD PRODUCT FORM
+    const addProductButton = document.getElementById("addProductButton");
+    const productFormPanel = document.getElementById("productFormPanel");
+    const productForm = document.getElementById("productForm");
+    const productFormHeading = document.getElementById("productFormHeading");
+
+    if (addProductButton) {
+        addProductButton.onclick = function (event) {
+            event.preventDefault();
+
+            if (productForm) {
+                productForm.reset();
+            }
+
+            if (productFormHeading) {
+                productFormHeading.textContent = "Add New Product";
+            }
+
+            if (productFormPanel) {
+                productFormPanel.style.display = "block";
+                productFormPanel.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+        };
+    }
+
+});
+    </script>
 </body>
   </html>
