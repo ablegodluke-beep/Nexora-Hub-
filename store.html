@@ -1238,14 +1238,34 @@ padding: 9px 12px;
       </div>
     </section>
     
-    <section class="nexora-dynamic-store">
-  <h2>Explore Our Digital Products</h2>
-  <p>Discover useful digital resources to help you learn, create, and grow.</p>
+    <section class="nexora-dynamic-store" id="all-products">  <div class="nexora-store-heading">
+    <span class="store-label">THE NEXORA COLLECTION</span>
+    <h2>Discover Digital Products</h2>
+    <p>Explore practical digital resources designed to help you learn new skills, create better content, and work smarter.</p>
+  </div>  <div class="nexora-store-controls"><div class="nexora-search-wrap">
+  <span class="nexora-search-icon">⌕</span>
+  <input
+    type="search"
+    id="nexora-search"
+    placeholder="Search products by name..."
+    aria-label="Search digital products"
+  >
+</div>
 
-  <div id="nexora-products" class="nexora-product-grid">
-    <p>Loading products...</p>
-  </div>
-    </section>
+<div class="nexora-category-filters" id="nexora-filters">
+  <button type="button" class="nexora-filter-btn active" data-category="all">All Products</button>
+  <button type="button" class="nexora-filter-btn" data-category="ai">AI Tools</button>
+  <button type="button" class="nexora-filter-btn" data-category="ebook">Ebooks</button>
+  <button type="button" class="nexora-filter-btn" data-category="video">Video Prompts</button>
+  <button type="button" class="nexora-filter-btn" data-category="template">Templates</button>
+</div>
+
+  </div>  <div class="nexora-results-bar">
+    <span id="nexora-results-count">Our digital collection</span>
+    <span>Quality resources. Simple checkout.</span>
+  </div>  <div id="nexora-products" class="nexora-product-grid">
+    <p class="nexora-empty-state">Loading our digital collection...</p>
+  </div></section>
 
     <!-- CATEGORIES -->
     <section class="section categories-section" id="categories">
