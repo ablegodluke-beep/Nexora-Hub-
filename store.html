@@ -773,90 +773,299 @@
       .benefit {
         border: 1px solid var(--border);
       }
-    }
-    .nexora-dynamic-store {
-  max-width: 1200px;
-  margin: 50px auto;
-  padding: 24px;
+    } 
+   /* PROFESSIONAL NEXORA DIGITAL STORE */
+
+.nexora-dynamic-store {
+max-width: 1200px;
+margin: 0 auto;
+padding: 70px 4%;
+background: #fafaff;
 }
 
-.nexora-dynamic-store h2 {
-  font-size: 28px;
-  margin-bottom: 10px;
+.nexora-store-heading {
+text-align: center;
+margin-bottom: 32px;
+}
+
+.nexora-store-heading .store-label {
+display: inline-block;
+padding: 7px 13px;
+border-radius: 30px;
+background: #f0edff;
+color: #6254f5;
+font-size: 11px;
+font-weight: 800;
+letter-spacing: 1px;
+margin-bottom: 13px;
+}
+
+.nexora-store-heading h2 {
+font-size: clamp(27px, 4vw, 38px);
+letter-spacing: -1px;
+margin-bottom: 10px;
+}
+
+.nexora-store-heading p {
+max-width: 580px;
+margin: 0 auto;
+color: #737b8c;
+font-size: 14px;
+line-height: 1.8;
+}
+
+.nexora-store-controls {
+max-width: 850px;
+margin: 30px auto;
+}
+
+.nexora-search-wrap {
+position: relative;
+margin-bottom: 20px;
+}
+
+.nexora-search-wrap input {
+width: 100%;
+padding: 16px 18px 16px 46px;
+border: 1px solid #e5e7eb;
+border-radius: 13px;
+background: #fff;
+font-size: 14px;
+outline: none;
+}
+
+.nexora-search-wrap input:focus {
+border-color: #6254f5;
+box-shadow: 0 0 0 3px rgba(98, 84, 245, .10);
+}
+
+.nexora-search-icon {
+position: absolute;
+left: 17px;
+top: 12px;
+font-size: 19px;
+color: #737b8c;
+}
+
+.nexora-category-filters {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+gap: 10px;
+}
+
+.nexora-filter-btn {
+border: 1px solid #e5e7eb;
+background: #fff;
+color: #374151;
+padding: 10px 16px;
+border-radius: 30px;
+font-size: 12px;
+font-weight: 700;
+cursor: pointer;
+}
+
+.nexora-filter-btn.active,
+.nexora-filter-btn:hover {
+background: #6254f5;
+border-color: #6254f5;
+color: #fff;
+}
+
+.nexora-results-bar {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 12px;
+margin: 32px 0 18px;
+color: #737b8c;
+font-size: 13px;
 }
 
 .nexora-product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
-  gap: 22px;
-  margin-top: 25px;
+display: grid;
+grid-template-columns: repeat(3, minmax(0, 1fr));
+gap: 24px;
 }
 
 .nexora-product-card {
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+min-width: 0;
+display: flex;
+flex-direction: column;
+background: #fff;
+border: 1px solid #ececf4;
+border-radius: 17px;
+overflow: hidden;
+transition: transform .22s ease, box-shadow .22s ease;
 }
 
-.nexora-product-card img {
-  width: 100%;
-  height: 190px;
-  object-fit: cover;
-  display: block;
+.nexora-product-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 16px 35px rgba(36, 29, 88, .10);
+}
+
+.nexora-product-image {
+height: 210px;
+background: linear-gradient(135deg, #f0edff, #faf9ff);
+overflow: hidden;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.nexora-product-image img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+display: block;
+}
+
+.nexora-image-placeholder {
+font-size: 44px;
+font-weight: 900;
+color: #6254f5;
 }
 
 .nexora-product-content {
-  padding: 20px;
+display: flex;
+flex-direction: column;
+flex: 1;
+padding: 21px;
 }
 
 .nexora-product-category {
-  color: #7048e8;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
+align-self: flex-start;
+background: #f0edff;
+color: #6254f5;
+padding: 5px 10px;
+border-radius: 30px;
+font-size: 10px;
+font-weight: 800;
+text-transform: uppercase;
+letter-spacing: .4px;
+margin-bottom: 13px;
 }
 
 .nexora-product-content h3 {
-  margin: 12px 0;
-  font-size: 19px;
-  overflow-wrap: anywhere;
+font-size: 18px;
+line-height: 1.45;
+letter-spacing: -.3px;
+margin-bottom: 10px;
+overflow-wrap: anywhere;
 }
 
 .nexora-product-content p {
-  color: #666;
-  line-height: 1.6;
-  overflow-wrap: anywhere;
-  white-space: pre-wrap;
+color: #737b8c;
+font-size: 13px;
+line-height: 1.8;
+overflow-wrap: anywhere;
+white-space: pre-wrap;
+margin-bottom: 20px;
 }
 
 .nexora-product-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 20px;
+margin-top: auto;
+padding-top: 17px;
+border-top: 1px solid #f0f0f5;
+display: flex;
+align-items: center;
+justify-content: space-between;
+flex-wrap: wrap;
+gap: 12px;
 }
 
 .nexora-product-bottom strong {
-  font-size: 18px;
-  color: #17152a;
+color: #17152a;
+font-size: 20px;
+font-weight: 900;
 }
 
 .nexora-buy-button {
-  background: #7048e8;
-  color: #fff;
-  padding: 11px 16px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+background: #6254f5;
+color: #fff;
+padding: 12px 15px;
+border-radius: 10px;
+font-size: 12px;
+font-weight: 800;
+text-decoration: none;
+transition: background .2s;
 }
 
 .nexora-buy-button:hover {
-  background: #5632c5;
-  }
+background: #5142e8;
+}
+
+.nexora-empty-state {
+grid-column: 1 / -1;
+text-align: center;
+padding: 45px 20px;
+background: #fff;
+border: 1px dashed #d9d5f7;
+border-radius: 15px;
+color: #737b8c;
+line-height: 1.8;
+}
+
+@media (max-width: 850px) {
+.nexora-product-grid {
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 17px;
+}
+
+.nexora-product-image {
+height: 180px;
+}
+}
+
+@media (max-width: 520px) {
+.nexora-dynamic-store {
+padding: 48px 4%;
+}
+
+.nexora-product-grid {
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 11px;
+}
+
+.nexora-product-image {
+height: 135px;
+}
+
+.nexora-product-content {
+padding: 13px;
+}
+
+.nexora-product-content h3 {
+font-size: 14px;
+}
+
+.nexora-product-content p {
+font-size: 12px;
+line-height: 1.6;
+}
+
+.nexora-product-bottom {
+align-items: flex-start;
+flex-direction: column;
+gap: 10px;
+}
+
+.nexora-product-bottom strong {
+font-size: 17px;
+}
+
+.nexora-buy-button {
+width: 100%;
+padding: 11px 8px;
+}
+
+.nexora-filter-btn {
+padding: 9px 12px;
+}
+
   </style>
 </head>
 
