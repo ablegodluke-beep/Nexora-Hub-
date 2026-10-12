@@ -1388,10 +1388,7 @@ padding: 9px 12px;
     </div>
   </footer>
 <!-- Supabase Library -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<!-- Nexora Hub Dynamic Products -->
-<script>
+  <!-- Supabase Library --><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
 const SUPABASE_URL = "https://izjrazugqbnijzhlxegp.supabase.co";
 const SUPABASE_KEY = "sb_publishable_wOVNCGI_o5XwCISbgUK9Sw_r8iMXn7R";
 
@@ -1400,80 +1397,16 @@ const supabaseClient = window.supabase.createClient(
   SUPABASE_KEY
 );
 
-async function loadNexoraProducts() {
-  const container = document.getElementById("nexora-products");
+let nexoraProducts = [];
+let activeNexoraCategory = "all";
 
-  if (!container) {
-    console.error("Product display container was not found.");
-    return;
-  }
-
-  container.innerHTML = "<p>Loading products...</p>";
-
-  const { data, error } = await supabaseClient
-    .from("products")
-    .select("id, name, description, price, currency, category, image_url, status, product_url, created_at")
-    .eq("status", "published")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Supabase error:", error.message);
-    container.innerHTML =
-      "<p>Products could not load. Please try again later.</p>";
-    return;
-  }
-
-  if (!data || data.length === 0) {
-    container.innerHTML = "<p>New products will appear here soon.</p>";
-    return;
-  }
-
-  container.innerHTML = data.map(product => {
-    const name = escapeProductText(product.name || "Untitled Product");
-    const description = escapeProductText(
-      product.description || "Discover this digital product from Nexora Hub."
-    );
-    const category = escapeProductText(product.category || "Digital Product");
-    const currency = escapeProductText(product.currency || "NGN");
-    const price = Number(product.price);
-    const formattedPrice = Number.isFinite(price)
-      ? `${currency === "NGN" ? "₦" : currency + " "}${price.toLocaleString()}`
-      : "View price";
-
-    const image = product.image_url
-      ? `<img src="${escapeProductText(product.image_url)}"
-          alt="${name}"
-          loading="lazy"
-          onerror="this.style.display='none'">`
-      : "";
-
-    const checkoutUrl = safeProductUrl(product.product_url);
-
-    return `
-      <article class="nexora-product-card">
-        ${image}
-        <div class="nexora-product-content">
-          <span class="nexora-product-category">${category}</span>
-          <h3>${name}</h3>
-          <p>${description}</p>
-          <div class="nexora-product-bottom">
-            <strong>${formattedPrice}</strong>
-            ${
-              checkoutUrl
-                ? `<a href="${checkoutUrl}" target="_blank"
-                     rel="noopener noreferrer"
-                     class="nexora-buy-button">Get Product</a>`
-                : `<span>Purchase link coming soon</span>`
-            }
-          </div>
-        </div>
-      </article>
-    `;
-  }).join("");
-}
+const productContainer = document.getElementById("nexora-products");
+const searchInput = document.getElementById("nexora-search");
+const filterContainer = document.getElementById("nexora-filters");
+const resultsCount = document.getElementById("nexora-results-count");
 
 function escapeProductText(value) {
-  return String(value).replace(/[&<>"']/g, character => ({
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
     "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
@@ -1482,19 +1415,232 @@ function escapeProductText(value) {
   })[character]);
 }
 
-function safeProductUrl(value) {
+function getSafeProductUrl(value) {
   if (!value) return "";
+
   try {
     const url = new URL(value);
-    return ["https:", "http:"].includes(url.protocol)
-      ? escapeProductText(url.href)
-      : "";
-  } catch {
-    return "";
+
+    if (url.protocol === "https:" || url.protocol === "http:") {
+      return url.href;
+    }
+  } catch (error) {
+    console.warn("Invalid product checkout URL.");
   }
+
+  return "";
+}
+
+function getProductCategory(product) {
+  const category = String(product.category || "").toLowerCase();
+  const name = String(product.name || "").toLowerCase();
+
+  if (category.includes("ai") || name.includes("ai tool")) {
+    return "ai";
+  }
+
+  if (
+    category.includes("ebook") ||
+    category.includes("book") ||
+    name.includes("ebook")
+  ) {
+    return "ebook";
+  }
+
+  if (
+    category.includes("video") ||
+    category.includes("prompt") ||
+    name.includes("video prompt")
+  ) {
+    return "video";
+  }
+
+  if (
+    category.includes("template") ||
+    name.includes("template")
+  ) {
+    return "template";
+  }
+
+  return "other";
+}
+
+function formatProductPrice(product) {
+  const price = Number(product.price);
+
+  if (!Number.isFinite(price)) {
+    return "View price";
+  }
+
+  const currency = String(product.currency || "NGN").toUpperCase();
+
+  if (currency === "NGN") {
+    return "₦" + price.toLocaleString("en-NG");
+  }
+
+  return currency + " " + price.toLocaleString();
+}
+
+function renderNexoraProducts() {
+  if (!productContainer) return;
+
+  const searchTerm = searchInput
+    ? searchInput.value.trim().toLowerCase()
+    : "";
+
+  const filteredProducts = nexoraProducts.filter(product => {
+    const searchableText = [
+      product.name,
+      product.description,
+      product.category
+    ].join(" ").toLowerCase();
+
+    const matchesSearch = searchableText.includes(searchTerm);
+
+    const matchesCategory =
+      activeNexoraCategory === "all" ||
+      getProductCategory(product) === activeNexoraCategory;
+
+    return matchesSearch && matchesCategory;
+  });
+
+  if (resultsCount) {
+    resultsCount.textContent =
+      filteredProducts.length +
+      (filteredProducts.length === 1 ? " product" : " products");
+  }
+
+  if (filteredProducts.length === 0) {
+    productContainer.innerHTML = `
+      <div class="nexora-empty-state">
+        <h3>No products found</h3>
+        <p>Try another search or choose a different category.</p>
+      </div>
+    `;
+    return;
+  }
+
+  productContainer.innerHTML = filteredProducts.map(product => {
+    const name = escapeProductText(product.name || "Digital Product");
+
+    const description = escapeProductText(
+      product.description ||
+      "Discover this digital resource from Nexora Hub."
+    );
+
+    const category = escapeProductText(
+      product.category || "Digital Product"
+    );
+
+    const imageUrl = getSafeProductUrl(product.image_url);
+    const checkoutUrl = getSafeProductUrl(product.product_url);
+
+    const imageMarkup = imageUrl
+      ? `
+        <div class="nexora-product-image">
+          <img
+            src="${escapeProductText(imageUrl)}"
+            alt="${name}"
+            loading="lazy"
+            onerror="this.parentElement.innerHTML='<span class=&quot;nexora-image-placeholder&quot;>N</span>'"
+          >
+        </div>
+      `
+      : `
+        <div class="nexora-product-image">
+          <span class="nexora-image-placeholder">N</span>
+        </div>
+      `;
+
+    const buttonMarkup = checkoutUrl
+      ? `
+        <a
+          class="nexora-buy-button"
+          href="${escapeProductText(checkoutUrl)}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Get Product →
+        </a>
+      `
+      : `
+        <span style="font-size:12px;color:#737b8c;">
+          Purchase link coming soon
+        </span>
+      `;
+
+    return `
+      <article class="nexora-product-card">
+        ${imageMarkup}
+
+        <div class="nexora-product-content">
+          <span class="nexora-product-category">${category}</span>
+
+          <h3>${name}</h3>
+
+          <p>${description}</p>
+
+          <div class="nexora-product-bottom">
+            <strong>${formatProductPrice(product)}</strong>
+            ${buttonMarkup}
+          </div>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+async function loadNexoraProducts() {
+  if (!productContainer) return;
+
+  productContainer.innerHTML = `
+    <p class="nexora-empty-state">Loading our digital collection...</p>
+  `;
+
+  const { data, error } = await supabaseClient
+    .from("products")
+    .select("id, name, description, price, currency, category, image_url, status, product_url, created_at")
+    .eq("status", "published")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Supabase product error:", error.message);
+
+    productContainer.innerHTML = `
+      <div class="nexora-empty-state">
+        Our products could not load right now. Please try again later.
+      </div>
+    `;
+
+    return;
+  }
+
+  nexoraProducts = data || [];
+  renderNexoraProducts();
+}
+
+if (searchInput) {
+  searchInput.addEventListener("input", renderNexoraProducts);
+}
+
+if (filterContainer) {
+  filterContainer.addEventListener("click", event => {
+    const button = event.target.closest("[data-category]");
+
+    if (!button) return;
+
+    activeNexoraCategory = button.dataset.category;
+
+    filterContainer.querySelectorAll(".nexora-filter-btn")
+      .forEach(item => item.classList.remove("active"));
+
+    button.classList.add("active");
+
+    renderNexoraProducts();
+  });
 }
 
 loadNexoraProducts();
-      </script>
+        </script>
 </body>
   </html>
