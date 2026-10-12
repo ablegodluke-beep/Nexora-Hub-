@@ -774,6 +774,89 @@
         border: 1px solid var(--border);
       }
     }
+    .nexora-dynamic-store {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 24px;
+}
+
+.nexora-dynamic-store h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.nexora-product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: 22px;
+  margin-top: 25px;
+}
+
+.nexora-product-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.nexora-product-card img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  display: block;
+}
+
+.nexora-product-content {
+  padding: 20px;
+}
+
+.nexora-product-category {
+  color: #7048e8;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.nexora-product-content h3 {
+  margin: 12px 0;
+  font-size: 19px;
+  overflow-wrap: anywhere;
+}
+
+.nexora-product-content p {
+  color: #666;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.nexora-product-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.nexora-product-bottom strong {
+  font-size: 18px;
+  color: #17152a;
+}
+
+.nexora-buy-button {
+  background: #7048e8;
+  color: #fff;
+  padding: 11px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.nexora-buy-button:hover {
+  background: #5632c5;
+  }
   </style>
 </head>
 
@@ -945,6 +1028,15 @@
 
       </div>
     </section>
+    
+    <section class="nexora-dynamic-store">
+  <h2>Explore Our Digital Products</h2>
+  <p>Discover useful digital resources to help you learn, create, and grow.</p>
+
+  <div id="nexora-products" class="nexora-product-grid">
+    <p>Loading products...</p>
+  </div>
+    </section>
 
     <!-- CATEGORIES -->
     <section class="section categories-section" id="categories">
@@ -1066,6 +1158,114 @@
 
     </div>
   </footer>
+<!-- Supabase Library -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<!-- Nexora Hub Dynamic Products -->
+<script>
+const SUPABASE_URL = "https://izjrazugqbnijzhlxegp.supabase.co";
+const SUPABASE_KEY = "sb_publishable_wOVNCGI_o5XwCISbgUK9Sw_r8iMXn7R";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+async function loadNexoraProducts() {
+  const container = document.getElementById("nexora-products");
+
+  if (!container) {
+    console.error("Product display container was not found.");
+    return;
+  }
+
+  container.innerHTML = "<p>Loading products...</p>";
+
+  const { data, error } = await supabaseClient
+    .from("products")
+    .select("id, name, description, price, currency, category, image_url, status, product_url, created_at")
+    .eq("status", "published")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Supabase error:", error.message);
+    container.innerHTML =
+      "<p>Products could not load. Please try again later.</p>";
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    container.innerHTML = "<p>New products will appear here soon.</p>";
+    return;
+  }
+
+  container.innerHTML = data.map(product => {
+    const name = escapeProductText(product.name || "Untitled Product");
+    const description = escapeProductText(
+      product.description || "Discover this digital product from Nexora Hub."
+    );
+    const category = escapeProductText(product.category || "Digital Product");
+    const currency = escapeProductText(product.currency || "NGN");
+    const price = Number(product.price);
+    const formattedPrice = Number.isFinite(price)
+      ? `${currency === "NGN" ? "₦" : currency + " "}${price.toLocaleString()}`
+      : "View price";
+
+    const image = product.image_url
+      ? `<img src="${escapeProductText(product.image_url)}"
+          alt="${name}"
+          loading="lazy"
+          onerror="this.style.display='none'">`
+      : "";
+
+    const checkoutUrl = safeProductUrl(product.product_url);
+
+    return `
+      <article class="nexora-product-card">
+        ${image}
+        <div class="nexora-product-content">
+          <span class="nexora-product-category">${category}</span>
+          <h3>${name}</h3>
+          <p>${description}</p>
+          <div class="nexora-product-bottom">
+            <strong>${formattedPrice}</strong>
+            ${
+              checkoutUrl
+                ? `<a href="${checkoutUrl}" target="_blank"
+                     rel="noopener noreferrer"
+                     class="nexora-buy-button">Get Product</a>`
+                : `<span>Purchase link coming soon</span>`
+            }
+          </div>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+function escapeProductText(value) {
+  return String(value).replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[character]);
+}
+
+function safeProductUrl(value) {
+  if (!value) return "";
+  try {
+    const url = new URL(value);
+    return ["https:", "http:"].includes(url.protocol)
+      ? escapeProductText(url.href)
+      : "";
+  } catch {
+    return "";
+  }
+}
+
+loadNexoraProducts();
+      </script>
 </body>
   </html>
