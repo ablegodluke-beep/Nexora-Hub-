@@ -1,843 +1,1156 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Work With Nexora Hub | Business Partnerships</title>
-
-  <meta name="description" content="Partner with Nexora Hub to reach talent, promote opportunities, and discuss digital projects and business collaborations.">
-
-  <meta name="theme-color" content="#6c45dc">
-
-  <style>
+  <meta name="theme-color" content="#101828">  <title>Partner With Us | Nexora Hub</title>  <meta name="description" content="Partner with Nexora Hub to promote opportunities, connect with talent, showcase your business, and build digital solutions across Africa.">  <style>
     :root {
-      --purple: #6c45dc;
-      --purple-dark: #4c2ca8;
-      --light-purple: #f4f0ff;
-      --dark: #19152a;
-      --text: #625d70;
+      --primary: #6c4cff;
+      --primary-dark: #5135df;
+      --dark: #101828;
+      --text: #344054;
+      --muted: #667085;
+      --light: #f8f9fc;
+      --border: #eaecf0;
       --white: #ffffff;
-      --border: #e9e5f1;
-      --green: #15803d;
+      --green: #12b76a;
     }
 
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
     }
 
     body {
       font-family: Arial, Helvetica, sans-serif;
-      background: #ffffff;
-      color: var(--dark);
+      background: var(--white);
+      color: var(--text);
       line-height: 1.7;
+      overflow-x: hidden;
     }
 
     a {
+      color: inherit;
       text-decoration: none;
     }
 
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
     .container {
-      width: min(1120px, 92%);
+      width: min(1120px, 90%);
       margin: auto;
     }
 
-    /* Header */
+    /* NAVIGATION */
 
-    header {
-      background: #ffffff;
+    .navbar {
+      background: rgba(255, 255, 255, 0.97);
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
+      backdrop-filter: blur(12px);
     }
 
-    .navbar {
+    .nav-inner {
       min-height: 76px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       gap: 20px;
     }
 
     .logo {
+      color: var(--dark);
       font-size: 25px;
       font-weight: 800;
-      color: var(--purple);
       letter-spacing: -1px;
+      white-space: nowrap;
+    }
+
+    .logo span {
+      color: var(--primary);
     }
 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 22px;
-      flex-wrap: wrap;
-    }
-
-    .nav-links a {
-      color: var(--dark);
+      gap: 25px;
       font-size: 14px;
       font-weight: 600;
     }
 
+    .nav-links a {
+      color: #475467;
+      transition: color 0.2s;
+    }
+
     .nav-links a:hover {
-      color: var(--purple);
+      color: var(--primary);
     }
 
-    .nav-button {
-      background: var(--purple);
-      color: white !important;
-      padding: 10px 17px;
+    .nav-links .nav-cta {
+      background: var(--primary);
+      color: white;
+      padding: 11px 18px;
       border-radius: 9px;
     }
 
-    /* Hero */
-
-    .hero {
-      background: linear-gradient(135deg, #f5f1ff, #ffffff 70%);
-      padding: 85px 0;
-      text-align: center;
-    }
-
-    .eyebrow {
-      display: inline-block;
-      background: #e9e1ff;
-      color: var(--purple-dark);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      padding: 7px 13px;
-      border-radius: 30px;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 {
-      font-size: clamp(34px, 5vw, 54px);
-      line-height: 1.15;
-      letter-spacing: -1.5px;
-      max-width: 850px;
-      margin: 0 auto 20px;
-    }
-
-    .hero h1 span {
-      color: var(--purple);
-    }
-
-    .hero p {
-      max-width: 700px;
-      margin: 0 auto;
-      color: var(--text);
-      font-size: 17px;
-    }
-
-    .hero-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 13px;
-      flex-wrap: wrap;
-      margin-top: 30px;
-    }
-
-    .button {
-      display: inline-block;
-      padding: 13px 21px;
-      border-radius: 9px;
-      font-weight: 700;
-      font-size: 14px;
-      transition: 0.2s;
-    }
-
-    .button-primary {
-      background: var(--purple);
+    .nav-links .nav-cta:hover {
+      background: var(--primary-dark);
       color: white;
     }
 
-    .button-primary:hover {
-      background: var(--purple-dark);
+    /* HERO */
+
+    .hero {
+      background:
+        radial-gradient(circle at 85% 20%, rgba(108, 76, 255, 0.17), transparent 30%),
+        linear-gradient(135deg, #101828 0%, #182444 65%, #29205c 100%);
+      color: white;
+      padding: 95px 0 100px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .button-secondary {
-      border: 1px solid var(--border);
-      background: white;
-      color: var(--dark);
+    .hero-content {
+      max-width: 760px;
+      position: relative;
+      z-index: 1;
     }
 
-    /* General sections */
-
-    section {
-      padding: 70px 0;
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 13px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 30px;
+      color: #d8d0ff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 23px;
     }
 
-    .section-heading {
+    .eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #a99aff;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 62px);
+      line-height: 1.12;
+      letter-spacing: -2px;
+      margin-bottom: 22px;
+      max-width: 740px;
+    }
+
+    .hero h1 span {
+      color: #b7aaff;
+    }
+
+    .hero p {
+      max-width: 630px;
+      color: #d0d5dd;
+      font-size: 17px;
+      margin-bottom: 32px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 13px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 21px;
+      border-radius: 9px;
+      font-weight: 700;
+      font-size: 14px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-light {
+      border-color: rgba(255, 255, 255, 0.3);
+      color: white;
+    }
+
+    .btn-light:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* INTRODUCTION */
+
+    .intro {
+      padding: 85px 0 55px;
       text-align: center;
-      max-width: 720px;
-      margin: 0 auto 38px;
     }
 
-    .section-heading h2 {
-      font-size: clamp(27px, 4vw, 36px);
-      line-height: 1.25;
+    .section-label {
+      color: var(--primary);
+      text-transform: uppercase;
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 1.5px;
       margin-bottom: 12px;
     }
 
-    .section-heading p {
-      color: var(--text);
+    .section-title {
+      color: var(--dark);
+      font-size: clamp(29px, 4vw, 42px);
+      line-height: 1.2;
+      letter-spacing: -1.2px;
+      margin-bottom: 17px;
     }
 
-    /* Service cards */
+    .section-description {
+      color: var(--muted);
+      max-width: 680px;
+      margin: 0 auto;
+      font-size: 16px;
+    }
 
-    .services-grid {
+    /* PARTNERSHIP CARDS */
+
+    .services {
+      padding: 25px 0 85px;
+    }
+
+    .service-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 22px;
     }
 
     .service-card {
+      background: white;
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 26px;
-      background: white;
+      padding: 29px 25px;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(16, 24, 40, 0.07);
     }
 
     .service-icon {
-      width: 48px;
-      height: 48px;
+      width: 52px;
+      height: 52px;
+      border-radius: 13px;
+      background: #f0edff;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 12px;
-      background: var(--light-purple);
-      font-size: 23px;
-      margin-bottom: 19px;
+      font-size: 24px;
+      margin-bottom: 22px;
     }
 
     .service-card h3 {
+      color: var(--dark);
       font-size: 19px;
       margin-bottom: 10px;
     }
 
     .service-card p {
+      color: var(--muted);
       font-size: 14px;
-      color: var(--text);
+      margin-bottom: 17px;
     }
 
-    /* How it works */
+    .text-link {
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 700;
+    }
 
-    .process-section {
-      background: #faf9fd;
+    /* HOW IT WORKS */
+
+    .process {
+      padding: 80px 0;
+      background: var(--light);
+    }
+
+    .process-heading {
+      text-align: center;
+      margin-bottom: 45px;
     }
 
     .process-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 25px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
     }
 
-    .process-card {
-      text-align: center;
-      padding: 20px;
+    .process-item {
+      padding: 5px;
     }
 
     .process-number {
-      width: 48px;
-      height: 48px;
+      width: 43px;
+      height: 43px;
       border-radius: 50%;
+      background: var(--primary);
+      color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--purple);
-      color: white;
       font-weight: 800;
-      margin: 0 auto 18px;
+      margin-bottom: 17px;
     }
 
-    .process-card h3 {
+    .process-item h3 {
+      color: var(--dark);
       margin-bottom: 9px;
+      font-size: 18px;
     }
 
-    .process-card p {
-      color: var(--text);
+    .process-item p {
+      color: var(--muted);
       font-size: 14px;
     }
 
-    /* Contact form */
+    /* CONTACT SECTION */
 
     .contact-section {
+      padding: 90px 0;
       background: white;
+    }
+
+    .contact-heading {
+      text-align: center;
+      margin-bottom: 45px;
     }
 
     .contact-layout {
       display: grid;
       grid-template-columns: 0.85fr 1.15fr;
-      gap: 45px;
-      align-items: start;
+      gap: 28px;
+      align-items: stretch;
     }
 
-    .contact-info h2 {
-      font-size: 32px;
-      line-height: 1.25;
-      margin-bottom: 16px;
+    .contact-panel {
+      background: #101828;
+      color: white;
+      border-radius: 18px;
+      padding: 36px 30px;
+      display: flex;
+      flex-direction: column;
     }
 
-    .contact-info > p {
-      color: var(--text);
-      margin-bottom: 25px;
+    .contact-panel h3 {
+      font-size: 25px;
+      line-height: 1.3;
+      margin-bottom: 13px;
     }
 
-    .contact-item {
-      margin-bottom: 18px;
+    .contact-panel > p {
+      color: #c4cbd5;
+      font-size: 14px;
+      margin-bottom: 30px;
     }
 
-    .contact-item strong {
+    .contact-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      padding: 19px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .contact-detail:last-of-type {
+      border-bottom: none;
+    }
+
+    .detail-icon {
+      flex-shrink: 0;
+      width: 43px;
+      height: 43px;
+      background: rgba(255, 255, 255, 0.09);
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+    }
+
+    .detail-text small {
       display: block;
+      color: #98a2b3;
+      font-size: 12px;
       margin-bottom: 4px;
     }
 
-    .contact-item a {
-      color: var(--purple);
+    .detail-text strong,
+    .detail-text a {
+      display: block;
+      color: white;
+      font-size: 14px;
       overflow-wrap: anywhere;
     }
 
-    .contact-form {
+    .detail-text a:hover {
+      color: #b7aaff;
+    }
+
+    .contact-note {
+      background: rgba(108, 76, 255, 0.18);
+      border: 1px solid rgba(183, 170, 255, 0.22);
+      padding: 16px;
+      border-radius: 11px;
+      margin-top: auto;
+      font-size: 13px;
+      color: #e1dcff;
+    }
+
+    /* FORM */
+
+    .form-panel {
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      box-shadow: 0 12px 40px rgba(32, 18, 70, 0.05);
+      border-radius: 18px;
+      padding: 36px;
+      box-shadow: 0 10px 35px rgba(16, 24, 40, 0.04);
     }
 
-    .contact-form h3 {
-      font-size: 22px;
-      margin-bottom: 6px;
+    .form-panel h3 {
+      color: var(--dark);
+      font-size: 24px;
+      margin-bottom: 8px;
     }
 
-    .form-intro {
+    .form-subtitle {
+      color: var(--muted);
       font-size: 14px;
-      color: var(--text);
-      margin-bottom: 22px;
+      margin-bottom: 27px;
     }
 
     .form-group {
-      margin-bottom: 17px;
+      margin-bottom: 19px;
     }
 
     .form-group label {
       display: block;
-      font-size: 14px;
+      color: #344054;
+      font-size: 13px;
       font-weight: 700;
-      margin-bottom: 7px;
+      margin-bottom: 8px;
     }
 
     .form-group input,
     .form-group select,
     .form-group textarea {
+      display: block;
       width: 100%;
-      padding: 13px;
-      border: 1px solid #dcd6e8;
-      border-radius: 8px;
-      font: inherit;
-      font-size: 14px;
+      border: 1px solid #d0d5dd;
       background: white;
       color: var(--dark);
+      padding: 13px 14px;
+      border-radius: 9px;
+      outline: none;
+      font-size: 14px;
+      transition: border 0.2s, box-shadow 0.2s;
     }
 
     .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
-      outline: 2px solid #d9ceff;
-      border-color: var(--purple);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(108, 76, 255, 0.12);
     }
 
     .form-group textarea {
-      min-height: 125px;
+      min-height: 130px;
       resize: vertical;
     }
 
-    .submit-button {
+    .form-submit {
       width: 100%;
-      padding: 14px;
       border: none;
-      border-radius: 9px;
-      background: var(--purple);
-      color: white;
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
+      margin-top: 3px;
     }
 
-    .submit-button:hover {
-      background: var(--purple-dark);
-    }
-
-    .form-note {
-      color: var(--text);
+    .form-disclaimer {
       font-size: 12px;
-      margin-top: 12px;
-    }
-
-    /* CTA */
-
-    .cta-section {
-      padding: 25px 0 75px;
-    }
-
-    .cta-box {
-      background: linear-gradient(135deg, #6c45dc, #4926a6);
-      border-radius: 20px;
-      padding: 45px 25px;
+      color: var(--muted);
       text-align: center;
-      color: white;
+      margin-top: 14px;
     }
 
-    .cta-box h2 {
-      font-size: clamp(26px, 4vw, 35px);
-      margin-bottom: 12px;
+    /* FINAL CTA */
+
+    .final-cta {
+      padding: 65px 0;
+      background: #f5f3ff;
+      text-align: center;
     }
 
-    .cta-box p {
-      max-width: 650px;
-      margin: 0 auto 22px;
-      color: #eee8ff;
+    .final-cta h2 {
+      color: var(--dark);
+      font-size: clamp(27px, 4vw, 38px);
+      line-height: 1.25;
+      margin-bottom: 14px;
     }
 
-    .cta-box .button {
-      background: white;
-      color: var(--purple-dark);
+    .final-cta p {
+      max-width: 620px;
+      margin: 0 auto 25px;
+      color: var(--muted);
+      font-size: 15px;
     }
 
-    /* Footer */
+    /* FOOTER */
 
     footer {
-      border-top: 1px solid var(--border);
-      padding: 28px 0;
-      background: #ffffff;
+      background: #0b1220;
+      color: #c4cbd5;
+      padding: 48px 0 20px;
     }
 
-    .footer-inner {
+    .footer-main {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 40px;
+      padding-bottom: 35px;
+    }
+
+    .footer-brand .logo {
+      color: white;
+      display: inline-block;
+      margin-bottom: 14px;
+    }
+
+    .footer-brand p {
+      max-width: 320px;
+      font-size: 13px;
+      color: #98a2b3;
+    }
+
+    .footer-column h4 {
+      color: white;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .footer-column a {
+      display: block;
+      width: fit-content;
+      margin-bottom: 10px;
+      color: #98a2b3;
+      font-size: 13px;
+    }
+
+    .footer-column a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
-      align-items: center;
-      gap: 18px;
-      flex-wrap: wrap;
+      gap: 12px;
+      color: #98a2b3;
+      font-size: 12px;
     }
 
-    .footer-brand {
-      font-weight: 800;
-      color: var(--purple);
-      font-size: 19px;
-    }
+    /* MOBILE RESPONSIVENESS */
 
-    .footer-text {
-      color: var(--text);
-      font-size: 13px;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      color: var(--text);
-      font-size: 13px;
-    }
-
-    .footer-links a:hover {
-      color: var(--purple);
-    }
-
-    /* Mobile */
-
-    @media (max-width: 800px) {
-      .navbar {
-        padding: 15px 0;
+    @media (max-width: 850px) {
+      .nav-inner {
+        padding: 17px 0;
         align-items: flex-start;
         flex-direction: column;
+        gap: 14px;
       }
 
       .nav-links {
-        gap: 12px 16px;
+        width: 100%;
+        gap: 17px;
+        flex-wrap: wrap;
+        font-size: 13px;
       }
 
-      .services-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      .hero {
+        padding: 70px 0 75px;
+      }
+
+      .service-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .contact-layout {
         grid-template-columns: 1fr;
-        gap: 30px;
+      }
+
+      .footer-main {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-brand {
+        grid-column: 1 / -1;
       }
     }
 
-    @media (max-width: 540px) {
+    @media (max-width: 560px) {
+      .container {
+        width: 91%;
+      }
+
+      .logo {
+        font-size: 23px;
+      }
+
+      .nav-links {
+        gap: 12px 17px;
+      }
+
+      .nav-links .nav-cta {
+        padding: 9px 12px;
+      }
+
       .hero {
-        padding: 60px 0;
+        padding: 58px 0 65px;
       }
 
-      section {
-        padding: 52px 0;
+      .hero h1 {
+        letter-spacing: -1.2px;
       }
 
-      .services-grid,
+      .hero p {
+        font-size: 15px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+      }
+
+      .intro {
+        padding: 65px 0 40px;
+      }
+
+      .services {
+        padding-bottom: 60px;
+      }
+
+      .service-grid,
       .process-grid {
         grid-template-columns: 1fr;
       }
 
       .service-card {
-        padding: 22px;
+        padding: 25px 22px;
       }
 
-      .contact-form {
-        padding: 21px;
+      .process {
+        padding: 65px 0;
       }
 
-      .footer-inner {
-        align-items: flex-start;
+      .process-grid {
+        gap: 27px;
+      }
+
+      .contact-section {
+        padding: 65px 0;
+      }
+
+      .contact-panel,
+      .form-panel {
+        padding: 25px 21px;
+        border-radius: 14px;
+      }
+
+      .contact-panel h3,
+      .form-panel h3 {
+        font-size: 22px;
+      }
+
+      .contact-detail {
+        gap: 12px;
+      }
+
+      .detail-text strong,
+      .detail-text a {
+        font-size: 13px;
+      }
+
+      .footer-main {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px 20px;
+      }
+
+      .footer-bottom {
         flex-direction: column;
       }
     }
-  </style>
-</head>
+  </style></head><body>  <!-- NAVIGATION -->  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">Nexora<span>Hub.</span></a>  <nav class="nav-links" aria-label="Main navigation">
+    <a href="index.html">Home</a>
+    <a href="jobs.html">Jobs</a>
+    <a href="career.html">CV Builder</a>
+    <a href="store.html">Digital Store</a>
+    <a href="#contact" class="nav-cta">Contact Us</a>
+  </nav>
+</div>
 
-<body>
+  </header>  <main><!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="eyebrow">Partnerships & Business Enquiries</div>
 
-  <header>
-    <div class="container navbar">
-      <a href="index.html" class="logo">Nexora Hub</a>
+      <h1>
+        Let's create something <span>valuable together.</span>
+      </h1>
 
-      <nav class="nav-links" aria-label="Main navigation">
-        <a href="index.html">Home</a>
-        <a href="jobs.html">Jobs</a>
-        <a href="career.html">CV Builder</a>
-        <a href="store.html">Digital Store</a>
-        <a href="#contact" class="nav-button">Contact Us</a>
-      </nav>
+      <p>
+        Nexora Hub connects people with opportunities, useful digital
+        resources and career support. We welcome enquiries from businesses,
+        recruiters, organisations and individuals who want to work with us.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">
+          Discuss a Partnership &rarr;
+        </a>
+
+        <a href="#opportunities" class="btn btn-light">
+          Explore Collaboration Options
+        </a>
+      </div>
     </div>
-  </header>
+  </div>
+</section>
 
-  <main>
+<!-- INTRODUCTION -->
+<section class="intro">
+  <div class="container">
+    <div class="section-label">Work With Nexora</div>
 
-    <section class="hero">
-      <div class="container">
-        <span class="eyebrow">BUSINESS & PARTNERSHIPS</span>
+    <h2 class="section-title">Let's find the right way to work together.</h2>
 
-        <h1>Let's Build Something <span>Meaningful</span> Together</h1>
+    <p class="section-description">
+      Whether you are hiring, building a business, promoting a product or
+      exploring a digital project, tell us what you have in mind.
+      We'll review your enquiry and discuss the next steps.
+    </p>
+  </div>
+</section>
+
+<!-- COLLABORATION OPTIONS -->
+<section class="services" id="opportunities">
+  <div class="container">
+    <div class="service-grid">
+
+      <article class="service-card">
+        <div class="service-icon">💼</div>
+        <h3>Recruitment & Jobs</h3>
+        <p>
+          Connect with us about job opportunities, internships, recruitment
+          campaigns or ways to help people discover legitimate openings.
+        </p>
+        <a href="#contact" class="text-link"
+           data-interest="Recruitment and job opportunities">
+          Discuss recruitment &rarr;
+        </a>
+      </article>
+
+      <article class="service-card">
+        <div class="service-icon">🤝</div>
+        <h3>Business Partnerships</h3>
+        <p>
+          Explore possible collaborations with Nexora Hub to reach
+          relevant audiences and develop useful services.
+        </p>
+        <a href="#contact" class="text-link"
+           data-interest="Business partnership">
+          Explore partnership &rarr;
+        </a>
+      </article>
+
+      <article class="service-card">
+        <div class="service-icon">🌐</div>
+        <h3>Digital Projects</h3>
+        <p>
+          Have a website idea or a digital project in mind? Contact us
+          to discuss your requirements and possible solutions.
+        </p>
+        <a href="#contact" class="text-link"
+           data-interest="Website or digital project">
+          Discuss a project &rarr;
+        </a>
+      </article>
+
+      <article class="service-card">
+        <div class="service-icon">📣</div>
+        <h3>Promotion & Visibility</h3>
+        <p>
+          Contact us to discuss potential promotional opportunities for
+          your organisation, service or digital product.
+        </p>
+        <a href="#contact" class="text-link"
+           data-interest="Promotion and visibility">
+          Make an enquiry &rarr;
+        </a>
+      </article>
+
+      <article class="service-card">
+        <div class="service-icon">🎓</div>
+        <h3>Student Opportunities</h3>
+        <p>
+          Share ideas for internships, student programmes, career
+          development resources or educational initiatives.
+        </p>
+        <a href="#contact" class="text-link"
+           data-interest="Student and educational opportunities">
+          Work with students &rarr;
+        </a>
+      </article>
+
+      <article class="service-card">
+        <div class="service-icon">💡</div>
+        <h3>Other Enquiries</h3>
+        <p>
+          Have a different idea? We are open to reviewing relevant
+          proposals and exploring suitable opportunities.
+        </p>
+        <a href="#contact" class="text-link"
+           data-interest="Other enquiry">
+          Tell us your idea &rarr;
+        </a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="container">
+    <div class="process-heading">
+      <div class="section-label">Simple Process</div>
+      <h2 class="section-title">How to get started</h2>
+      <p class="section-description">
+        A straightforward way to introduce your idea and start a conversation.
+      </p>
+    </div>
+
+    <div class="process-grid">
+
+      <div class="process-item">
+        <div class="process-number">01</div>
+        <h3>Tell Us About Yourself</h3>
+        <p>
+          Share your name, organisation if applicable, and the reason
+          you want to connect with Nexora Hub.
+        </p>
+      </div>
+
+      <div class="process-item">
+        <div class="process-number">02</div>
+        <h3>Explain Your Idea</h3>
+        <p>
+          Give us a clear summary of your needs, proposed collaboration
+          or the opportunity you want to discuss.
+        </p>
+      </div>
+
+      <div class="process-item">
+        <div class="process-number">03</div>
+        <h3>Continue the Conversation</h3>
+        <p>
+          Your message will be prepared for email. After you send it,
+          we can review the proposal and discuss possible next steps.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROFESSIONAL CONTACT SECTION -->
+<section class="contact-section" id="contact">
+  <div class="container">
+
+    <div class="contact-heading">
+      <div class="section-label">Get In Touch</div>
+      <h2 class="section-title">Let's talk about your idea.</h2>
+      <p class="section-description">
+        Use the form to introduce your enquiry, or contact us directly
+        using the details below.
+      </p>
+    </div>
+
+    <div class="contact-layout">
+
+      <!-- CONTACT INFORMATION -->
+      <div class="contact-panel">
+        <h3>Contact Nexora Hub</h3>
 
         <p>
-          Nexora Hub connects people with career opportunities, digital resources
-          and services. We're open to discussing business partnerships,
-          project enquiries and opportunities to create value together.
+          We welcome relevant business enquiries, partnership proposals,
+          recruitment discussions and digital project ideas.
         </p>
 
-        <div class="hero-buttons">
-          <a href="#contact" class="button button-primary">
-            Discuss a Project
-          </a>
-
-          <a href="mailto:ablegodluke@gmail.com"
-             class="button button-secondary">
-            Email Nexora Hub
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="container">
-
-        <div class="section-heading">
-          <h2>How We Can Work Together</h2>
-          <p>
-            Tell us what you're planning. We'll review your enquiry and discuss
-            whether there's a suitable way for us to work together.
-          </p>
-        </div>
-
-        <div class="services-grid">
-
-          <article class="service-card">
-            <div class="service-icon">🤝</div>
-            <h3>Business Partnerships</h3>
-            <p>
-              Discuss potential collaborations, business relationships
-              and ideas that align with Nexora Hub's mission.
-            </p>
-          </article>
-
-          <article class="service-card">
-            <div class="service-icon">💼</div>
-            <h3>Job & Opportunity Listings</h3>
-            <p>
-              Employers and organisations can contact us to discuss relevant
-              job opportunities, internships and career-related listings.
-            </p>
-          </article>
-
-          <article class="service-card">
-            <div class="service-icon">💻</div>
-            <h3>Digital Projects</h3>
-            <p>
-              Have a website idea or a digital project to discuss?
-              Contact us to explain your needs and explore possible next steps.
-            </p>
-          </article>
-
-          <article class="service-card">
-            <div class="service-icon">📣</div>
-            <h3>Promotion Enquiries</h3>
-            <p>
-              Discuss promotional opportunities for relevant products,
-              services and projects. Any collaboration is subject to review.
-            </p>
-          </article>
-
-          <article class="service-card">
-            <div class="service-icon">🎓</div>
-            <h3>Student & Career Initiatives</h3>
-            <p>
-              We're open to hearing from organisations interested in career
-              guidance, student opportunities and useful learning resources.
-            </p>
-          </article>
-
-          <article class="service-card">
-            <div class="service-icon">💡</div>
-            <h3>Other Ideas</h3>
-            <p>
-              Have another idea for working with Nexora Hub?
-              Send us a message and explain what you have in mind.
-            </p>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-    <section class="process-section">
-      <div class="container">
-
-        <div class="section-heading">
-          <h2>How It Works</h2>
-          <p>
-            A simple way to start a conversation about working together.
-          </p>
-        </div>
-
-        <div class="process-grid">
-
-          <article class="process-card">
-            <div class="process-number">1</div>
-            <h3>Send Your Enquiry</h3>
-            <p>
-              Tell us about your organisation, project or proposed partnership.
-            </p>
-          </article>
-
-          <article class="process-card">
-            <div class="process-number">2</div>
-            <h3>We'll Review It</h3>
-            <p>
-              We'll review the information you provide and consider the
-              appropriate next steps.
-            </p>
-          </article>
-
-          <article class="process-card">
-            <div class="process-number">3</div>
-            <h3>Discuss the Next Steps</h3>
-            <p>
-              If the proposal is suitable, we can discuss the details
-              and possible ways forward.
-            </p>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-    <section class="contact-section" id="contact">
-      <div class="container contact-layout">
-
-        <div class="contact-info">
-          <span class="eyebrow">GET IN TOUCH</span>
-
-          <h2>Tell Us About Your Project</h2>
-
-          <p>
-            Complete the enquiry form to prepare a message for Nexora Hub.
-            You can also contact us directly by email.
-          </p>
-
-          <div class="contact-item">
-            <strong>Email</strong>
+        <div class="contact-detail">
+          <div class="detail-icon">✉</div>
+          <div class="detail-text">
+            <small>Email address</small>
             <a href="mailto:ablegodluke@gmail.com">
               ablegodluke@gmail.com
             </a>
           </div>
+        </div>
 
-          <div class="contact-item">
-            <strong>Phone</strong>
-            <a href="tel:+2349017579718">
-              +234 901 757 9718
+        <div class="contact-detail">
+          <div class="detail-icon">☎</div>
+          <div class="detail-text">
+            <small>Phone / WhatsApp</small>
+            <a href="tel:+2349017579718">+234 901 757 9718</a>
+            <a href="https://wa.me/2349017579718"
+               target="_blank" rel="noopener noreferrer">
+              Message us on WhatsApp &rarr;
             </a>
-          </div>
-
-          <div class="contact-item">
-            <strong>Website</strong>
-            <a href="index.html">Nexora Hub</a>
           </div>
         </div>
 
-        <form class="contact-form" id="company-form">
-          <h3>Business Enquiry</h3>
-
-          <p class="form-intro">
-            Fill in the details below to prepare your email enquiry.
-          </p>
-
-          <div class="form-group">
-            <label for="company-name">Company or Organisation</label>
-            <input
-              type="text"
-              id="company-name"
-              name="company"
-              placeholder="Enter company name"
-              required
-            >
+        <div class="contact-detail">
+          <div class="detail-icon">🌍</div>
+          <div class="detail-text">
+            <small>Our focus</small>
+            <strong>Nigeria, Africa & beyond</strong>
           </div>
+        </div>
+
+        <div class="contact-note">
+          <strong>Have a proposal?</strong><br>
+          Please include enough information for us to understand what
+          you need and how we might work together.
+        </div>
+      </div>
+
+      <!-- ENQUIRY FORM -->
+      <div class="form-panel">
+        <h3>Send an enquiry</h3>
+
+        <p class="form-subtitle">
+          Complete the fields below to prepare your message.
+        </p>
+
+        <form id="enquiryForm">
 
           <div class="form-group">
-            <label for="contact-name">Your Name</label>
+            <label for="name">Full name *</label>
             <input
               type="text"
-              id="contact-name"
+              id="name"
               name="name"
               placeholder="Enter your full name"
+              autocomplete="name"
               required
             >
           </div>
 
           <div class="form-group">
-            <label for="contact-email">Your Email Address</label>
+            <label for="email">Email address *</label>
             <input
               type="email"
-              id="contact-email"
+              id="email"
               name="email"
               placeholder="you@example.com"
+              autocomplete="email"
               required
             >
           </div>
 
           <div class="form-group">
-            <label for="enquiry-type">Type of Enquiry</label>
-            <select id="enquiry-type" name="type" required>
+            <label for="organisation">Company or organisation</label>
+            <input
+              type="text"
+              id="organisation"
+              name="organisation"
+              placeholder="Enter organisation name (optional)"
+              autocomplete="organization"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="interest">What would you like to discuss? *</label>
+            <select id="interest" name="interest" required>
               <option value="">Select an enquiry type</option>
+              <option>Recruitment and job opportunities</option>
               <option>Business partnership</option>
-              <option>Job or internship listing</option>
               <option>Website or digital project</option>
-              <option>Promotion enquiry</option>
-              <option>Student or career initiative</option>
-              <option>Other</option>
+              <option>Promotion and visibility</option>
+              <option>Student and educational opportunities</option>
+              <option>Other enquiry</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label for="project-message">Tell Us About Your Enquiry</label>
+            <label for="message">Your message *</label>
             <textarea
-              id="project-message"
+              id="message"
               name="message"
-              placeholder="Describe your project or proposal..."
+              placeholder="Tell us about your idea, requirements or proposal..."
               required
             ></textarea>
           </div>
 
-          <button type="submit" class="submit-button">
-            Prepare Email Enquiry
+          <button type="submit" class="btn btn-primary form-submit">
+            Prepare Email Message &rarr;
           </button>
 
-          <p class="form-note">
-            This form opens your email application with your message prepared.
-            You will need to send the email yourself.
+          <p class="form-disclaimer">
+            Your email app will open with your message prepared.
+            You must press Send to submit the enquiry.
           </p>
+
         </form>
-
       </div>
-    </section>
-
-    <section class="cta-section">
-      <div class="container">
-        <div class="cta-box">
-          <h2>Have an Idea Worth Exploring?</h2>
-          <p>
-            Start a conversation with Nexora Hub about your project,
-            organisation or potential collaboration.
-          </p>
-
-          <a href="#contact" class="button">Contact Nexora Hub</a>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer>
-    <div class="container footer-inner">
-
-      <div>
-        <a href="index.html" class="footer-brand">Nexora Hub</a>
-        <p class="footer-text">
-          Building opportunities across Africa and beyond.
-        </p>
-      </div>
-
-      <nav class="footer-links" aria-label="Footer navigation">
-        <a href="index.html">Home</a>
-        <a href="jobs.html">Jobs</a>
-        <a href="store.html">Digital Store</a>
-        <a href="about.html">About</a>
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="terms.html">Terms & Conditions</a>
-      </nav>
-
-      <p class="footer-text">
-        &copy; <span id="current-year"></span> Nexora Hub. All rights reserved.
-      </p>
 
     </div>
-  </footer>
+  </div>
+</section>
 
-  <script>
-    document.getElementById("current-year").textContent =
+<!-- FINAL CALL TO ACTION -->
+<section class="final-cta">
+  <div class="container">
+    <h2>Have an opportunity worth discussing?</h2>
+
+    <p>
+      Start a conversation with Nexora Hub about a potential partnership,
+      recruitment opportunity or digital project.
+    </p>
+
+    <a href="#contact" class="btn btn-primary">
+      Contact Nexora Hub &rarr;
+    </a>
+  </div>
+</section>
+
+  </main>  <!-- FOOTER -->  <footer>
+    <div class="container">  <div class="footer-main">
+
+    <div class="footer-brand">
+      <a href="index.html" class="logo">Nexora<span>Hub.</span></a>
+
+      <p>
+        Connecting people with opportunities, career resources
+        and digital solutions across Africa and beyond.
+      </p>
+    </div>
+
+    <div class="footer-column">
+      <h4>Explore</h4>
+      <a href="index.html">Home</a>
+      <a href="jobs.html">Find Jobs</a>
+      <a href="career.html">CV Builder</a>
+      <a href="store.html">Digital Store</a>
+      <a href="about.html">About Us</a>
+    </div>
+
+    <div class="footer-column">
+      <h4>Information</h4>
+      <a href="#contact">Contact Us</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms & Conditions</a>
+      <a href="mailto:ablegodluke@gmail.com">Email Us</a>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <span>
+      &copy; <span id="currentYear"></span> Nexora Hub. All rights reserved.
+    </span>
+
+    <span>Building opportunities across Africa and beyond.</span>
+  </div>
+
+</div>
+
+  </footer>  <script>
+    // Update copyright year automatically.
+    document.getElementById("currentYear").textContent =
       new Date().getFullYear();
 
-    document.getElementById("company-form").addEventListener("submit", function(event) {
+    // Preselect the enquiry type when a visitor clicks a service link.
+    document.querySelectorAll("[data-interest]").forEach(function(link) {
+      link.addEventListener("click", function() {
+        const interestField = document.getElementById("interest");
+        interestField.value = this.getAttribute("data-interest");
+      });
+    });
+
+    // Prepare an email draft containing the form details.
+    document.getElementById("enquiryForm").addEventListener("submit", function(event) {
       event.preventDefault();
 
-      const company = document.getElementById("company-name").value.trim();
-      const name = document.getElementById("contact-name").value.trim();
-      const email = document.getElementById("contact-email").value.trim();
-      const type = document.getElementById("enquiry-type").value;
-      const message = document.getElementById("project-message").value.trim();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const organisation = document.getElementById("organisation").value.trim();
+      const interest = document.getElementById("interest").value;
+      const message = document.getElementById("message").value.trim();
 
-      const subject = "Nexora Hub Business Enquiry - " + type;
+      if (!name || !email || !interest || !message) {
+        alert("Please complete all required fields.");
+        return;
+      }
 
-      const body =
-        "Company or Organisation: " + company + "\n" +
-        "Contact Name: " + name + "\n" +
-        "Contact Email: " + email + "\n" +
-        "Enquiry Type: " + type + "\n\n" +
-        "Project Details:\n" + message;
+      const subject = encodeURIComponent(
+        "Nexora Hub Enquiry: " + interest
+      );
 
-      const mailto =
-        "mailto:ablegodluke@gmail.com" +
-        "?subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(body);
+      const body = encodeURIComponent(
+        "Hello Nexora Hub,\n\n" +
+        "I would like to make an enquiry.\n\n" +
+        "Full name: " + name + "\n" +
+        "Email address: " + email + "\n" +
+        "Company/organisation: " + (organisation || "Not provided") + "\n" +
+        "Enquiry type: " + interest + "\n\n" +
+        "Message:\n" + message + "\n\n" +
+        "Regards,\n" + name
+      );
 
-      window.location.href = mailto;
+      window.location.href =
+        "mailto:ablegodluke@gmail.com?subject=" + subject + "&body=" + body;
     });
-  </script>
-
-</body>
+  </script></body>
   </html>
